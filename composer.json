@@ -1,0 +1,20 @@
+{
+    "name": "hi/library",
+    "description": "Hi 框架类库组件",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Library\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anoxia",
+            "email": "anoxia@engineer.com"
+        }
+    ],
+    "require-dev": {
+        "psr/http-message": "^1.0",
+        "hi/http": "^0.0.21"
+    }
+}

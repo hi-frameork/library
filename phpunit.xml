@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+  backupGlobals="false"
+  backupStaticAttributes="false"
+  beStrictAboutTestsThatDoNotTestAnything="false"
+  colors="true"
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  processIsolation="false"
+  stopOnError="false"
+  stopOnFailure="false"
+  verbose="true"
+  printerClass="Sempro\PHPUnitPrettyPrinter\PrettyPrinterForPhpUnit9"
+>
+  <testsuites>
+    <testsuite name="Unit/Library/Attribute">
+      <directory suffix="Test.php">./tests/Unit/Library/Attribute/</directory>
+    </testsuite>
+    <testsuite name="Unit/Library/Database">
+      <directory suffix="Test.php">./tests/Unit/Library/Database</directory>
+    </testsuite>
+    <testsuite name="Feature/Library/Http">
+      <directory suffix="Test.php">./tests/Feature/Library/Http/</directory>
+    </testsuite>
+    <testsuite name="Feature/Routes">
+      <directory suffix="Test.php">./tests/Feature/Routes/</directory>
+    </testsuite>
+  </testsuites>
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </coverage>
+  <php>
+    <!-- <ini name="date.timezone" value="PRC" /> -->
+    <!-- <ini name="intl.default_locale" value="C.UTF-8" /> -->
+    <ini name="memory_limit" value="2048M" />
+  </php>
+</phpunit>

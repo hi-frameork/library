@@ -1,0 +1,170 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "bc0a4caf1af4f1ece59fad5ee8ae9192",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "hi/http",
+            "version": "0.0.21",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hi-frameork/http.git",
+                "reference": "914b6a024df66e47aa817c3a978b01619e982f6e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hi-frameork/http/zipball/914b6a024df66e47aa817c3a978b01619e982f6e",
+                "reference": "914b6a024df66e47aa817c3a978b01619e982f6e",
+                "shasum": ""
+            },
+            "require": {
+                "hi/server": "^0.0",
+                "php": ">=7.4",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.11",
+                "phpunit/phpunit": "^9.5",
+                "swoole/ide-helper": "^4",
+                "vimeo/psalm": "^4.26"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anoxia",
+                    "email": "anoxia@engineer.com"
+                }
+            ],
+            "description": "Hi 框架 HTTP 组件",
+            "support": {
+                "issues": "https://github.com/hi-frameork/http/issues",
+                "source": "https://github.com/hi-frameork/http/tree/0.0.21"
+            },
+            "time": "2023-02-12T15:44:11+00:00"
+        },
+        {
+            "name": "hi/server",
+            "version": "0.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hi-frameork/server.git",
+                "reference": "233b4d0dfbf000f5687d29e38e1a73c037ea9955"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hi-frameork/server/zipball/233b4d0dfbf000f5687d29e38e1a73c037ea9955",
+                "reference": "233b4d0dfbf000f5687d29e38e1a73c037ea9955",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.11",
+                "phpstan/phpstan": "^1.8",
+                "phpunit/phpunit": "^9.5",
+                "swoole/ide-helper": "4.8",
+                "workerman/workerman": "^4.0"
+            },
+            "suggest": {
+                "ext-soole": "Coroutine-based concurrency library for PHP"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "russell",
+                    "email": "anoxia@engineer.com"
+                }
+            ],
+            "description": "Hi 框架组件，提供 Server 基础抽象能力",
+            "support": {
+                "issues": "https://github.com/hi-frameork/server/issues",
+                "source": "https://github.com/hi-frameork/server/tree/0.0.4"
+            },
+            "time": "2022-10-03T16:55:41+00:00"
+        },
+        {
+            "name": "psr/http-message",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-message.git",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-message/tree/master"
+            },
+            "time": "2016-08-06T14:39:51+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}

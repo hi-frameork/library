@@ -1,0 +1,7 @@
+.*
+!.gitignore
+!.deploy/
+!.php-cs-fixer.dist.php
+
+composer
+vendor/
