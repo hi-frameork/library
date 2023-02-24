@@ -123,4 +123,32 @@ class Model
 
         return $this->insert()->cols($data)->executeAndGetlastId();
     }
+
+
+    /**
+     * 检查指定 ID 记录是否存在
+     */
+    public function existById(int $id)
+    {
+        $result = $this->select(['id'])
+            ->where('id = :a', ['a' => $id])
+            ->first()
+        ;
+
+        return $result ? true : false;
+    }
+
+    /**
+     * 更新指定 ID 记录对应数据
+     */
+    public function updateById(int $id, array $data)
+    {
+        return $this->update()
+            ->cols($data)
+            ->where('id = :a', [
+                'a' => $id
+            ])
+            ->execute()
+        ;
+    }
 }
