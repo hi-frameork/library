@@ -24,7 +24,7 @@ class Manager extends DatabaseManager
                 }
 
                 return $redis;
-            }, $config['pool_size']);
+            }, $config['pool_size'] ?? 8);
         }
 
         // debug('初始化 Redis 数据库连接池', $configs);

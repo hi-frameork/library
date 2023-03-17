@@ -17,14 +17,14 @@ class Manager extends DatabaseManager
 
             $pdoConfig = new PdoConfig();
             $pdoConfig->withHost($config['host']);
-            $pdoConfig->withPort($config['port']);
+            $pdoConfig->withPort($config['port'] ?? 3306);
             // $pdoConfig->withUnixSocket('/tmp/mysql.sock')
             $pdoConfig->withDbName($config['database']);
-            $pdoConfig->withCharset($config['charset']);
             $pdoConfig->withUsername($config['user']);
             $pdoConfig->withPassword($config['password']);
+            $pdoConfig->withCharset($config['charset'] ?? 'utf8mb4');
 
-            $this->pool[$name] = new PdoPool($pdoConfig, $config['pool_size']);
+            $this->pool[$name] = new PdoPool($pdoConfig, $config['pool_size'] ?? 8);
 
             // $this->pool[$name] = new ConnectionPool(
             //     fn () => new PDO(
