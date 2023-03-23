@@ -82,7 +82,7 @@ class QueryProxy
         $hasThrowable = false;
 
         try {
-            debug('MYSQL', [str_replace(PHP_EOL, ' ', $this->query->getStatement()), $this->query->getBindValues()]);
+            // debug('MYSQL', [str_replace(PHP_EOL, ' ', $this->query->getStatement()), $this->query->getBindValues()]);
             // SQL 预处理
             $stmt = $pdo->prepare($this->query->getStatement());
             // SQL 语句参数绑定并执行

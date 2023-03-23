@@ -18,6 +18,7 @@
     },
     "require-dev": {
         "psr/http-message": "^1.0",
-        "hi/http": "^0.0.21"
+        "hi/http": "^0.0.21",
+        "hi/kernel": "^0.0.11"
     }
 }

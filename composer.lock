@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bfc70f05db80617edf88c0ff6c64ba3",
+    "content-hash": "6179c6467a0ed9484e3214743ee0e31e",
     "packages": [
         {
             "name": "aura/sqlquery",
@@ -77,6 +77,116 @@
     ],
     "packages-dev": [
         {
+            "name": "alecrabbit/php-cli-tools",
+            "version": "0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alecrabbit/php-cli-tools.git",
+                "reference": "962a6c4396a18081efe08561dd76bacdd4e3163b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alecrabbit/php-cli-tools/zipball/962a6c4396a18081efe08561dd76bacdd4e3163b",
+                "reference": "962a6c4396a18081efe08561dd76bacdd4e3163b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "alecrabbit/php-helpers": "^0.7 || ^0.8 ",
+                "nunomaduro/collision": "^3.0",
+                "phpunit/phpunit": "^8.0",
+                "symfony/var-dumper": "^4.2"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/bootstrap.php"
+                ],
+                "psr-4": {
+                    "AlecRabbit\\Cli\\": "src\\Cli"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "CLI tools for php.",
+            "keywords": [
+                "ansi",
+                "cli",
+                "console",
+                "control",
+                "height",
+                "terminal",
+                "title",
+                "width"
+            ],
+            "support": {
+                "issues": "https://github.com/alecrabbit/php-cli-tools/issues",
+                "source": "https://github.com/alecrabbit/php-cli-tools/tree/develop"
+            },
+            "time": "2019-11-01T12:16:39+00:00"
+        },
+        {
+            "name": "alecrabbit/php-console-colour",
+            "version": "0.10.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alecrabbit/php-console-colour.git",
+                "reference": "f82a0933f1699c51aa0842475f6e09b0d519071d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alecrabbit/php-console-colour/zipball/f82a0933f1699c51aa0842475f6e09b0d519071d",
+                "reference": "f82a0933f1699c51aa0842475f6e09b0d519071d",
+                "shasum": ""
+            },
+            "require": {
+                "alecrabbit/php-cli-tools": "^0.6",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "alecrabbit/php-helpers": "^0.8",
+                "nunomaduro/collision": "^4.2",
+                "phpunit/phpunit": "^8.5",
+                "symfony/var-dumper": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlecRabbit\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Helps to do colored console output.",
+            "keywords": [
+                "ansi",
+                "color",
+                "colour",
+                "console",
+                "height",
+                "output",
+                "terminal",
+                "width"
+            ],
+            "support": {
+                "issues": "https://github.com/alecrabbit/php-console-colour/issues",
+                "source": "https://github.com/alecrabbit/php-console-colour/tree/0.10.1"
+            },
+            "funding": [
+                {
+                    "url": "https://www.patreon.com/alecrabbit",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-07-30T08:19:31+00:00"
+        },
+        {
             "name": "hi/http",
             "version": "0.0.21",
             "source": {
@@ -123,6 +233,50 @@
                 "source": "https://github.com/hi-frameork/http/tree/0.0.21"
             },
             "time": "2023-02-12T15:44:11+00:00"
+        },
+        {
+            "name": "hi/kernel",
+            "version": "0.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hi-frameork/kernel.git",
+                "reference": "d9447467ef427f10fc13ae98c34060f25cbaa33c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hi-frameork/kernel/zipball/d9447467ef427f10fc13ae98c34060f25cbaa33c",
+                "reference": "d9447467ef427f10fc13ae98c34060f25cbaa33c",
+                "shasum": ""
+            },
+            "require": {
+                "alecrabbit/php-console-colour": "^0.10.1",
+                "php": ">=7.4",
+                "psr/container": "^2.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.11",
+                "phpunit/phpunit": "^9.5",
+                "sempro/phpunit-pretty-print": "^1.4",
+                "vimeo/psalm": "^4.27"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "functions.php"
+                ],
+                "psr-4": {
+                    "Hi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "support": {
+                "issues": "https://github.com/hi-frameork/kernel/issues",
+                "source": "https://github.com/hi-frameork/kernel/tree/0.0.11"
+            },
+            "time": "2023-02-16T10:30:56+00:00"
         },
         {
             "name": "hi/server",
@@ -173,6 +327,59 @@
                 "source": "https://github.com/hi-frameork/server/tree/0.0.4"
             },
             "time": "2022-10-03T16:55:41+00:00"
+        },
+        {
+            "name": "psr/container",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/c71ecc56dfe541dbd90c5360474fbc405f8d5963",
+                "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/container/issues",
+                "source": "https://github.com/php-fig/container/tree/2.0.2"
+            },
+            "time": "2021-11-05T16:47:00+00:00"
         },
         {
             "name": "psr/http-message",
