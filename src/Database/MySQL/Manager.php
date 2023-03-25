@@ -23,7 +23,7 @@ class Manager extends DatabaseManager
                 throw new InvalidArgumentException("Mysql 连接初始化错误: '{$name}' 连接配置为空");
             }
 
-            $pdoConfig = new PdoConfig();
+            $pdoConfig = new PDOConfig();
 
             // 如果配置了 socket 则使用 socket 连接
             if (isset($config['sock'])) {
