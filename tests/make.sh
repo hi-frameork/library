@@ -8,7 +8,7 @@ WorkDir=/var/www
 # 目录挂载
 Mount="-v `pwd`/.deploy/local/php.ini:/usr/local/etc/php/conf.d/php.ini -v `pwd`:${WorkDir}"
 # 服务端口
-Port=9520
+Port=9527
 # 日志路径
 LogFile=storage/logs/voya.log
 
@@ -17,7 +17,7 @@ echo '> 正在启动:' $(date '+%Y-%m-%d %H:%M:%S')
 case $1 in
   watch)
     echo '+ 访问地址: http://0.0.0.0:'${Port}
-    Args="--name ${Name} ${Mount} -d -p ${Port}:80 ${Image} php ${WorkDir}/bootstrap.php http start"
+    Args="--name ${Name} ${Mount} -d -p ${Port}:80 ${Image} php ${WorkDir}/tests/webserver.php"
   ;;
   tests)
     Args="--name ${Name} ${Mount} ${Image} php ${WorkDir}/tests/start.php --config=${WorkDir}/phpunit.xml"

@@ -1,0 +1,30 @@
+Library\Database\PDOProxy::__construct | 37 | 数据库连接初始化
+Library\Database\PDOProxy::__call | 47 | prepare | 执行查询
+Library\Database\PDOProxy::__call | 48 | prepare | 查询结果{"queryString":"select * from NewTable where id > ?"}
+Library\Database\PDOStatementProxy::__call | 48 | execute | 执行查询
+Library\Database\PDOStatementProxy::__call | 49 | execute | 查询结果true
+Library\Database\PDOStatementProxy::__call | 48 | fetchAll | 执行查询
+Library\Database\PDOStatementProxy::__call | 49 | fetchAll | 查询结果[{"id":1},{"id":2},{"id":3},{"id":4},{"id":5},{"id":6}]
+Library\Database\PDOProxy::__call | 47 | prepare | 执行查询
+Library\Database\PDOProxy::__call | 48 | prepare | 查询结果{"queryString":"select * from NewTable where id > ?"}
+Library\Database\PDOStatementProxy::__call | 48 | execute | 执行查询
+Library\Database\PDOStatementProxy::__call | 49 | execute | 查询结果true
+Library\Database\PDOStatementProxy::__call | 48 | fetchAll | 执行查询
+Library\Database\PDOStatementProxy::__call | 49 | fetchAll | 查询结果[{"id":1},{"id":2},{"id":3},{"id":4},{"id":5},{"id":6}]
+Library\Database\PDOProxy::__call | 47 | prepare | 执行查询
+Library\Database\PDOProxy::__call | 48 | prepare | 查询结果{"queryString":"select * from NewTable where id > ?"}
+Library\Database\PDOStatementProxy::__call | 48 | execute | 执行查询
+Library\Database\PDOStatementProxy::__call | 49 | execute | 查询结果true
+Library\Database\PDOStatementProxy::__call | 48 | fetchAll | 执行查询
+Library\Database\PDOStatementProxy::__call | 49 | fetchAll | 查询结果[{"id":1},{"id":2},{"id":3},{"id":4},{"id":5},{"id":6}]
+Library\Database\PDOProxy::__call | 47 | prepare | 执行查询
+Library\Database\PDOProxy::__call | 48 | prepare | 查询结果{"queryString":"select * from NewTable where id > ?"}
+Library\Database\PDOStatementProxy::__call | 48 | execute | 执行查询
+Library\Database\PDOStatementProxy::__call | 49 | execute | 查询结果false
+Library\Database\PDOStatementProxy::__call72 | execute | 查询失败
+Library\Database\PDOStatementProxy::__call73 | bound | 0 | 0
+Library\Database\PDOStatementProxy::__call75 | execute | 执行重连
+Library\Database\PDOStatementProxy::__call | 48 | execute | 执行查询
+Library\Database\PDOStatementProxy::__call | 49 | execute | 查询结果true
+Library\Database\PDOStatementProxy::__call | 48 | fetchAll | 执行查询
+Library\Database\PDOStatementProxy::__call | 49 | fetchAll | 查询结果[{"id":1},{"id":2},{"id":3},{"id":4},{"id":5},{"id":6}]

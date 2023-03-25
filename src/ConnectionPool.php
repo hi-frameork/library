@@ -20,31 +20,20 @@ class ConnectionPool
     protected $pool;
 
     /**
-     * @var callable
-     */
-    protected $constructor;
-
-    /**
-     * @var int
-     */
-    protected $size;
-
-    /**
      * @var int
      */
     protected $num;
 
     /**
-     * @var null|string
+     * @param callable $constructor
      */
-    protected $proxy;
-
-    public function __construct(callable $constructor, int $size = self::DEFAULT_SIZE, ?string $proxy = null)
-    {
-        $this->pool        = new Channel($this->size = $size);
-        $this->constructor = $constructor;
-        $this->num         = 0;
-        $this->proxy       = $proxy;
+    public function __construct(
+        protected $constructor,
+        protected $size = self::DEFAULT_SIZE,
+        protected ?string $proxy = null
+    ) {
+        $this->pool = new Channel($size);
+        $this->num  = 0;
     }
 
     public function fill(): void
