@@ -4,7 +4,8 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Library\\": "src/"
+            "Library\\": "src/",
+            "Aura\\SqlQuery\\": "SqlQuery/"
         }
     },
     "autoload-dev": {
@@ -20,8 +21,7 @@
     ],
     "require": {
         "monolog/monolog": "^3.2",
-        "nette/robot-loader": "^3.4",
-        "aura/sqlquery": "3.x-dev"
+        "nette/robot-loader": "^3.4"
     },
     "require-dev": {
         "hi/http": "^0.0",
