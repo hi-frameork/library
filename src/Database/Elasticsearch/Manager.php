@@ -17,12 +17,17 @@ class Manager extends DatabaseManager
     protected function createPool(array $config): ConnectionPool
     {
         return new ConnectionPool(
-            fn () => ClientBuilder::create()
-                ->setHosts($config['host'])
-                ->setBasicAuthentication($config['username'], $config['password'])
-                ->setHandler(new RequestHandler)
-                ->build()
-            ,
+            function () use ($config) {
+                $builder = ClientBuilder::create()
+                    ->setHosts($config['host'])
+                    ->setHandler(new RequestHandler)
+                ;
+                if (isset($config['username']) && isset($config['password'])) {
+                    $builder->setBasicAuthentication($config['username'], $config['password']);
+                }
+
+                return $builder->build();
+            },
             $config['pool_size'] ?? ConnectionPool::DEFAULT_SIZE
         );
     }
