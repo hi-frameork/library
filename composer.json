@@ -24,13 +24,11 @@
         "aura/sqlquery": "3.x-dev"
     },
     "require-dev": {
-        "psr/http-message": "^1.0",
         "hi/http": "^0.0",
         "hi/kernel": "^0.0",
         "elasticsearch/elasticsearch": "7.17",
         "jetbrains/phpstorm-stubs": "^2022.3",
         "monolog/monolog": "^3.3",
-        "nette/robot-loader": "^3.4",
         "vimeo/psalm": "^5.8",
         "friendsofphp/php-cs-fixer": "^3.15",
         "phpunit/phpunit": "^9.5",
