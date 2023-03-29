@@ -14,6 +14,8 @@
         }
     ],
     "require": {
+        "monolog/monolog": "^3.2",
+        "nette/robot-loader": "^3.4",
         "aura/sqlquery": "3.x-dev"
     },
     "require-dev": {
