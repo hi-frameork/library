@@ -2,22 +2,23 @@
 
 namespace Library\Database\Redis;
 
-use InvalidArgumentException;
 use Library\ConnectionPool;
 use Library\Database\Manager as DatabaseManager;
 use Redis;
 
+/**
+ * Redis 链接池管理器
+ */
 class Manager extends DatabaseManager
 {
-    public function __construct(protected array $configs)
+    /**
+     * @inheritdoc
+     */
+    protected function createPool(array $config): ConnectionPool
     {
-        foreach ($configs as $name => $config) {
-            if (!$config) {
-                throw new InvalidArgumentException("Redis 连接初始化错误: '{$name}' 连接配置为空");
-            }
-
-            $this->pool[$name] = new ConnectionPool(function () use ($config) {
-                $redis = new Redis();
+        return new ConnectionPool(
+            function () use ($config) {
+                $redis = new Redis;
                 $redis->connect($config['host'], $config['port'], $config['timeout'] ?? 1);
 
                 if (isset($config['password'])) {
@@ -29,7 +30,8 @@ class Manager extends DatabaseManager
                 }
 
                 return $redis;
-            }, $config['pool_size'] ?? ConnectionPool::DEFAULT_SIZE);
-        }
+            },
+            $config['pool_size'] ?? ConnectionPool::DEFAULT_SIZE
+        );
     }
 }

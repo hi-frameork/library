@@ -7,6 +7,11 @@
             "Library\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Anoxia",
@@ -28,7 +33,7 @@
         "nette/robot-loader": "^3.4",
         "vimeo/psalm": "^5.8",
         "friendsofphp/php-cs-fixer": "^3.15",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^9.5",
         "sempro/phpunit-pretty-print": "^1.2"
     }
 }

@@ -11,8 +11,14 @@ class Redis
      */
     protected $redis;
 
+    /**
+     * 数据库连接名称
+     */
     protected string $connection = 'default';
 
+    /**
+     * Redis Construct
+     */
     public function __construct()
     {
         $this->redis = new Proxy($this->connection);

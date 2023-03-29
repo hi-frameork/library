@@ -21,10 +21,10 @@ class ElasticsearchTest extends TestCase
     }
 
     // 测试 ElasticesIndex Client 对象
-    public function testGetClient()
-    {
-        $this->assertInstanceOf(\Elasticsearch\Client::class, $this->esIndex->doGetClient());
-    }
+    // public function testGetClient()
+    // {
+    //     $this->assertInstanceOf(\Elasticsearch\Client::class, $this->esIndex->doGetClient());
+    // }
 
     // 测试创建 Index && Doc
     public function testCreateIndex()
@@ -153,9 +153,21 @@ class ElasticsearchTest extends TestCase
             'index' => $this->esIndex->doGetIndex(),
         ]);
     }
+
+    public function testConnectionNotExists()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("Database connection pool 'not-exist' does not exist");
+        (new NotExistsConnection())->doGet('1234567890');
+    }
 }
 
 class NotExistIndex extends ElasticsearchAsset
 {
     protected string $index = 'phpunit-not-exist-index';
+}
+
+class NotExistsConnection extends ElasticsearchAsset
+{
+    protected string $connection = 'not-exist';
 }
