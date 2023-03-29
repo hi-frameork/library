@@ -6,6 +6,14 @@ use Exception;
 
 abstract class Elasticsearch
 {
+    /**
+     * 连接名称
+     */
+    protected string $connection = 'default';
+
+    /**
+     * 索引名称
+     */
     protected string $index = '';
 
     /**

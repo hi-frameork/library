@@ -4,9 +4,10 @@
 Name=$(basename `pwd`)-$(echo `pwd` | md5 | cut -c1-10)
 # 单元测试运行镜像
 Image=public.ecr.aws/o0r2l9b2/typing/php:swoole-8.1.13-arm64
+# Image=xdebug
 WorkDir=/var/www
 # 目录挂载
-Mount="-v `pwd`/.deploy/local/php.ini:/usr/local/etc/php/conf.d/php.ini -v `pwd`:${WorkDir}"
+Mount="-v `pwd`/tests/php.ini:/usr/local/etc/php/conf.d/php.ini -v `pwd`:${WorkDir}"
 # 服务端口
 Port=9527
 # 日志路径
@@ -16,8 +17,9 @@ echo '> 正在启动:' $(date '+%Y-%m-%d %H:%M:%S')
 
 case $1 in
   watch)
+    # docker build -t xdebug -f tests/EsDebug/Dockerfile .
     echo '+ 访问地址: http://0.0.0.0:'${Port}
-    Args="--name ${Name} ${Mount} -d -p ${Port}:80 ${Image} php ${WorkDir}/tests/webserver.php"
+    Args="--name ${Name} ${Mount} -d -p ${Port}:80 ${Image} php -S 0.0.0.0:80 -t ${WorkDir}/tests/"
   ;;
   tests)
     Args="--name ${Name} ${Mount} ${Image} php ${WorkDir}/tests/start.php --config=${WorkDir}/phpunit.xml"
