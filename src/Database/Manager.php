@@ -4,6 +4,7 @@ namespace Library\Database;
 
 use InvalidArgumentException;
 use Library\ConnectionPool;
+use RuntimeException;
 
 abstract class Manager
 {
@@ -37,6 +38,11 @@ abstract class Manager
      */
     public function pool(string $name)
     {
+        // 数据库连接池不许在
+        if (!isset($this->pool[$name])) {
+            throw new RuntimeException("Database connection pool '{$name}' does not exist");
+        }
+
         return $this->pool[$name];
     }
 }

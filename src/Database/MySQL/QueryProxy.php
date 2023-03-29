@@ -71,18 +71,15 @@ class QueryProxy
     {
         /** @var \Library\Database\Manager $manager */
         $manager = app('db.pool.mysql');
-
         /** @var ConnectionPool $pool */
         $pool = $manager->pool($this->connection);
 
         /** @var \PDO $pdo */
         $pdo = $pool->get();
 
-        // 是否有异常待抛出
-        $hasThrowable = false;
-
         try {
-            // debug('MYSQL', [str_replace(PHP_EOL, ' ', $this->query->getStatement()), $this->query->getBindValues()]);
+            debug('MYSQL', [str_replace(PHP_EOL, ' ', $this->query->getStatement()), $this->query->getBindValues()]);
+
             // SQL 预处理
             $stmt = $pdo->prepare($this->query->getStatement());
             // SQL 语句参数绑定并执行
@@ -90,18 +87,9 @@ class QueryProxy
             // 执行回调（个性化业务，例如：获取 lastInsertId, 首行数据）
             $result = $callback($pdo, $stmt);
         } catch (Throwable $th) {
-            $hasThrowable = true;
-            // FIXME 使用 Handler 打印 PDOException 信息
-            // echo PHP_EOL;
-            // print_r($e->getMessage());
-            // print_r($e->getTraceAsString());
-            // echo PHP_EOL;
-        }
-
-        $pool->put($pdo);
-
-        if ($hasThrowable) {
             throw $th;
+        } finally {
+            $pool->put($pdo);
         }
 
         return $result;

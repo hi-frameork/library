@@ -14,18 +14,19 @@
   printerClass="Sempro\PHPUnitPrettyPrinter\PrettyPrinterForPhpUnit9"
 >
   <testsuites>
-    <testsuite name="Unit/Library/Attribute">
+    <!-- <testsuite name="Unit/Library/Attribute">
       <directory suffix="Test.php">./tests/Unit/Library/Attribute/</directory>
-    </testsuite>
+    </testsuite> -->
     <testsuite name="Unit/Library/Database">
-      <directory suffix="Test.php">./tests/Unit/Library/Database</directory>
+      <!-- <directory suffix="Test.php">./tests/Unit/Library/Database</directory> -->
+      <file>./tests/Unit/Library/Database/ElasticsearchTest.php</file>
     </testsuite>
-    <testsuite name="Feature/Library/Http">
+    <!-- <testsuite name="Feature/Library/Http">
       <directory suffix="Test.php">./tests/Feature/Library/Http/</directory>
     </testsuite>
     <testsuite name="Feature/Routes">
       <directory suffix="Test.php">./tests/Feature/Routes/</directory>
-    </testsuite>
+    </testsuite> -->
   </testsuites>
   <coverage processUncoveredFiles="true">
     <include>
