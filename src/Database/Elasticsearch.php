@@ -3,9 +3,9 @@
 namespace Library\Database;
 
 use BadMethodCallException;
+use Exception;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
-use Exception;
 
 /**
  * @method IndicesNamespace indices(string $id) 获取指定 ID 的文档
@@ -83,7 +83,7 @@ abstract class Elasticsearch
          *         [_seq_no] => 8
          *         [_primary_term] => 1
          *     )
-         *
+         * 
          * 取 ID 字段值
          */
         return fn (Client $client) => $client->index($params)['_id'] ?? '';
@@ -173,53 +173,20 @@ abstract class Elasticsearch
     }
 
     /**
-     * 批量操作更新
-     */
-    private function bulk(array $data)
-    {
-        return fn (Client $client) => $client->bulk([
-            'index' => $this->getIndex(),
-            'body'  => $data,
-        ]);
-    }
-
-    /**
      * 需要动态调用的方法需要在此手动添加
-     *
+     * 
      * @return mixed
      */
     public function __call($name, $arguments)
     {
-        switch ($name) {
-            case 'indices':
-                $callback = $this->indices(...$arguments);
-                break;
+        if (!method_exists($this, $name))
+            throw new BadMethodCallException(
+                sprintf("Method %s::%s does not exist.", static::class, $name)
+            );
 
-            case 'index':
-                $callback = $this->index(...$arguments);
-                break;
-
-            case 'get':
-                $callback = $this->get(...$arguments);
-                break;
-
-            case 'delete':
-                $callback = $this->delete(...$arguments);
-                break;
-
-            case 'search':
-                $callback = $this->search(...$arguments);
-                break;
-
-            case 'bulk':
-                $callback = $this->bulk(...$arguments);
-                break;
-
-            default:
-                throw new BadMethodCallException("Method {$name} does not exist.");
-        }
-
-        return $this->run($callback);
+        return $this->run(
+            $this->{$name}(...$arguments)
+        );
     }
 
     /**
