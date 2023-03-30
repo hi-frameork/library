@@ -13,6 +13,7 @@ use Elasticsearch\Namespaces\IndicesNamespace;
  * @method array get(string $id, array $body = [], bool $throwException = true) 获取指定 Doc
  * @method bool delete(array $body) 删除指定 ID 的文档
  * @method array search(array $body) 搜索，返回值 array{total: array, hits: array}
+ * @method array bulk(array $data) 批量创建
  */
 abstract class Elasticsearch
 {
@@ -170,6 +171,17 @@ abstract class Elasticsearch
 
             return false;
         };
+    }
+
+    /**
+     * 批量操作更新
+     */
+    private function bulk(array $data)
+    {
+        return fn (Client $client) => $client->bulk([
+            'index' => $this->getIndex(),
+            'body'  => $data,
+        ]);
     }
 
     /**
