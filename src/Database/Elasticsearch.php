@@ -3,9 +3,9 @@
 namespace Library\Database;
 
 use BadMethodCallException;
-use Exception;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
+use Exception;
 
 /**
  * @method IndicesNamespace indices(string $id) 获取指定 ID 的文档
@@ -83,7 +83,7 @@ abstract class Elasticsearch
          *         [_seq_no] => 8
          *         [_primary_term] => 1
          *     )
-         * 
+         *
          * 取 ID 字段值
          */
         return fn (Client $client) => $client->index($params)['_id'] ?? '';
@@ -173,8 +173,19 @@ abstract class Elasticsearch
     }
 
     /**
+     * 批量操作更新
+     */
+    private function bulk(array $data)
+    {
+        return fn (Client $client) => $client->bulk([
+            'index' => $this->getIndex(),
+            'body'  => $data,
+        ]);
+    }
+
+    /**
      * 需要动态调用的方法需要在此手动添加
-     * 
+     *
      * @return mixed
      */
     public function __call($name, $arguments)
@@ -198,6 +209,10 @@ abstract class Elasticsearch
 
             case 'search':
                 $callback = $this->search(...$arguments);
+                break;
+
+            case 'bulk':
+                $callback = $this->bulk(...$arguments);
                 break;
 
             default:
