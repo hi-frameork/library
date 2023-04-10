@@ -38,8 +38,9 @@ class Route
         protected string $patch = '',
         protected string $options = '',
         protected string $head = '',
-        public string $middleware = '',
-        public string $desc = '',
+        protected string $middleware = '',
+        protected string $desc = '',
+        protected bool $auth = true,
     ) {
         if ($get) {
             $this->method  = 'GET';
