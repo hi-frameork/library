@@ -14,6 +14,10 @@ class File
      */
     public static function scanDirectoryClass(string $path): array
     {
+        if (!is_dir($path)) {
+            return [];
+        }
+
         $classLoader = new RobotLoader();
         $classLoader->addDirectory($path)->rebuild();
 
