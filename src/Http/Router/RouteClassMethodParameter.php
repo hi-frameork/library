@@ -2,6 +2,9 @@
 
 namespace Library\Http\Router;
 
+/**
+ * 路由类方法参数
+ */
 class RouteClassMethodParameter
 {
     /**
@@ -18,11 +21,17 @@ class RouteClassMethodParameter
     ) {
     }
 
+    /**
+     * 创建路由类方法参数实例
+     */
     public function newInstance(): object
     {
         return new $this->type();
     }
 
+    /**
+     * 添加路由类方法参数属性
+     */
     public function appendProperty(InputClassProperty $property): void
     {
         $this->properties[] = $property;

@@ -28,6 +28,9 @@ class Route
      * @param string $patch      HTTP PATCH
      * @param string $options    HTTP OPTIONS
      * @param string $head       HTTP HEAD
+     * @param string $middleware 命名中间件，以逗号分割多个中间件
+     * @param string $desc       前缀说明
+     * @param bool   $auth       是否需要身份认证
      */
     public function __construct(
         public string $prefix = '',
@@ -38,9 +41,9 @@ class Route
         protected string $patch = '',
         protected string $options = '',
         protected string $head = '',
-        protected string $middleware = '',
-        protected string $desc = '',
-        protected bool $auth = true,
+        public string $middleware = '',
+        public string $desc = '',
+        public bool $auth = true,
     ) {
         if ($get) {
             $this->method  = 'GET';

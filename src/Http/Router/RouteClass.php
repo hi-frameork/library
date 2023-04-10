@@ -16,11 +16,17 @@ class RouteClass
     ) {
     }
 
+    /**
+     * 创建路由类实例
+     */
     public function newInstance(): object
     {
         return new $this->name();
     }
 
+    /**
+     * 添加路由方法
+     */
     public function appendMethod(RouteClassMethod $method): void
     {
         $this->methods[] = $method;

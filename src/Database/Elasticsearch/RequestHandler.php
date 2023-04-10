@@ -10,7 +10,7 @@ use Library\Http\Client;
 
 /**
  * ES 请求处理器
- * 
+ *
  * 代码参照 https://github.com/Aquarmini/swoft-elasticsearch/blob/1918f12056104515efb196d3786853a451fcf827/src/CoroutineHandler.php
  */
 class RequestHandler
@@ -21,38 +21,38 @@ class RequestHandler
 
     /**
      * @param array $request 内容结构
-     * Array (
-     *     [http_method] => GET
-     *     [scheme] => http
-     *     [uri] => /
-     *     [body] => 
-     *     [headers] => Array (
-     *         [Host] => Array (
-     *             [0] => 192.168.64.2
-     *         )
-     *         [Content-Type] => Array (
-     *             [0] => application/json
-     *         )
-     *         [Accept] => Array (
-     *             [0] => application/json
-     *         )
-     *         [User-Agent] => Array (
-     *             [0] => elasticsearch-php/7.17.0 (Darwin 22.3.0; PHP 8.2.3)
-     *         )
-     *         [x-elastic-client-meta] => Array (
-     *             [0] => es=7.17.0,php=8.2.3,t=7.17.0,a=0,cu=7.88.1
-     *         )
-     *     )
-     *     [client] => Array (
-     *         [curl] => Array (
-     *             [107] => 1
-     *             [10005] => elastic:J2yf8wGK700YH3325QSA5kik
-     *             [3] => 30001
-     *         )
-     *         [x-elastic-client-meta] => 1
-     *         [port_in_header] => 
-     *     )
-     * )
+     *                       Array (
+     *                       [http_method] => GET
+     *                       [scheme] => http
+     *                       [uri] => /
+     *                       [body] =>
+     *                       [headers] => Array (
+     *                       [Host] => Array (
+     *                       [0] => 192.168.64.2
+     *                       )
+     *                       [Content-Type] => Array (
+     *                       [0] => application/json
+     *                       )
+     *                       [Accept] => Array (
+     *                       [0] => application/json
+     *                       )
+     *                       [User-Agent] => Array (
+     *                       [0] => elasticsearch-php/7.17.0 (Darwin 22.3.0; PHP 8.2.3)
+     *                       )
+     *                       [x-elastic-client-meta] => Array (
+     *                       [0] => es=7.17.0,php=8.2.3,t=7.17.0,a=0,cu=7.88.1
+     *                       )
+     *                       )
+     *                       [client] => Array (
+     *                       [curl] => Array (
+     *                       [107] => 1
+     *                       [10005] => elastic:J2yf8wGK700YH3325QSA5kik
+     *                       [3] => 30001
+     *                       )
+     *                       [x-elastic-client-meta] => 1
+     *                       [port_in_header] =>
+     *                       )
+     *                       )
      */
     public function __invoke(array $request)
     {
@@ -61,18 +61,18 @@ class RequestHandler
 
     /**
      * 从给定参数创建协程客户端
-     * 
+     *
      * @param array $params
      */
     private function doRquest(array $request)
     {
         $method = $request['http_method'] ?? 'GET';
-        $scheme = $request['scheme'] ?? 'http';
-        $ssl = $scheme === 'https';
+        $scheme = $request['scheme']      ?? 'http';
+        $ssl    = $scheme === 'https';
 
         // 解析URL
         $effectiveUrl = Core::url($request);
-        $parsed = parse_url($effectiveUrl);
+        $parsed       = parse_url($effectiveUrl);
 
         // 主机地址
         $host = $parsed['host'] ?? '';
@@ -111,9 +111,9 @@ class RequestHandler
                 'total_time' => microtime(true) - $btime,
             ],
             'effective_url' => $effectiveUrl,
-            'headers' => isset($client->headers) ? $client->headers : [],
-            'status' => $client->statusCode,
-            'body' => $this->getBodyStream($client->body),
+            'headers'       => isset($client->headers) ? $client->headers : [],
+            'status'        => $client->statusCode,
+            'body'          => $this->getBodyStream($client->body),
         ]);
     }
 

@@ -54,6 +54,7 @@ class ObjectProxy
     {
         /** @var mixed $object */
         $object = $this->__object;
+
         return $object(...$arguments);
     }
 

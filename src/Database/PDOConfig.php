@@ -44,6 +44,7 @@ class PDOConfig
     public function withDriver(string $driver): self
     {
         $this->driver = $driver;
+
         return $this;
     }
 
@@ -55,6 +56,7 @@ class PDOConfig
     public function withHost($host): self
     {
         $this->host = $host;
+
         return $this;
     }
 
@@ -76,12 +78,14 @@ class PDOConfig
     public function withUnixSocket(?string $unixSocket): self
     {
         $this->unixSocket = $unixSocket;
+
         return $this;
     }
 
     public function withPort(int $port): self
     {
         $this->port = $port;
+
         return $this;
     }
 
@@ -93,6 +97,7 @@ class PDOConfig
     public function withDbname(string $dbname): self
     {
         $this->dbname = $dbname;
+
         return $this;
     }
 
@@ -104,6 +109,7 @@ class PDOConfig
     public function withCharset(string $charset): self
     {
         $this->charset = $charset;
+
         return $this;
     }
 
@@ -115,6 +121,7 @@ class PDOConfig
     public function withUsername(string $username): self
     {
         $this->username = $username;
+
         return $this;
     }
 
@@ -126,6 +133,7 @@ class PDOConfig
     public function withPassword(string $password): self
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -137,6 +145,7 @@ class PDOConfig
     public function withOptions(array $options): self
     {
         $this->options = $options;
+
         return $this;
     }
 

@@ -20,7 +20,7 @@ class Manager extends DatabaseManager
             function () use ($config) {
                 $builder = ClientBuilder::create()
                     ->setHosts($config['host'])
-                    ->setHandler(new RequestHandler)
+                    ->setHandler(new RequestHandler())
                 ;
                 if (isset($config['username']) && isset($config['password'])) {
                     $builder->setBasicAuthentication($config['username'], $config['password']);

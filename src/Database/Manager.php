@@ -19,10 +19,11 @@ abstract class Manager
     public function __construct(protected array $configs)
     {
         foreach ($configs as $name => $config) {
-            if (!$config)
+            if (!$config) {
                 throw new InvalidArgumentException(
                     "Database connection initialization error: '{$name}' connection configuration is empty"
                 );
+            }
 
             $this->pool[$name] = $this->createPool($config);
         }

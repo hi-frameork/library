@@ -1,6 +1,5 @@
 <?php
 
-use Hi\Kernel;
 
 return (new \Hi\Kernel($_ENV['APP_PATH'] ?? dirname(__DIR__)))->load(function (\Hi\Kernel\Container $container) {
     $container->set('db.elasticsearch', fn () => new \Library\Database\Elasticsearch\Manager([

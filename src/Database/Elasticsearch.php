@@ -3,9 +3,9 @@
 namespace Library\Database;
 
 use BadMethodCallException;
-use Exception;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
+use Exception;
 
 /**
  * @method IndicesNamespace indices(string $id) 获取指定 ID 的文档
@@ -84,7 +84,7 @@ abstract class Elasticsearch
          *         [_seq_no] => 8
          *         [_primary_term] => 1
          *     )
-         * 
+         *
          * 取 ID 字段值
          */
         return fn (Client $client) => $client->index($params)['_id'] ?? '';
@@ -186,15 +186,16 @@ abstract class Elasticsearch
 
     /**
      * 需要动态调用的方法需要在此手动添加
-     * 
+     *
      * @return mixed
      */
     public function __call($name, $arguments)
     {
-        if (!method_exists($this, $name))
+        if (!method_exists($this, $name)) {
             throw new BadMethodCallException(
                 sprintf("Method %s::%s does not exist.", static::class, $name)
             );
+        }
 
         return $this->run(
             $this->{$name}(...$arguments)

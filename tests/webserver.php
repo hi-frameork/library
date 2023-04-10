@@ -7,11 +7,11 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $dbPool = new Manager([
     'test' => [
-        'host' => '192.168.64.4',
-        'port' => 3306,
-        'database' => 'test-connect',
-        'user' => 'root',
-        'password' => '123456',
+        'host'      => '192.168.64.4',
+        'port'      => 3306,
+        'database'  => 'test-connect',
+        'user'      => 'root',
+        'password'  => '123456',
         'pool_size' => 1,
     ]
 ]);
@@ -23,7 +23,6 @@ $app = new Application('swoole', [
     ]
 ]);
 $app->get('/db-reconnect-test', function () use ($dbPool) {
-
     try {
         $pool = $dbPool->pool('test');
 
@@ -35,13 +34,14 @@ $app->get('/db-reconnect-test', function () use ($dbPool) {
         // SQL 语句参数绑定并执行
         $stmt->execute([0]);
     } catch (\Throwable $e) {
-    $pool->put($pdo);
+        $pool->put($pdo);
+
         return json_encode([
-            'type' => get_class($e),
-            'code' => $e->getCode(),
+            'type'    => get_class($e),
+            'code'    => $e->getCode(),
             'message' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'stack' => $e->getTraceAsString(),
+            'file'    => $e->getFile(),
+            'stack'   => $e->getTraceAsString(),
         ]);
     }
 

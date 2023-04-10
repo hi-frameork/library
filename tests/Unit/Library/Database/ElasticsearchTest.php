@@ -80,7 +80,7 @@ class ElasticsearchTest extends TestCase
                 'value'    => 1,
                 'relation' => 'eq',
             ],
-            'hits'  => [
+            'hits' => [
                 [
                     'id'         => '1234567890',
                     'created_at' => '2022-10-11 22:41:56',
@@ -107,7 +107,7 @@ class ElasticsearchTest extends TestCase
                 'value'    => 0,
                 'relation' => 'eq',
             ],
-            'hits'  => []
+            'hits' => []
         ];
 
         $this->assertSame($expect, $result);
