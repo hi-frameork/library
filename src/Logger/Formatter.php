@@ -23,7 +23,6 @@ class Formatter extends LineFormatter
         }
         unset($vars['context']['_trace_'], $vars['context']['addition']);
 
-
         if (isset($record->context['exception'])) {
             $exception = $record->context['exception'];
             $content .= "message:\n {$exception['message']}\n";

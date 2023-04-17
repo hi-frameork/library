@@ -5,14 +5,43 @@ namespace Library;
 use RuntimeException;
 use Swoole\Coroutine as SwooleCoroutine;
 
+/**
+ * 协程上下文，用于在协程间共享数据
+ *
+ * 在 swoole 协程基础上扩展了协程上下文，可以在协程间共享数据
+ * 即将数据挂载到根协程上，所有子/孙协程都可以通过 getContext 方法获取根协程挂载的数据
+ *
+ * 使用示例：
+ * ```php
+ * # 挂在数据至当前协程所在的根协程上
+ * # 方法内部会根据自身的协程 ID 向上遍历，直到找到根协程 ID
+ * # 然后将数据挂载至根协程上
+ * Coroutine::attch($data);
+ *
+ * # 获取当前协程所在的根协程上挂载的数据
+ * $data = Coroutine::getContext();
+ * ```
+ */
 class Coroutine extends SwooleCoroutine
 {
+    /**
+     * 协程上下文映射
+     */
     protected static array $attches = [];
 
+    /**
+     * 协程 ID 映射
+     */
     protected static array $maps = [];
 
+    /**
+     * 协程引用计数
+     */
     protected static array $referenceCount = [];
 
+    /**
+     * 创建协程
+     */
     public static function create(callable $func, ...$params)
     {
         return parent::create(function () use ($func, $params) {
@@ -25,7 +54,7 @@ class Coroutine extends SwooleCoroutine
     }
 
     /**
-     * 为当前携程挂载 $data
+     * 为当前携程挂载数据
      * 其将会通过 $maps 与 $referenceCount 在所有子协程中共享
      */
     public static function attch($data)
@@ -42,6 +71,9 @@ class Coroutine extends SwooleCoroutine
         Coroutine::defer([static::class, 'doDefer']);
     }
 
+    /**
+     * 释放/清理协程上下文
+     */
     public static function doDefer()
     {
         $uid = static::getuid();
@@ -95,6 +127,9 @@ class Coroutine extends SwooleCoroutine
         }
     }
 
+    /**
+     * 获取当前协程所在的根协程上挂载的数据
+     */
     public static function getContext($uid = null)
     {
         if (!$uid) {

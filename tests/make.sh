@@ -3,7 +3,7 @@
 # 容器名称
 Name=$(basename `pwd`)-$(echo `pwd` | md5 | cut -c1-10)
 # 单元测试运行镜像
-Image=public.ecr.aws/o0r2l9b2/typing/php:swoole-8.1.13-arm64
+Image=public.ecr.aws/o0r2l9b2/typing/php:swoole-8.1-arm64
 # Image=xdebug
 WorkDir=/var/www
 # 目录挂载

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Library\Database;
+namespace Tests\Unit\Library\Database\MySQL;
 
 use Aura\SqlQuery\QueryFactory;
 use Library\Database\MySQL\QueryProxy;

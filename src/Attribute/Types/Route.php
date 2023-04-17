@@ -31,67 +31,31 @@ class Route
      * @param string $middleware 命名中间件，以逗号分割多个中间件
      * @param string $desc       前缀说明
      * @param bool   $auth       是否需要身份认证
+     * @param string $validate   验证器
      */
     public function __construct(
+        string $get = '',
+        string $post = '',
+        string $put = '',
+        string $delete = '',
+        string $patch = '',
+        string $options = '',
+        string $head = '',
         public string $prefix = '',
-        protected string $get = '',
-        protected string $post = '',
-        protected string $put = '',
-        protected string $delete = '',
-        protected string $patch = '',
-        protected string $options = '',
-        protected string $head = '',
         public string $middleware = '',
         public string $desc = '',
         public bool $auth = true,
+        public string $validate = '',
     ) {
-        if ($get) {
-            $this->method  = 'GET';
-            $this->pattern = $get;
-
-            return;
-        }
-
-        if ($post) {
-            $this->method  = 'POST';
-            $this->pattern = $post;
-
-            return;
-        }
-
-        if ($put) {
-            $this->method  = 'PUT';
-            $this->pattern = $put;
-
-            return;
-        }
-
-        if ($delete) {
-            $this->method  = 'DELETE';
-            $this->pattern = $delete;
-
-            return;
-        }
-
-        if ($patch) {
-            $this->method  = 'PATCH';
-            $this->pattern = $patch;
-
-            return;
-        }
-
-        if ($options) {
-            $this->method  = 'OPTIONS';
-            $this->pattern = $options;
-
-            return;
-        }
-
-        if ($head) {
-            $this->method  = 'HEAD';
-            $this->pattern = $head;
-
-            return;
-        }
+        [$this->method, $this->pattern] = match (true) {
+            (bool) $get     => ['GET'     , $get],
+            (bool) $post    => ['POST'    , $post],
+            (bool) $put     => ['PUT'     , $put],
+            (bool) $delete  => ['DELETE'  , $delete],
+            (bool) $patch   => ['PATCH'   , $patch],
+            (bool) $options => ['OPTIONS' , $options],
+            (bool) $head    => ['HEAD'    , $head],
+            default         => [''        , ''],
+        };
     }
 }

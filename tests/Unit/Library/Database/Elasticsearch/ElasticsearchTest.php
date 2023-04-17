@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Library\Database;
+namespace Tests\Unit\Library\Database\Elasticsearch;
 
 use PHPUnit\Framework\TestCase;
 use Tests\Asset\ElasticsearchAsset;

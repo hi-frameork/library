@@ -124,7 +124,6 @@ class Model
         return $this->insert()->cols($data)->executeAndGetlastId();
     }
 
-
     /**
      * 检查指定 ID 记录是否存在
      */

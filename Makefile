@@ -31,10 +31,16 @@ check: info
 custom: info
 	@sh tests/make.sh custom
 
-## logs: 自定义命令，例如 composer
+## logs: 打印服务运行的实时日志
 .PHONY: logs
 logs: info
 	@sh tests/make.sh logs
+
+## init: 复制配置文件模版
+.PHONY: init
+init: info
+	@echo 'init 复制配置文件模版:'
+	cp ./.deploy/local/application.yaml src/application.yaml
 
 # 打印环境信息
 info:

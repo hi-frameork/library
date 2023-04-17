@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\Library\Database;
+namespace Tests\Unit\Library\Database\MySQL;
 
 use Library\Database\MySQL\QueryProxy;
-use PHPUnit\Framework\TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Tests\Asset\MySQLAsset;
 
-class ModelTest extends TestCase
+class ModelTest extends MockeryTestCase
 {
     /**
      * @var Select|SQLBuilderProxy

@@ -18,7 +18,7 @@ class ReaderTest extends TestCase
         $reflectionClass = new ReflectionClass(RouteAsset::class);
         /** @var Route $attribute */
         $attribute = Reader::getClassAttribute($reflectionClass, Route::class);
-        // print_r($attribute);
+
         $this->assertSame('/api/asset', $attribute->prefix);
         $this->assertSame('route class', $attribute->desc);
     }
@@ -32,7 +32,6 @@ class ReaderTest extends TestCase
         $post = $reflectionClass->getMethod('post');
         /** @var Route $postAttribute */
         $postAttribute = Reader::getMethodAttribute($post, Route::class);
-        // print_r($postAttribute);
         $this->assertSame('POST', $postAttribute->method);
         $this->assertSame('/post-path', $postAttribute->pattern);
         $this->assertSame('route method post', $postAttribute->desc);
@@ -63,7 +62,6 @@ class ReaderTest extends TestCase
             $this->assertSame('id', $attribute->sourceName);
             $this->assertSame('ID', $attribute->desc);
             $this->assertSame('ranger:1-9', $attribute->rule);
-            // print_r($attribute);
 
             $property = $class->getProperty('name');
             /** @var Http $attribute */
@@ -71,7 +69,6 @@ class ReaderTest extends TestCase
             $this->assertSame('post', $attribute->sourceFrom);
             $this->assertSame('name', $attribute->sourceName);
             $this->assertSame('名称', $attribute->desc);
-            // print_r($attribute);
         }
     }
 }

@@ -31,7 +31,8 @@
         "monolog/monolog": "^3.3",
         "vimeo/psalm": "^5.8",
         "friendsofphp/php-cs-fixer": "^3.15",
-        "phpunit/phpunit": "^9.5",
-        "sempro/phpunit-pretty-print": "^1.2"
+        "phpunit/phpunit": "^9.6",
+        "sempro/phpunit-pretty-print": "^1.2",
+        "mockery/mockery": "^1.5"
     }
 }
