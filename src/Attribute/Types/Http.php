@@ -34,6 +34,14 @@ class Http
      */
     public string $type;
 
+    /**
+     * 参数说明
+     *
+     * @param string $source  数据源，例如：get.id, header.token 等
+     * @param string $desc    参数说明
+     * @param string $rule    参数规则
+     * @param string $default 默认值
+     */
     public function __construct(
         public string $source = '',
         public string $desc = '',

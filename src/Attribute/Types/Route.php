@@ -34,7 +34,7 @@ class Route
      * @param string $middleware 命名中间件，以逗号分割多个中间件
      * @param string $desc       前缀说明
      * @param bool   $auth       是否需要身份认证
-     * @param string $validate   验证器
+     * @param string $cors       跨域设置
      */
     public function __construct(
         string $get = '',
@@ -48,7 +48,7 @@ class Route
         public string $middleware = '',
         public string $desc = '',
         public bool $auth = true,
-        public string $validate = '',
+        public string $cors = '',
     ) {
         [$this->method, $this->pattern] = match (true) {
             (bool) $get     => ['GET'     , $get],
