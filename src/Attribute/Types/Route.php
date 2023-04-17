@@ -4,6 +4,9 @@ namespace Library\Attribute\Types;
 
 use Attribute;
 
+/**
+ * HTTP 路由注解
+ */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class Route
 {

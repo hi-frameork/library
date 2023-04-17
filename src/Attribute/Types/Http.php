@@ -4,6 +4,9 @@ namespace Library\Attribute\Types;
 
 use Attribute;
 
+/**
+ * HTTP 请求参数注解
+ */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
 class Http
 {
