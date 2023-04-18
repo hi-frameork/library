@@ -209,6 +209,10 @@ class Router extends HttpRouter
                         'attribute'  => $attribute,
                         'middleware' => $this->middlewareLoader->get($attribute->cors),
                     ]);
+
+                    // 将 CORS 中间件添加到路由中
+                    // 业务接口需要返回 CORS 头信息，因此需要在业务接口中添加 CORS 中间件
+                    $attribute->middleware[] = $attribute->cors;
                 }
 
                 // 挂载最终路由
