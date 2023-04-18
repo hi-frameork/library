@@ -5,6 +5,7 @@ namespace Library\Http;
 use Exception;
 use Hi\Http\Router as HttpRouter;
 use Hi\Kernel\Attribute\Reader;
+use Library\Attribute\Types\Http;
 use Library\Attribute\Types\Route;
 use Library\Http\Router\InputClassProperty;
 use Library\Http\Router\MiddlewareLoader;
