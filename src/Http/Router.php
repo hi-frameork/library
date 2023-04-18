@@ -204,9 +204,7 @@ class Router extends HttpRouter
                 $attribute = $method->attribute;
                 // 路由需要支持跨域访问，为路由创建 OPTIONS 请求路由
                 if ($attribute->cors) {
-                    $this->mount('OPTIONS', $attribute->pattern, function () {
-                        return '';
-                    }, [
+                    $this->mount('OPTIONS', $attribute->pattern, fn () => '', [
                         'attribute'  => $attribute,
                         'middleware' => $this->middlewareLoader->get($attribute->cors),
                     ]);

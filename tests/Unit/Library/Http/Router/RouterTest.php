@@ -4,9 +4,6 @@ namespace Tests\Unit\Library\Http\Router;
 
 use Library\Http\Router;
 use PHPUnit\Framework\TestCase;
-use Tests\Unit\Library\Http\Router\Stub\Case1\Route1;
-use Tests\Unit\Library\Http\Router\Stub\Case1\Route2;
-use Tests\Unit\Library\Http\Router\Stub\Case1\Route3;
 
 class RouterTest extends TestCase
 {
