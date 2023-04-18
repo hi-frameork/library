@@ -21,20 +21,23 @@ class Route
     public string $pattern;
 
     /**
-     * @param string $prefix     路由前缀，此类所有方法路由会自动添加该前缀
-     * @param string $desc       前缀说明
-     * @param string $middleware 命名中间件，以逗号分割多个中间件
-     * @param string $get        HTTP GET
-     * @param string $post       HTTP POST
-     * @param string $put        HTTP PUT
-     * @param string $delete     HTTP DELETE
-     * @param string $patch      HTTP PATCH
-     * @param string $options    HTTP OPTIONS
-     * @param string $head       HTTP HEAD
-     * @param string $middleware 命名中间件，以逗号分割多个中间件
-     * @param string $desc       前缀说明
-     * @param bool   $auth       是否需要身份认证
-     * @param string $cors       跨域设置
+     * 路由中间件
+     */
+    public array $middleware = [];
+
+    /**
+     * @param string       $get        HTTP GET
+     * @param string       $post       HTTP POST
+     * @param string       $put        HTTP PUT
+     * @param string       $delete     HTTP DELETE
+     * @param string       $patch      HTTP PATCH
+     * @param string       $options    HTTP OPTIONS
+     * @param string       $head       HTTP HEAD
+     * @param string       $prefix     路由前缀，此类所有方法路由会自动添加该前缀
+     * @param string       $desc       前缀说明
+     * @param string|array $middleware 命名中间件
+     * @param bool         $auth       是否需要身份认证
+     * @param string       $cors       跨域设置，指定中间件名称，例如：cors.default
      */
     public function __construct(
         string $get = '',
@@ -44,11 +47,11 @@ class Route
         string $patch = '',
         string $options = '',
         string $head = '',
+        string|array $middleware = [],
+        public string $cors = '',
         public string $prefix = '',
-        public string $middleware = '',
         public string $desc = '',
         public bool $auth = true,
-        public string $cors = '',
     ) {
         [$this->method, $this->pattern] = match (true) {
             (bool) $get     => ['GET'     , $get],
@@ -60,5 +63,24 @@ class Route
             (bool) $head    => ['HEAD'    , $head],
             default         => [''        , ''],
         };
+
+        if ($middleware) {
+            $this->middleware = is_array($middleware) ? $middleware : [$middleware];
+        }
+    }
+
+    /**
+     * 添加中间件
+     */
+    public function appendMiddleware(string|array $middleware): void
+    {
+        if (is_array($middleware)) {
+            $this->middleware += $middleware;
+        } else {
+            $this->middleware[] = $middleware;
+        }
+
+        // 去重
+        $this->middleware = array_unique($this->middleware);
     }
 }

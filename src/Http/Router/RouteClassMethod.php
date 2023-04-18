@@ -16,6 +16,9 @@ class RouteClassMethod
     ) {
     }
 
+    /**
+     * 添加路由方法参数
+     */
     public function appendParameter(RouteClassMethodparameter $parameter): void
     {
         $this->parameters[$parameter->name] = $parameter;

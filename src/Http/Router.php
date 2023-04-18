@@ -4,10 +4,10 @@ namespace Library\Http;
 
 use Exception;
 use Hi\Http\Router as HttpRouter;
-use Hi\Kernel\Attribute\Reader as AttributeReader;
-use Library\Attribute\Types\Http;
+use Hi\Kernel\Attribute\Reader;
 use Library\Attribute\Types\Route;
 use Library\Http\Router\InputClassProperty;
+use Library\Http\Router\MiddlewareLoader;
 use Library\Http\Router\RouteClass;
 use Library\Http\Router\RouteClassMethod;
 use Library\Http\Router\RouteClassMethodParameter;
@@ -24,52 +24,51 @@ class Router extends HttpRouter
      *
      * @var RouteClass[]
      */
-    protected array $routeAttribtes;
+    protected array $routeAttributes;
+
+    /**
+     * 中间件注解类
+     */
+    protected MiddlewareLoader $middlewareLoader;
 
     /**
      * 已找到的路由类
      *
      * @var string[]
      */
-    protected array $routerClasses;
+    protected array $classes = [];
 
     /**
      * Router Construct
      *
-     * @param string $routeFilePath 路由文件所在目录路径
+     * @param string[] $pathes 路由文件所在目录路径
      */
-    public function __construct(protected string $routeFilePath)
+    public function __construct(...$pathes)
     {
         parent::__construct();
-        $this->findRouteClasses();
+        $this->findRouteClasses($pathes);
+
+        $this->middlewareLoader = new MiddlewareLoader(
+            array_keys($this->classes)
+        );
     }
 
     /**
      * 从路由文件所在目录中查找路由类
      */
-    protected function findRouteClasses(): void
+    protected function findRouteClasses(array $pathes): void
     {
-        try {
-            $this->routerClasses = File::scanDirectoryClass($this->routeFilePath);
-        } catch (Exception $e) {
-            throw new RuntimeException('路由文件加载失败，' . $e->getMessage());
+        foreach ($pathes as $path) {
+            $this->classes += File::scanDirectoryClass($path);
         }
-    }
-
-    /**
-     * 返回路由文件所在目录路径
-     */
-    public function getRouteFilePath(): string
-    {
-        return $this->routeFilePath;
     }
 
     /**
      * 返回已找到的路由类
      */
-    public function getRouteClasses(): array
+    public function getClasses(): array
     {
-        return $this->routerClasses;
+        return $this->classes;
     }
 
     /**
@@ -77,7 +76,7 @@ class Router extends HttpRouter
      */
     public function getRouteAttributes(): array
     {
-        return $this->routeAttribtes;
+        return $this->routeAttributes;
     }
 
     /**
@@ -86,9 +85,13 @@ class Router extends HttpRouter
     public function load(): static
     {
         try {
-            foreach ($this->routerClasses as $className => $classFile) {
-                $this->routeAttribtes[$className] = $this->parseClassAttribute($className);
-                $this->loadAttributeRoute($this->routeAttribtes[$className]);
+            foreach ($this->classes as $className => $classFile) {
+                $routeClass = $this->parseAttribute($className);
+                if (!$routeClass) {
+                    continue;
+                }
+                $this->routeAttributes[$className] = $routeClass;
+                $this->loadAttributeRoute($routeClass);
             }
         } catch (Exception $e) {
             throw new RuntimeException(
@@ -104,22 +107,35 @@ class Router extends HttpRouter
     /**
      * 解析路由类注解
      */
-    private function parseClassAttribute(string $className): RouteClass
+    private function parseAttribute(string $class): ?RouteClass
     {
-        $reflectionClass = new ReflectionClass($className);
+        $reflectionClass = new ReflectionClass($class);
 
-        $routeAttribtes = AttributeReader::getClassAttribute($reflectionClass, Route::class);
-        if (!$routeAttribtes) {
-            throw new RuntimeException("类 '{$className}' 必须声明路由注解, 请使用 " . Route::class . " 注解");
+        // 如果类没有路由注解，代表非路由类
+        $attribute = Reader::getClassAttribute($reflectionClass, Route::class);
+        if (!$attribute) {
+            return null;
         }
 
-        $class = new RouteClass($className, $routeAttribtes);
-
+        $routeClass = new RouteClass($class, $attribute);
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-            $class->appendMethod($this->parseClassMethodAttribute($reflectionMethod));
+            $routeClassMethod = $this->parseClassMethodAttribute($reflectionMethod);
+
+            // 如果路由类注解中声明了 CORS 配置, 将其应用到路由方法注解中
+            // 如果路由方法注解中声明了 CORS 配置，以路由方法注解中的配置为准
+            if ($routeClass->attribute->cors && !$routeClassMethod->attribute->cors) {
+                $routeClassMethod->attribute->cors = $routeClass->attribute->cors;
+            }
+
+            // 如果路由类注解中声明了中间件, 将其应用到路由方法注解中
+            if ($routeClass->attribute->middleware) {
+                $routeClassMethod->attribute->appendMiddleware($routeClass->attribute->middleware);
+            }
+
+            $routeClass->appendMethod($routeClassMethod);
         }
 
-        return $class;
+        return $routeClass;
     }
 
     /**
@@ -127,14 +143,14 @@ class Router extends HttpRouter
      */
     private function parseClassMethodAttribute(ReflectionMethod $method): RouteClassMethod
     {
-        $routeAttribtes = AttributeReader::getMethodAttribute($method, Route::class);
-        if (!$routeAttribtes) {
+        $attributes = Reader::getMethodAttribute($method, Route::class);
+        if (!$attributes) {
             throw new RuntimeException(
-                "方法 '{$method->class}::{$method->name}' 必须声明路由注解, 请使用 " . Route::class . " 注解"
+                "方法 '{$method->class}::{$method->name}' 必须声明路由注解, 请使用 " . Route::class . " 进行注解"
             );
         }
 
-        $routeClassMethod = new RouteClassMethod($method->name, $routeAttribtes);
+        $routeClassMethod = new RouteClassMethod($method->name, $attributes);
 
         foreach ($method->getParameters() as $parameter) {
             $routeClassMethod->appendParameter($this->parseClassMethodParameterAttribute($parameter));
@@ -159,7 +175,7 @@ class Router extends HttpRouter
         $routeClassMethodParameter = new RouteClassMethodParameter(
             $parameter->getName(),
             $typeName,
-            AttributeReader::hasClassAttribute($reflectionClass, Http::class),
+            Reader::hasClassAttribute($reflectionClass, Http::class),
             true
         );
 
@@ -170,7 +186,7 @@ class Router extends HttpRouter
                     $reflectionProperty->getType()->getName(),
                     $reflectionProperty->getType()->allowsNull(),
                     $reflectionProperty->getDefaultValue(),
-                    AttributeReader::getPropertyAttribute($reflectionProperty, Http::class),
+                    Reader::getPropertyAttribute($reflectionProperty, Http::class),
                 ));
             }
         }
@@ -181,22 +197,42 @@ class Router extends HttpRouter
     /**
      * 加载路由规则
      */
-    public function loadAttributeRoute(RouteClass $routeClass): void
+    protected function loadAttributeRoute(RouteClass $class): void
     {
-        $this->group($routeClass->attribute->prefix, function () use ($routeClass) {
-            $instance = $routeClass->newInstance();
-            foreach ($routeClass->methods as $method) {
-                $handle = [$instance, $method->name];
+        $this->group($class->attribute->prefix, function () use ($class) {
+            foreach ($class->methods as $method) {
+                $attribute = $method->attribute;
+                // 路由需要支持跨域访问，为路由创建 OPTIONS 请求路由
+                if ($attribute->cors) {
+                    $this->mount('OPTIONS', $attribute->pattern, function () {
+                        return '';
+                    }, [
+                        'attribute'  => $attribute,
+                        'middleware' => $this->middlewareLoader->get($attribute->cors),
+                    ]);
+                }
+
+                $handle = [$class->newInstance(), $method->name];
+
                 $this->mount(
-                    $method->attribute->method,
-                    $method->attribute->pattern,
+                    $attribute->method,
+                    $attribute->pattern,
                     $handle,
                     [
                         'parameters' => $method->parameters,
-                        'attribute'  => $method->attribute,
+                        'attribute'  => $attribute,
+                        'middleware' => $this->middlewareLoader->get($attribute->middleware),
                     ]
                 );
             }
         });
+    }
+
+    /**
+     * 返回路由树
+     */
+    public function getRouteTree()
+    {
+        return $this->tree;
     }
 }

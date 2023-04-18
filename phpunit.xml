@@ -18,8 +18,9 @@
     </testsuite> -->
     <testsuite name="Unit">
       <!-- <directory suffix="Test.php">./tests/Unit/Library/Attribute/</directory> -->
-      <directory suffix="Test.php">./tests/Unit/Library/Database/MySQL</directory>
+      <!-- <directory suffix="Test.php">./tests/Unit/Library/Database/MySQL</directory> -->
       <!-- <file>./tests/Unit/Library/Database/ElasticsearchTest.php</file> -->
+      <directory suffix="Test.php">./tests/Unit/Library/Http/Router</directory>
     </testsuite>
     <!-- <testsuite name="Feature/Library/Http">
       <directory suffix="Test.php">./tests/Feature/Library/Http/</directory>
