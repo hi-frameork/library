@@ -82,7 +82,7 @@ class Router extends HttpRouter
     /**
      * 解析路由类并加载路由规则
      */
-    public function load(): static
+    public function load(): Router
     {
         try {
             foreach ($this->classes as $className => $classFile) {
@@ -202,7 +202,8 @@ class Router extends HttpRouter
         $this->group($class->attribute->prefix, function () use ($class) {
             foreach ($class->methods as $method) {
                 $attribute = $method->attribute;
-                // 路由需要支持跨域访问，为路由创建 OPTIONS 请求路由
+
+                // 定义了路由注解需要支持跨域访问，为路由创建 OPTIONS 请求路由
                 if ($attribute->cors) {
                     $this->mount('OPTIONS', $attribute->pattern, fn () => '', [
                         'attribute'  => $attribute,
@@ -210,18 +211,13 @@ class Router extends HttpRouter
                     ]);
                 }
 
+                // 挂载最终路由
                 $handle = [$class->newInstance(), $method->name];
-
-                $this->mount(
-                    $attribute->method,
-                    $attribute->pattern,
-                    $handle,
-                    [
-                        'parameters' => $method->parameters,
-                        'attribute'  => $attribute,
-                        'middleware' => $this->middlewareLoader->get($attribute->middleware),
-                    ]
-                );
+                $this->mount($attribute->method, $attribute->pattern, $handle, [
+                    'parameters' => $method->parameters,
+                    'attribute'  => $attribute,
+                    'middleware' => $this->middlewareLoader->get($attribute->middleware),
+                ]);
             }
         });
     }
@@ -232,5 +228,13 @@ class Router extends HttpRouter
     public function getRouteTree()
     {
         return $this->tree;
+    }
+
+    /**
+     * 返回中间件加载器
+     */
+    public function getMiddlewareLoader(): MiddlewareLoader
+    {
+        return $this->middlewareLoader;
     }
 }
