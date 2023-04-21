@@ -117,13 +117,21 @@ abstract class Elasticsearch
      *
      * @return array{total: array, hits: array}
      */
-    private function search(array $body): callable
+    private function search(array $body, array $option = []): callable
     {
         return function (Client $client) use ($body) {
             $result = $client->search([
                 'index' => $this->getIndex(),
                 'body'  => $body,
             ]);
+
+            // 同时返回打分
+            if (!empty($option['with_score'])) {
+                foreach ($result['hits']['hits'] as &$value) {
+                    $value['_source']['_score'] = $value['_score'];
+                }
+            }
+
             $hits    = $result['hits'];
             $sources = array_column($hits['hits'], '_source');
 
