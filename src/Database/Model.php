@@ -150,4 +150,30 @@ class Model
             ->execute()
         ;
     }
+
+    /**
+     * 根据 ID 遍历表所有数据，每次遍历 $count 条
+     *
+     * @param int      $count    每次遍历条数
+     * @param callable $callback 回调函数
+     * @param array    $column   遍历字段
+     */
+    public function chunkById(int $count, callable $callback, $column = ['*']): void
+    {
+        $id = 0;
+
+        do {
+            $result = $this->select($column)
+                ->where('id > :a', ['a' => $id])
+                ->orderBy(['id ASC'])
+                ->limit($count)
+                ->execute()
+            ;
+
+            if ($result) {
+                $callback($result);
+                $id = $result[count($result) - 1]['id'];
+            }
+        } while ($result);
+    }
 }
