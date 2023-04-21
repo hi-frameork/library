@@ -119,7 +119,7 @@ abstract class Elasticsearch
      */
     private function search(array $body, array $option = []): callable
     {
-        return function (Client $client) use ($body) {
+        return function (Client $client) use ($body, $option) {
             $result = $client->search([
                 'index' => $this->getIndex(),
                 'body'  => $body,
