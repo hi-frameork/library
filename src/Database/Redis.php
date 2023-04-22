@@ -7,7 +7,7 @@ use Library\Database\Redis\Proxy;
 class Redis
 {
     /**
-     * @var \Redis
+     * @var \Redis|Proxy
      */
     protected $redis;
 
