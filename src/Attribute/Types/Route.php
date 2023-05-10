@@ -54,14 +54,14 @@ class Route
         public bool $auth = true,
     ) {
         [$this->method, $this->pattern] = match (true) {
-            (bool) $get     => ['GET'     , $get],
-            (bool) $post    => ['POST'    , $post],
-            (bool) $put     => ['PUT'     , $put],
-            (bool) $delete  => ['DELETE'  , $delete],
-            (bool) $patch   => ['PATCH'   , $patch],
-            (bool) $options => ['OPTIONS' , $options],
-            (bool) $head    => ['HEAD'    , $head],
-            default         => [''        , ''],
+            (bool) $get     => ['GET',     $get],
+            (bool) $post    => ['POST',    $post],
+            (bool) $put     => ['PUT',     $put],
+            (bool) $delete  => ['DELETE',  $delete],
+            (bool) $patch   => ['PATCH',   $patch],
+            (bool) $options => ['OPTIONS', $options],
+            (bool) $head    => ['HEAD',    $head],
+            default         => ['',        ''],
         };
 
         if ($middleware) {

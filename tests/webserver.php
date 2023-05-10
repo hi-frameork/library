@@ -22,6 +22,7 @@ $app = new Application('swoole', [
         'pid_file' => '/tmp/swoole.pid',
     ]
 ]);
+
 $app->get('/db-reconnect-test', function () use ($dbPool) {
     try {
         $pool = $dbPool->pool('test');
@@ -50,4 +51,5 @@ $app->get('/db-reconnect-test', function () use ($dbPool) {
 
     return json_encode($result);
 });
+
 $app->listen(80, '0.0.0.0');

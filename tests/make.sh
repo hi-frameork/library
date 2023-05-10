@@ -11,7 +11,7 @@ Mount="-v `pwd`/tests/php.ini:/usr/local/etc/php/conf.d/php.ini -v `pwd`:${WorkD
 # 服务端口
 Port=9527
 # 日志路径
-LogFile=storage/logs/voya.log
+LogFile=storage/logs/hi.log
 
 echo '> 正在启动:' $(date '+%Y-%m-%d %H:%M:%S')
 
