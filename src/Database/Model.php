@@ -12,7 +12,7 @@ class Model
     /**
      * 数据库类型
      */
-    private const TYPE = 'mysql';
+    private const Type = 'mysql';
 
     /**
      * 目标数据库
@@ -34,7 +34,7 @@ class Model
     protected function select(array $columns = ['*'], ?string $table = null)
     {
         return $this->createQueryProxy(
-            (new QueryFactory(self::TYPE))->newSelect()->from($table ?? $this->table)->cols($columns)
+            (new QueryFactory(self::Type))->newSelect()->from($table ?? $this->table)->cols($columns)
         );
     }
 
@@ -48,7 +48,7 @@ class Model
     protected function update(?string $table = null)
     {
         return $this->createQueryProxy(
-            (new QueryFactory(self::TYPE))->newUpdate()->table($table ?? $this->table)
+            (new QueryFactory(self::Type))->newUpdate()->table($table ?? $this->table)
         );
     }
 
@@ -62,7 +62,7 @@ class Model
     protected function insert(?string $table = null)
     {
         return $this->createQueryProxy(
-            (new QueryFactory(self::TYPE))->newInsert()->into($table ?? $this->table)
+            (new QueryFactory(self::Type))->newInsert()->into($table ?? $this->table)
         );
     }
 
@@ -76,7 +76,7 @@ class Model
     protected function delete(?string $table = null)
     {
         return $this->createQueryProxy(
-            (new QueryFactory(self::TYPE))->newDelete()->from($table ?? $this->table)
+            (new QueryFactory(self::Type))->newDelete()->from($table ?? $this->table)
         );
     }
 
