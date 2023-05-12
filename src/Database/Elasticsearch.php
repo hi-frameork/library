@@ -14,6 +14,8 @@ use Exception;
  * @method bool delete(array $body) 删除指定 ID 的文档
  * @method array search(array $body) 搜索，返回值 array{total: array, hits: array}
  * @method array bulk(array $data) 批量创建
+ * @method array updateByQuery(array $query, bool $throwException = true) 根据查询更新
+ * @method array updateById(array $query, string $id, bool $throwException = true) 根据id更新
  */
 abstract class Elasticsearch
 {
@@ -190,6 +192,50 @@ abstract class Elasticsearch
             'index' => $this->getIndex(),
             'body'  => $data,
         ]);
+    }
+
+    /**
+     * 根据查询更新
+     */
+    private function updateByQuery(array $query, bool $throwException = true)
+    {
+        return function (Client $client) use ($query, $throwException) {
+            try {
+                $result = $client->updateByQuery([
+                    'refresh' => true,
+                    'index'   => $this->getIndex(),
+                    'body'    => $query,
+                ]);
+
+                return $result;
+            } catch (Exception $th) {
+                $throwException && throw $th;
+            }
+
+            return null;
+        };
+    }
+
+    /**
+     * 根据id更新
+     */
+    private function updateById(array $query, string $id, bool $throwException = true)
+    {
+        return function (Client $client) use ($query, $id, $throwException) {
+            try {
+                $result = $client->update([
+                    'id'    => $id,
+                    'index' => $this->getIndex(),
+                    'body'  => $query,
+                ]);
+
+                return $result;
+            } catch (Exception $th) {
+                $throwException && throw $th;
+            }
+
+            return null;
+        };
     }
 
     /**
