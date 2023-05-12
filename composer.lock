@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c42e50ad6810f42482d49b4fafcfd30",
+    "content-hash": "7cb01e871b7f166c0593022c3915435b",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -656,6 +656,73 @@
             "time": "2021-03-30T17:13:30+00:00"
         },
         {
+            "name": "chdemko/sorted-collections",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chdemko/php-sorted-collections.git",
+                "reference": "47501ae538696dc58440ea16b9245b3995740d25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chdemko/php-sorted-collections/zipball/47501ae538696dc58440ea16b9245b3995740d25",
+                "reference": "47501ae538696dc58440ea16b9245b3995740d25",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "joomla/coding-standards": "~2.0@alpha",
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpbench/phpbench": "^1.0@dev",
+                "phpunit/phpunit": "^7.0",
+                "sphpdox/sphpdox": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "chdemko\\SortedCollection\\": "src/SortedCollection"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Christophe Demko",
+                    "email": "chdemko@gmail.com",
+                    "homepage": "http://chdemko.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Sorted Collections for PHP >= 5.5",
+            "homepage": "https://php-sorted-collections.readthedocs.io/en/latest/?badge=latest",
+            "keywords": [
+                "avl",
+                "collection",
+                "iterator",
+                "map",
+                "ordered",
+                "set",
+                "sorted",
+                "tree",
+                "treemap",
+                "treeset"
+            ],
+            "support": {
+                "issues": "https://github.com/chdemko/php-sorted-collections/issues",
+                "source": "https://github.com/chdemko/php-sorted-collections/tree/1.0.5"
+            },
+            "time": "2018-10-22T12:24:26+00:00"
+        },
+        {
             "name": "composer/pcre",
             "version": "3.1.0",
             "source": {
@@ -1244,6 +1311,50 @@
             "time": "2022-02-03T13:40:04+00:00"
         },
         {
+            "name": "exussum12/xxhash",
+            "version": "1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/exussum12/xxhash.git",
+                "reference": "f5567ec5739ffee27aa3469e5001b4759b1b9e0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/exussum12/xxhash/zipball/f5567ec5739ffee27aa3469e5001b4759b1b9e0d",
+                "reference": "f5567ec5739ffee27aa3469e5001b4759b1b9e0d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.1|^8.0|^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "exussum12\\xxhash\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Scott Dutton",
+                    "email": "scott@exussum.co.uk"
+                }
+            ],
+            "description": "xxHash implementation in Pure PHP",
+            "support": {
+                "issues": "https://github.com/exussum12/xxhash/issues",
+                "source": "https://github.com/exussum12/xxhash/tree/1.3"
+            },
+            "time": "2020-11-30T09:04:53+00:00"
+        },
+        {
             "name": "ezimuel/guzzlestreams",
             "version": "3.1.0",
             "source": {
@@ -1612,6 +1723,52 @@
             "time": "2023-04-02T19:30:06+00:00"
         },
         {
+            "name": "google/crc32",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/php-crc32.git",
+                "reference": "a8525f0dea6fca1893e1bae2f6e804c5f7d007fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/php-crc32/zipball/a8525f0dea6fca1893e1bae2f6e804c5f7d007fb",
+                "reference": "a8525f0dea6fca1893e1bae2f6e804c5f7d007fb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.13 || v2.14.2",
+                "paragonie/random_compat": ">=2",
+                "phpunit/phpunit": "^4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Google\\CRC32\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Brampton",
+                    "email": "bramp@google.com"
+                }
+            ],
+            "description": "Various CRC32 implementations",
+            "homepage": "https://github.com/google/php-crc32",
+            "support": {
+                "issues": "https://github.com/google/php-crc32/issues",
+                "source": "https://github.com/google/php-crc32/tree/v0.1.0"
+            },
+            "time": "2019-05-09T06:24:58+00:00"
+        },
+        {
             "name": "hamcrest/hamcrest-php",
             "version": "v2.0.1",
             "source": {
@@ -1851,6 +2008,51 @@
                 "source": "https://github.com/JetBrains/phpstorm-stubs/tree/v2022.3"
             },
             "time": "2022-10-17T09:21:37+00:00"
+        },
+        {
+            "name": "longlang/phpkafka",
+            "version": "v1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swoole/phpkafka.git",
+                "reference": "3e6e880d67bd012308f1fbcd0880d2262c75be3d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swoole/phpkafka/zipball/3e6e880d67bd012308f1fbcd0880d2262c75be3d",
+                "reference": "3e6e880d67bd012308f1fbcd0880d2262c75be3d",
+                "shasum": ""
+            },
+            "require": {
+                "chdemko/sorted-collections": "^1.0",
+                "exussum12/xxhash": "^1.0.0",
+                "google/crc32": "^0.1.0",
+                "php": ">=7.1",
+                "symfony/polyfill-php81": "^1.23"
+            },
+            "require-dev": {
+                "colinodell/json5": "^2.1",
+                "friendsofphp/php-cs-fixer": "^2.18",
+                "phpstan/phpstan": "^0.12.81",
+                "phpunit/phpunit": "^7.5|^8.0|^9.0",
+                "swoole/ide-helper": "^4.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "longlang\\phpkafka\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "A kafka client. Support php-fpm and Swoole.",
+            "support": {
+                "issues": "https://github.com/swoole/phpkafka/issues",
+                "source": "https://github.com/swoole/phpkafka/tree/v1.2.3"
+            },
+            "time": "2023-03-22T07:23:08+00:00"
         },
         {
             "name": "mockery/mockery",
