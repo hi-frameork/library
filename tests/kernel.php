@@ -10,4 +10,12 @@ return (new \Hi\Kernel($_ENV['APP_PATH'] ?? dirname(__DIR__)))->load(function (\
             'password' => 'J2yf8wGK700YH3325QSA5kik',
         ]
     ]));
+
+    $container->set('queue', function () {
+        return (new \Library\Queue\Manager(['default' => []]))
+            ->load([
+                basePath('/src/Queue/Producers'),
+            ])
+        ;
+    });
 });
