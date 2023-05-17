@@ -9,7 +9,7 @@ use Exception;
 
 /**
  * @method IndicesNamespace indices(string $id) 获取指定 ID 的文档
- * @method string index(array $body, string $id = '') 创建 Index && Doc
+ * @method string index(array $body, string $id = '', bool $refresh = false) 创建 Index && Doc
  * @method array get(string $id, array $body = [], bool $throwException = true) 获取指定 Doc
  * @method bool delete(array $body) 删除指定 ID 的文档
  * @method array search(array $body) 搜索，返回值 array{total: array, hits: array}
@@ -56,13 +56,15 @@ abstract class Elasticsearch
     /**
      * 创建 Index && Doc
      *
-     * @return string 文档插入 ID
+     * @param bool $refresh 是否刷新
+     * @return string $id 文档插入 ID
      */
-    private function index(array $body, string $id = ''): callable
+    private function index(array $body, string $id = '', bool $refresh = false): callable
     {
         $params = [
-            'index' => $this->getIndex(),
-            'body'  => $body,
+            'index'   => $this->getIndex(),
+            'refresh' => $refresh,
+            'body'    => $body,
         ];
 
         if ($id) {
