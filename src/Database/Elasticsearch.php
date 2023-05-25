@@ -107,7 +107,7 @@ abstract class Elasticsearch
                     ...$body,
                 ]);
 
-                return $result['_source'];
+                return $result['_source'] ?? [];
             } catch (Exception $th) {
                 $throwException && throw $th;
             }

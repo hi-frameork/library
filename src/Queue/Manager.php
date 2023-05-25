@@ -53,7 +53,7 @@ class Manager
     protected function parseProducer(string $class): ?AbstractProducer
     {
         $reflectionClass = new ReflectionClass($class);
-        // 如果类没有路由注解，代表非路由类
+        // 如果类没有注解，代表非生产者类
         $attribute = Reader::getClassAttribute($reflectionClass, Producer::class);
         if (!$attribute) {
             return null;
