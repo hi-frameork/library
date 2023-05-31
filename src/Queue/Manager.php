@@ -13,10 +13,12 @@ class Manager
 
     protected ConsumerRunner $consumerRunner;
 
+    protected array $classes = [];
+
     public function __construct(array $configs)
     {
-        $this->producerRunner = new ProducerRunner();
-        $this->consumerRunner = new ConsumerRunner();
+        // $this->producerRunner = new ProducerRunner();
+        // $this->consumerRunner = new ConsumerRunner();
     }
 
     /**
@@ -30,24 +32,26 @@ class Manager
             $paths = [$paths];
         }
 
-        $classes = [];
         foreach ($paths as $path) {
-            $classes += File::scanDirectoryClass($path);
+            $this->classes = array_merge($this->classes, File::scanDirectoryClass($path));
         }
 
+        return $this;
+    }
+
+    /**
+     * 为命令行增加手动投递消息的能力
+     */
+    public function producer()
+    {
+        $runner = new ProducerRunner();
+
         // 解析生产者
-        foreach ($classes as $class) {
+        foreach ($this->classes as $class) {
             if ($producer = $this->parseProducer($class)) {
                 $this->producerRunner->add($producer);
             }
         }
-
-        // 解析消费者
-        foreach ($classes as $class) {
-            $this->parseConsumer($class);
-        }
-
-        return $this;
     }
 
     protected function parseProducer(string $class): ?AbstractProducer
@@ -58,14 +62,6 @@ class Manager
         if (!$attribute) {
             return null;
         }
-    }
-
-    protected function parseConsumer(string $class)
-    {
-    }
-
-    public function produce(AbstractProducer $producer)
-    {
     }
 
     /**
@@ -79,8 +75,19 @@ class Manager
      *
      * @param string|null $aliasOrClassName 消费者别名或类名
      */
-    public function consume(?string $aliasOrClassName = null): void
+    public function consumer(?string $aliasOrClassName = null): void
     {
-        return $this->consumerRunner->run($aliasOrClassName);
+        $runner = new ConsumerRunner();
+
+        // 解析消费者
+        foreach ($this->classes as $class) {
+            $this->parseConsumer($class);
+        }
+
+        // return $runner->run($aliasOrClassName);
+    }
+
+    protected function parseConsumer(string $class)
+    {
     }
 }

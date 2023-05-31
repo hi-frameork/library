@@ -16,18 +16,21 @@
   <testsuites>
     <!-- <testsuite name="Unit/Library/Attribute">
     </testsuite> -->
-    <testsuite name="Unit">
+    <!-- <testsuite name="Unit"> -->
       <!-- <directory suffix="Test.php">./tests/Unit/Library/Attribute/</directory> -->
       <!-- <directory suffix="Test.php">./tests/Unit/Library/Database/MySQL</directory> -->
       <!-- <file>./tests/Unit/Library/Database/ElasticsearchTest.php</file> -->
-      <directory suffix="Test.php">./tests/Unit/Library/Http/Router</directory>
-    </testsuite>
+      <!-- <directory suffix="Test.php">./tests/Unit/Library/Http/Router</directory> -->
+    <!-- </testsuite> -->
     <!-- <testsuite name="Feature/Library/Http">
       <directory suffix="Test.php">./tests/Feature/Library/Http/</directory>
     </testsuite> -->
     <!-- <testsuite name="Feature/Routes">
       <directory suffix="Test.php">./tests/Feature/Routes/</directory>
     </testsuite> -->
+    <testsuite name="Queue">
+      <directory suffix="Test.php">./tests/Queue/</directory>
+    </testsuite>
   </testsuites>
   <coverage processUncoveredFiles="true">
     <include>
