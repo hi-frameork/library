@@ -2,6 +2,8 @@
 
 namespace Library\Queue;
 
+use Hi\Kernel\Attribute\Reader;
+use Library\Attribute\Queue\Producer;
 use Library\System\File;
 use ReflectionClass;
 
@@ -51,6 +53,11 @@ class Manager
     protected function parseProducer(string $class): ?AbstractProducer
     {
         $reflectionClass = new ReflectionClass($class);
+        // 如果类没有注解，代表非生产者类
+        $attribute = Reader::getClassAttribute($reflectionClass, Producer::class);
+        if (!$attribute) {
+            return null;
+        }
     }
 
     protected function parseConsumer(string $class)
