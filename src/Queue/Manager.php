@@ -2,23 +2,26 @@
 
 namespace Library\Queue;
 
-use Hi\Kernel\Attribute\Reader;
+use Library\Attribute\Queue\Consumer;
 use Library\Attribute\Queue\Producer;
 use Library\System\File;
-use ReflectionClass;
 
 class Manager
 {
     protected ProducerRunner $producerRunner;
 
-    protected ConsumerRunner $consumerRunner;
-
     protected array $classes = [];
 
-    public function __construct(array $configs)
+    protected Config $config;
+
+    public function __construct(array $configs, protected array $paths)
     {
-        // $this->producerRunner = new ProducerRunner();
-        // $this->consumerRunner = new ConsumerRunner();
+        $this->config = new Config($configs);
+        $this->load($paths);
+
+        // 初始化生产者运行器
+        $parser               = new Parser(array_keys($this->classes), Producer::class);
+        $this->producerRunner = new ProducerRunner($this->config, $parser);
     }
 
     /**
@@ -26,7 +29,7 @@ class Manager
      *
      * @param string|string[] $paths 需要扫描的生产者定义的路径
      */
-    public function load($paths): self
+    protected function load($paths): self
     {
         if (!is_array($paths)) {
             $paths = [$paths];
@@ -39,29 +42,22 @@ class Manager
         return $this;
     }
 
+    public function getPaths()
+    {
+        return $this->paths;
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
     /**
      * 为命令行增加手动投递消息的能力
      */
-    public function producer()
+    public function produce(AbstractProducer|string $producer, ?array $data = null): void
     {
-        $runner = new ProducerRunner();
-
-        // 解析生产者
-        foreach ($this->classes as $class) {
-            if ($producer = $this->parseProducer($class)) {
-                $this->producerRunner->add($producer);
-            }
-        }
-    }
-
-    protected function parseProducer(string $class): ?AbstractProducer
-    {
-        $reflectionClass = new ReflectionClass($class);
-        // 如果类没有注解，代表非生产者类
-        $attribute = Reader::getClassAttribute($reflectionClass, Producer::class);
-        if (!$attribute) {
-            return null;
-        }
+        $this->producerRunner->run($producer, $data);
     }
 
     /**
@@ -75,19 +71,13 @@ class Manager
      *
      * @param string|null $aliasOrClassName 消费者别名或类名
      */
-    public function consumer(?string $aliasOrClassName = null): void
+    public function consume(?string $aliasOrClassName = null): void
     {
-        $runner = new ConsumerRunner();
+        // 消费者类解析
+        $parser = new Parser(array_keys($this->classes), Consumer::class);
 
-        // 解析消费者
-        foreach ($this->classes as $class) {
-            $this->parseConsumer($class);
-        }
-
-        // return $runner->run($aliasOrClassName);
-    }
-
-    protected function parseConsumer(string $class)
-    {
+        // 启动消费者
+        $runner = new ConsumerRunner($this->config, $parser);
+        $runner->run($aliasOrClassName);
     }
 }

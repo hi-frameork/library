@@ -34,6 +34,7 @@
         "phpunit/phpunit": "^9.6",
         "sempro/phpunit-pretty-print": "^1.2",
         "mockery/mockery": "^1.5",
-        "longlang/phpkafka": "^1.2"
+        "longlang/phpkafka": "^1.2",
+        "swoole/ide-helper": "4.8.13"
     }
 }

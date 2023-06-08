@@ -12,10 +12,13 @@ return (new \Hi\Kernel($_ENV['APP_PATH'] ?? dirname(__DIR__)))->load(function (\
     ]));
 
     $container->set('queue', function () {
-        return (new \Library\Queue\Manager(['default' => []]))
-            ->load([
-                basePath('/src/Queue/Producers'),
-            ])
-        ;
+        return new \Library\Queue\Manager([
+            'kafka.default' => [
+                'bootstrapServers' => '',
+                'brokers' => '',
+            ],
+        ], [
+            basePath('/src/Queue/Producers'),
+        ]);
     });
 });

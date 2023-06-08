@@ -2,7 +2,10 @@
 
 use Library\Queue\AbstractProducer;
 
-function produce(AbstractProducer|string $producer)
+/**
+ * 生产者投递消息
+ */
+function produce(AbstractProducer|string $producer, ?array $data = null)
 {
-    $producer->send();
+    return app('queue')->produce($producer, $data);
 }

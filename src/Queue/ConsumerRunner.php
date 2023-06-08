@@ -2,57 +2,55 @@
 
 namespace Library\Queue;
 
-use Library\System\Process;
+use Exception;
+use Library\System\Process\Manager;
 
 /**
  * 消费者运行器
  */
 class ConsumerRunner
 {
-    /**
-     * @var array<string, AbstractConsumer>
-     */
-    protected array $consumers = [];
+    public function __construct(
+        protected Config $config,
+        protected Parser $consunerParser
+    ) {
+    }
 
     /**
      * 启动消费者
      */
     public function run(?string $aliasOrClassName = null): void
     {
-        /** @var Process[] */
-        $processes = [];
-        foreach ($this->getConsumers($aliasOrClassName) as $consumner) {
-            $process = new Process(fn () => $consumner->execute());
-            $process->start();
-            $processes[$process->pid] = $process;
-        }
-    }
+        // 进程管理器
+        $pm = new Manager();
 
-    /**
-     * 获取消费者
-     *
-     * @return AbstractConsumer[]
-     */
-    public function getConsumers(?string $aliasOrClassName = null)
-    {
-        if (is_null($aliasOrClassName)) {
-            return null;
-        }
+        $consumers = $this->consunerParser->get($aliasOrClassName);
+        // 启动消费者(在子进程中执行)
+        foreach ($consumers as $item) {
+            $class = $item['class'];
+            /** @var AbstractConsumer $consumer */
+            $consumer = new $class();
 
-        if (isset($this->consumers[$aliasOrClassName])) {
-            return $this->consumers[$aliasOrClassName];
-        }
-
-        if (class_exists($aliasOrClassName)) {
-            $consumer = new $aliasOrClassName();
-            if (!$consumer instanceof AbstractConsumer) {
-                throw new \Exception(sprintf('Consumer class %s must be an instance of %s', $aliasOrClassName, AbstractConsumer::class));
+            // 检查连接名与连接配置是否设置
+            $connection = $consumer->getConnection();
+            if (!$connection) {
+                throw new Exception("Class {$class} connection name must be set");
             }
-            $this->consumers[$aliasOrClassName] = $consumer;
+            // 为消费者设置 broker 服务器
+            $consumer->getConfig()->setBrokers(
+                $this->config->get($connection)->brokers
+            );
 
-            return $consumer;
+            // 检查 topic 名称是否设置
+            $topic = $consumer->getTopic();
+            if (!$topic) {
+                throw new Exception("Class {$class} topic must be set");
+            }
+
+            // 创建子进程启动消费者
+            $pm->add(fn () => $consumer->execute(), true);
         }
 
-        throw new \Exception(sprintf('Consumer class %s not found', $aliasOrClassName));
+        $pm->start();
     }
 }
