@@ -7,6 +7,8 @@ use longlang\phpkafka\Producer\Producer;
 use longlang\phpkafka\Producer\ProducerConfig;
 
 /**
+ * 生产者基类
+ *
  * @property ProducerConfig $config
  * @method ProducerConfig getConfig()
  */
@@ -70,21 +72,36 @@ abstract class AbstractProducer extends AbstractQueue
         return $this->data;
     }
 
+    /**
+     * 返回消息 key
+     *
+     * 默认为 null，使用默认分区策略
+     * 若需要自定义分区策略，重写该方法
+     */
     public function getkey(): ?string
     {
         return null;
     }
 
+    /**
+     * 设置消息头部
+     */
     public function setHeaders(array $headers): void
     {
         $this->headers = $headers;
     }
 
+    /**
+     * 返回消息头部
+     */
     public function getHeaders(): array
     {
         return $this->headers;
     }
 
+    /**
+     * 连接消息队列并批量发送消息
+     */
     public function send(): void
     {
         $messages = [];

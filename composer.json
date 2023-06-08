@@ -21,6 +21,7 @@
     "require": {
         "monolog/monolog": "^3.2",
         "nette/robot-loader": "^3.4",
+        "longlang/phpkafka": "^1.2",
         "aura/sqlquery": "^3.0"
     },
     "require-dev": {
@@ -34,7 +35,6 @@
         "phpunit/phpunit": "^9.6",
         "sempro/phpunit-pretty-print": "^1.2",
         "mockery/mockery": "^1.5",
-        "longlang/phpkafka": "^1.2",
         "swoole/ide-helper": "4.8.13"
     }
 }

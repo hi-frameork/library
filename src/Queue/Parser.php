@@ -44,8 +44,13 @@ class Parser
                 'attribute' => $attribute,
             ];
 
-            $this->parsed['classes'][$class]              = [$item];
-            $this->parsed['aliases'][$attribute->alias][] = $item;
+            // 将类添加到类数组中
+            $this->parsed['classes'][$class] = [$item];
+
+            // 如果有别名，将类添加到别名数组中
+            if ($attribute->alias) {
+                $this->parsed['aliases'][$attribute->alias][] = $item;
+            }
         }
     }
 

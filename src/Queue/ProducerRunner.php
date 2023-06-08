@@ -20,6 +20,7 @@ class ProducerRunner
      */
     public function run(AbstractProducer|string $producer, ?array $data = null): void
     {
+        // 如果是字符串，那么就是生产者的别名分组，需要先通过别名获取生产者组(相同别名)
         if (is_string($producer)) {
             $defines   = $this->parser->get($producer);
             $producers = array_map(fn ($define) => new $define['class']($data), $defines);

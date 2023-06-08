@@ -8,10 +8,19 @@ use Library\System\File;
 
 class Manager
 {
+    /**
+     * 队列管理器
+     */
     protected ProducerRunner $producerRunner;
 
+    /**
+     * 外部指定的生产者与消费者类
+     */
     protected array $classes = [];
 
+    /**
+     * 队列配置管理器
+     */
     protected Config $config;
 
     public function __construct(array $configs, protected array $paths)
@@ -42,11 +51,17 @@ class Manager
         return $this;
     }
 
+    /**
+     * 外部指定的生产者与消费者类锁在路径
+     */
     public function getPaths()
     {
         return $this->paths;
     }
 
+    /**
+     * 返回队列配置管理器
+     */
     public function getConfig()
     {
         return $this->config;

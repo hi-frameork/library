@@ -18,6 +18,9 @@ class Config
         }
     }
 
+    /**
+     * 获取指定名称的配置
+     */
     public function get(string $name): Item
     {
         if (!isset($this->list[$name])) {
@@ -36,10 +39,19 @@ class Config
     }
 }
 
+/**
+ * 队列配置项
+ */
 class Item
 {
+    /**
+     * bootstrapServers 配置
+     */
     public string $bootstrapServers;
 
+    /**
+     * brokers 配置
+     */
     public string $brokers;
 
     public function __construct(array $data)

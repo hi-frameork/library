@@ -7,6 +7,8 @@ use longlang\phpkafka\Consumer\Consumer;
 use longlang\phpkafka\Consumer\ConsumerConfig;
 
 /**
+ * 消费者基类
+ *
  * @property ConsumerConfig $config
  * @method ConsumerConfig getConfig()
  */
@@ -34,11 +36,9 @@ abstract class AbstractConsumer extends AbstractQueue
         $this->config->setInterval(0.1);
     }
 
-    public function setBroker(string $broker): void
-    {
-        $this->config->setBroker($broker);
-    }
-
+    /**
+     * 创建消费者实例并执行消费
+     */
     public function execute(): void
     {
         $consumer = (new Consumer($this->config, [$this, 'consume']));
