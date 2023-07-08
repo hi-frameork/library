@@ -38,8 +38,6 @@ class PDOProxy extends ObjectProxy
         parent::__construct($constructor());
         $this->__object->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
         $this->constructor = $constructor;
-
-        $this->enableWriteForward();
     }
 
     public function __call(string $name, array $arguments)
@@ -96,8 +94,6 @@ class PDOProxy extends ObjectProxy
                 $this->__object->setAttribute($attribute, $value);
             }
         }
-
-        $this->enableWriteForward();
     }
 
     public function setAttribute(int $attribute, $value): bool
