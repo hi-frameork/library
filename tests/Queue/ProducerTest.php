@@ -13,8 +13,8 @@ class ProducerTest extends TestCase
     {
         $this->manager = new Manager([
             'kafka.default' => [
-                'bootstrapServers' => 'host.docker.internal:29092',
-                'brokers'          => 'host.docker.internal:29092',
+                'bootstrapServers' => '10.43.210.198:9092',
+                'brokers'          => '10.43.210.198:9092',
             ],
         ], [
             __DIR__ . '/Stubs',
