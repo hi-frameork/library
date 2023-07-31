@@ -19,6 +19,17 @@ class Model
      */
     protected string $connection = 'default';
 
+    protected string $readConnection = 'default';
+
+    /**
+     * 使用读库查询
+     */
+    public function useRead(): self
+    {
+        $this->connection = $this->readConnection;
+        return $this;
+    }
+
     /**
      * 目标数据表
      */
