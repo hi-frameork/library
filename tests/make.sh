@@ -17,9 +17,8 @@ echo '> 正在启动:' $(date '+%Y-%m-%d %H:%M:%S')
 
 case $1 in
   watch)
-    # docker build -t xdebug -f tests/EsDebug/Dockerfile .
     echo '+ 访问地址: http://0.0.0.0:'${Port}
-    Args="--name ${Name} ${Mount} -d -p ${Port}:80 ${Image} php -S 0.0.0.0:80 -t ${WorkDir}/tests/"
+    Args="--name ${Name} ${Mount} -d -p ${Port}:80 ${Image} php -S 0.0.0.0:80"
   ;;
   tests)
     Args="--name ${Name} ${Mount} ${Image} php ${WorkDir}/tests/start.php --config=${WorkDir}/phpunit.xml"

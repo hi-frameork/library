@@ -19,7 +19,18 @@ class ConsumerRunner
     /**
      * 启动消费者
      */
-    public function run(?string $aliasOrClassName = null): void
+    public function run(?string $aliasOrClassName = null, bool $parallel = false)
+    {
+        return $parallel
+            ? $this->parallel($aliasOrClassName)
+            : $this->signle($aliasOrClassName)
+        ;
+    }
+
+    /**
+     * 并行启动消费者进行消费
+     */
+    protected function parallel(?string $aliasOrClassName = null)
     {
         // 进程管理器
         $pm = new Manager();
@@ -52,5 +63,38 @@ class ConsumerRunner
         }
 
         $pm->start();
+    }
+
+    /**
+     * 单进程启动消费者进行消费
+     */
+    protected function signle(?string $aliasOrClassName = null)
+    {
+        $consumers = $this->consunerParser->get($aliasOrClassName);
+        // 启动消费者(在子进程中执行)
+        foreach ($consumers as $item) {
+            $class = $item['class'];
+            /** @var AbstractConsumer $consumer */
+            $consumer = new $class();
+
+            // 检查连接名与连接配置是否设置
+            $connection = $consumer->getConnection();
+            if (!$connection) {
+                throw new Exception("Class {$class} connection name must be set");
+            }
+            // 为消费者设置 broker 服务器
+            $consumer->getConfig()->setBrokers(
+                $this->config->get($connection)->brokers
+            );
+
+            // 检查 topic 名称是否设置
+            $topic = $consumer->getTopic();
+            if (!$topic) {
+                throw new Exception("Class {$class} topic must be set");
+            }
+
+            // 创建子进程启动消费者
+            $consumer->execute();
+        }
     }
 }

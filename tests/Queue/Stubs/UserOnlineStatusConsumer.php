@@ -25,11 +25,15 @@ class UserOnlineStatusConsumer extends AbstractConsumer
 
     public function consume(?ConsumeMessage $message): void
     {
-        file_put_contents('php://stdout', $message->getValue() . PHP_EOL);
-        $rate = rand(1, 100);
-        if ($rate > 50) {
-            throw new Exception('test');
-        }
+        echo $message->getValue();
+        // file_put_contents('php://stdout', $message->getValue() . PHP_EOL);
+
+        $this->stop();
+
+        // $rate = rand(1, 100);
+        // if ($rate > 50) {
+        //     throw new Exception('test');
+        // }
 
         // file_put_contents('log', $message->getValue() . PHP_EOL, FILE_APPEND);
         // var_dump($message);

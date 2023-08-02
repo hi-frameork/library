@@ -14,6 +14,8 @@ use longlang\phpkafka\Consumer\ConsumerConfig;
  */
 abstract class AbstractConsumer extends AbstractQueue
 {
+    protected Consumer $consumer;
+
     /**
      * 消费者初始化/配置初始化
      * 子类需要更多配置时，重写该方法
@@ -41,8 +43,16 @@ abstract class AbstractConsumer extends AbstractQueue
      */
     public function execute(): void
     {
-        $consumer = (new Consumer($this->config, [$this, 'consume']));
-        $consumer->start();
+        $this->consumer = (new Consumer($this->config, [$this, 'consume']));
+        $this->consumer->start();
+    }
+
+    /**
+     * 关闭消费者
+     */
+    public function stop(): void
+    {
+        $this->consumer->stop();
     }
 
     /**

@@ -85,14 +85,15 @@ class Manager
      *  - 传入消费者类名，启动指定消费者
      *
      * @param string|null $aliasOrClassName 消费者别名或类名
+     * @param bool        $parallel         是否并行启动
      */
-    public function consume(?string $aliasOrClassName = null): void
+    public function consume(?string $aliasOrClassName = null, bool $parallel = true): void
     {
         // 消费者类解析
         $parser = new Parser(array_keys($this->classes), Consumer::class);
 
         // 启动消费者
         $runner = new ConsumerRunner($this->config, $parser);
-        $runner->run($aliasOrClassName);
+        $runner->run($aliasOrClassName, $parallel);
     }
 }

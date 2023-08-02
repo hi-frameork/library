@@ -28,12 +28,12 @@
     <!-- <testsuite name="Feature/Routes">
       <directory suffix="Test.php">./tests/Feature/Routes/</directory>
     </testsuite> -->
-    <!-- <testsuite name="Queue"> -->
-      <!-- <directory suffix="Test.php">./tests/Queue/</directory> -->
-    <!--   <file>./tests/Queue/ParserTest.php</file> -->
-      <!-- <file>./tests/Queue/ConsumerTest.php</file> -->
-    <!--   <file>./tests/Queue/ProducerTest.php</file> -->
-    <!-- </testsuite> -->
+    <testsuite name="Queue">
+      <directory suffix="Test.php">./tests/Queue/</directory>
+      <!-- <file>./tests/Queue/ParserTest.php</file>
+      <file>./tests/Queue/ProducerTest.php</file>
+      <file>./tests/Queue/ConsumerTest.php</file> -->
+    </testsuite>
     <testsuite name="Corontine">
       <directory suffix="Test.php">./tests/Coroutine/</directory>
     </testsuite>

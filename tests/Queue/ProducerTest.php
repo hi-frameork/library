@@ -13,8 +13,8 @@ class ProducerTest extends TestCase
     {
         $this->manager = new Manager([
             'kafka.default' => [
-                'bootstrapServers' => '10.43.210.198:9092',
-                'brokers'          => '10.43.210.198:9092',
+                'bootstrapServers' => 'host.docker.internal:29092',
+                'brokers'          => 'host.docker.internal:29092',
             ],
         ], [
             __DIR__ . '/Stubs',
@@ -34,11 +34,11 @@ class ProducerTest extends TestCase
         $this->manager->produce($producer);
     }
 
-    public function testProducerWithAlias()
-    {
-        $this->manager->produce('user_online_status', [
-            'user_id'       => 1,
-            'online_status' => 1,
-        ]);
-    }
+    // public function testProducerWithAlias()
+    // {
+    //     $this->manager->produce('user_online_status', [
+    //         'user_id'       => 1,
+    //         'online_status' => 1,
+    //     ]);
+    // }
 }

@@ -32,7 +32,7 @@ class ConsumerTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Queue config kafka.default not found");
 
-        $manager->consume('user_online_status');
+        $manager->consume('user_online_status', false);
     }
 
     // 测试传入正确的配置连接时，是否会正常消费
@@ -40,16 +40,15 @@ class ConsumerTest extends TestCase
     {
         $manager = new Manager([
             'kafka.default' => [
-                'bootstrapServers' => '10.43.210.198:9092',
-                'brokers'          => '10.43.210.198:9092',
+                'bootstrapServers' => 'host.docker.internal:29092',
+                'brokers'          => 'host.docker.internal:29092',
             ],
         ], [
             __DIR__ . '/Stubs',
         ]);
-        $manager->consume('user_online_status');
+        $manager->consume('user_online_status', false);
 
-        $this->expectOutputString(111);
-
-        exit();
+        // 值来自 Tests\Queue\ProducerTest::testProducerWithObject 方法
+        $this->expectOutputString('{"user_id":1,"online_status":1}');
     }
 }
