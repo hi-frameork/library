@@ -70,9 +70,9 @@ class Manager
     /**
      * 为命令行增加手动投递消息的能力
      */
-    public function produce(AbstractProducer|string $producer, ?array $data = null): void
+    public function produce(AbstractProducer|string $producer, ?array $data = null): bool
     {
-        $this->producerRunner->run($producer, $data);
+        return $this->producerRunner->run($producer, $data);
     }
 
     /**

@@ -102,7 +102,7 @@ abstract class AbstractProducer extends AbstractQueue
     /**
      * 连接消息队列并批量发送消息
      */
-    public function send(): void
+    public function send(): bool
     {
         $messages = [];
         foreach ($this->data as $item) {
@@ -115,6 +115,12 @@ abstract class AbstractProducer extends AbstractQueue
             );
         }
 
-        (new Producer($this->config))->sendBatch($messages);
+        if ($messages) {
+            (new Producer($this->config))->sendBatch($messages);
+
+            return true;
+        }
+
+        return false;
     }
 }
