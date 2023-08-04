@@ -59,5 +59,5 @@ abstract class AbstractConsumer extends AbstractQueue
     /**
      * 执行消费业务处理
      */
-    abstract public function consume(?ConsumeMessage $message): void;
+    abstract public function consume(?ConsumeMessage $message);
 }
