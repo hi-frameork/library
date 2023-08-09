@@ -270,7 +270,7 @@ abstract class Elasticsearch
         $pool = $manager->pool($this->connection);
 
         /** @var Client $client */
-        $client = $pool->get();
+        $client = $pool->get(-1);
 
         try {
             // tips: 不能使用 call_user_func，因为 call_user_func 会将闭包转换为字符串，导致内存泄漏

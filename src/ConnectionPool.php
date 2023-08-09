@@ -55,7 +55,7 @@ class ConnectionPool
 
         $connection = $this->pool->pop($timeout);
         if (!$connection) {
-            alert('connection get timeout', ['timeout' => $timeout]);
+            alert('Connection get timeout', ['timeout' => $timeout]);
         }
 
         return $connection;

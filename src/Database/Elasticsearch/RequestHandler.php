@@ -15,8 +15,10 @@ use Library\Http\Client;
  */
 class RequestHandler
 {
-    public function __construct(protected array $settings = [])
-    {
+    public function __construct(
+        protected array $settings = [],
+        protected $client = null,
+    ) {
     }
 
     /**
@@ -96,10 +98,10 @@ class RequestHandler
         $btime = microtime(true);
 
         // 发起请求
-        $client = new Client($host, $port, $ssl);
+        $client = $this->getClient($host, $port, $ssl);
         $client->setMethod($method);
         $client->setData($request['body'] ?? '');
-        $client->setHeaders($this->processHeaders($request, $client));
+        $client->setHeaders($this->processHeaders($request));
         $client->set($this->processSettings($this->settings));
         $client->execute($path);
 
@@ -115,6 +117,15 @@ class RequestHandler
             'status'        => $client->statusCode,
             'body'          => $this->getBodyStream($client->body),
         ]);
+    }
+
+    private function getClient($host, $port, $ssl)
+    {
+        if (!$this->client) {
+            $this->client = new Client($host, $port, $ssl);
+        }
+
+        return $this->client;
     }
 
     /**
