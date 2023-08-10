@@ -116,7 +116,9 @@ abstract class AbstractProducer extends AbstractQueue
         }
 
         if ($messages) {
-            (new Producer($this->config))->sendBatch($messages);
+            $producer = (new Producer($this->config));
+            $producer->sendBatch($messages);
+            $producer->close();
 
             return true;
         }
