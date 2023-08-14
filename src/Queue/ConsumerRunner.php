@@ -93,8 +93,9 @@ class ConsumerRunner
                 throw new Exception("Class {$class} topic must be set");
             }
 
-            // 创建子进程启动消费者
+            // 执行单次消费，然后关闭消费者
             $consumer->execute();
+            $consumer->stop();
         }
     }
 }
