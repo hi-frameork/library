@@ -35,7 +35,7 @@ class ProducerRunner
             if (!$connection) {
                 $class = get_class($producer);
 
-                throw new Exception("Class {$class} connection name must be set");
+                throw new Exception("Class {$class} Queue connection name must be set");
             }
         }
 
