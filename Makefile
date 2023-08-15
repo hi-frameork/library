@@ -4,9 +4,9 @@ help:
 	@echo "使用说明:"
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed 's/^/ /'
 
-## watch: 本地开发启动服务并监听文件变动
-.PHONY: watch
-watch: info
+## dev: 本地开发启动服务并监听文件变动
+.PHONY: dev
+dev: info
 	@sh tests/make.sh watch
 
 ## tests: 单元测试

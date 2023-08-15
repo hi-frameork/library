@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Corontine;
+namespace Tests\Suites\Corontine;
 
 use PHPUnit\Framework\TestCase;
 

@@ -8,25 +8,26 @@ WorkDir=/var/www
 echo '> 正在启动:' $(date '+%Y-%m-%d %H:%M:%S')
 
 case $1 in
-  watch)
-    # 容器名称
-    Name=$(basename `pwd`)-$(echo `pwd` | md5 | cut -c1-10)
-    # 目录挂载
-    Mount="-v `pwd`/tests/php.ini:/usr/local/etc/php/conf.d/php.ini -v `pwd`:${WorkDir}"
-    # 启动容器并进入容器
-    docker stop ${Name} >> /dev/null
-    docker rm ${Name} >> /dev/null
-    docker run --name ${Name} ${Mount} -d ${Image} php -S 0.0.0.0:80
-    docker exec -it ${Name} sh
-    # apk add util-linux make
+watch)
+  # 容器名称
+  Name=$(basename $(pwd))-$(echo $(pwd) | md5 | cut -c1-10)
+  # 目录挂载
+  Mount="-v $(pwd)/tests/php.ini:/usr/local/etc/php/conf.d/php.ini -v $(pwd):${WorkDir}"
+  # 启动容器并进入容器
+  docker stop ${Name} >>/dev/null
+  docker rm ${Name} >>/dev/null
+  docker run --name ${Name} ${Mount} -d ${Image} php -S 0.0.0.0:80
+  # 安装依赖并进入容器
+  docker exec -it ${Name} sh -c "apk add util-linux make"
+  docker exec -it ${Name} sh
   ;;
-  tests)
-    php ${WorkDir}/tests/start.php --config=${WorkDir}/phpunit.xml
+tests)
+  php ${WorkDir}/tests/start.php --config=${WorkDir}/phpunit.xml
   ;;
-  cs)
-    php ${WorkDir}/vendor/bin/php-cs-fixer fix --config=${WorkDir}/.php-cs-fixer.dist.php
+cs)
+  php ${WorkDir}/vendor/bin/php-cs-fixer fix --config=${WorkDir}/.php-cs-fixer.dist.php
   ;;
-  check)
-    php ${WorkDir}/vendor/bin/psalm --alter --issues=MissingReturnType --issues=MissingParamType --dry-run
+check)
+  php ${WorkDir}/vendor/bin/psalm --alter --issues=MissingReturnType --issues=MissingParamType --dry-run
   ;;
 esac

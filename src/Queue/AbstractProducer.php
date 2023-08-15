@@ -40,7 +40,8 @@ abstract class AbstractProducer extends AbstractQueue
     ) {
         $this->config = new ProducerConfig();
         $this->config->setAcks($this->getAcks());
-        $this->config->setUpdateBrokers(true);
+        $this->config->setUpdateBrokers(true); // 自动更新 broker 服务器
+        $this->config->setAutoCreateTopic(false); // 禁止自动创建 topic
 
         // 默认底层统一以批量机制发送消息
         if (!$batch) {

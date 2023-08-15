@@ -37,6 +37,7 @@ abstract class AbstractConsumer extends AbstractQueue
         $this->config->setTopic($this->topic->value);
         $this->config->setInterval(0.1);
         $this->config->setGroupId(static::class);
+        $this->config->setAutoCreateTopic(false);
     }
 
     /**

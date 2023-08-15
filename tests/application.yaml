@@ -1,0 +1,6 @@
+
+# 消息队列配置
+queue:
+  kafka-default:
+    bootstrapServers: 'host.docker.internal:29092'
+    brokers: 'host.docker.internal:29092'

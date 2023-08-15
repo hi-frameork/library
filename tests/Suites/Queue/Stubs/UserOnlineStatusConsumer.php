@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Queue\Stubs;
+namespace Tests\Suites\Queue\Stubs;
 
 use Exception;
 use Library\Attribute\Queue\Consumer;

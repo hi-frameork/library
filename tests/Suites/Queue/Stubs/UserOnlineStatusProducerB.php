@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Queue\Stubs;
+namespace Tests\Suites\Queue\Stubs;
 
 use Library\Attribute\Queue\Producer;
 use Library\Queue\AbstractProducer;

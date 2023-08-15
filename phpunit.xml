@@ -29,14 +29,14 @@
       <directory suffix="Test.php">./tests/Feature/Routes/</directory>
     </testsuite> -->
     <testsuite name="Queue">
-      <directory suffix="Test.php">./tests/Queue/</directory>
+      <directory suffix="Test.php">./tests/Suites/Queue/</directory>
       <!-- <file>./tests/Queue/ParserTest.php</file>
       <file>./tests/Queue/ProducerTest.php</file>
       <file>./tests/Queue/ConsumerTest.php</file> -->
     </testsuite>
-    <testsuite name="Corontine">
-      <directory suffix="Test.php">./tests/Coroutine/</directory>
-    </testsuite>
+    <!-- <testsuite name="Corontine"> -->
+    <!--   <directory suffix="Test.php">./tests/Suites/Coroutine/</directory> -->
+    <!-- </testsuite> -->
   </testsuites>
   <coverage processUncoveredFiles="true">
     <include>

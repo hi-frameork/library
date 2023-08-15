@@ -13,6 +13,19 @@ use ReflectionClass;
 class Parser
 {
     /**
+     * ```php
+     * [
+     * 'classes' => [
+     *     'consunmer01' => [
+     *         ['class' => $class, 'attribute' => $attribute],
+     *     ]
+     * 'aliases' => [
+     *     'alias01' => [
+     *         ['class' => $class, 'attribute' => $attribute],
+     *         ['class' => $class, 'attribute' => $attribute],
+     *     ]
+     * ]
+     * ```
      * @var array
      */
     protected array $parsed = [
@@ -27,6 +40,11 @@ class Parser
 
     /**
      * 解析指定注解的类
+     *
+     * 相同注解别名视为同一组
+     * 在消费者/生产者执行时如果通过别名操作将会将该组所有生产者/消费者都执行
+     *
+     * @param string Consumer|Producer $attributeClass
      */
     protected function parse(array $classes, string $attributeClass)
     {
@@ -56,6 +74,8 @@ class Parser
 
     /**
      * 获取类或别名对应的消费者或生产者类解析数据
+     *
+     * @throws NotFoundException
      */
     public function get(?string $aliasOrClassName = null): array
     {

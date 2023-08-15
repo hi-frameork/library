@@ -2,38 +2,45 @@
 
 namespace Library\Queue;
 
-use Exception;
+use RuntimeException;
 
+/**
+ * 消息队列配置
+ */
 class Config
 {
     /**
-     * @var Item[]
+     * @var KafkaItem[]
      */
-    protected array $list;
+    protected array $list = [];
 
     public function __construct(array $data)
     {
         foreach ($data as $name => $item) {
-            $this->list[$name] = new Item($item);
+            $this->list[$name] = match ($item['type'] ?? '') {
+                default => new KafkaItem($item),
+            };
         }
     }
 
     /**
      * 获取指定名称的配置
+     *
+     * @return KafkaItem
      */
-    public function get(string $name): Item
+    public function get(string $name)
     {
         if (!isset($this->list[$name])) {
-            throw new Exception("Queue config {$name} not found");
+            throw new RuntimeException("Queue config {$name} not found");
         }
 
         return $this->list[$name];
     }
 
     /**
-     * @return <string, Item>
+     * @return <string, KafkaItem>
      */
-    public function getList()
+    public function getList(): array
     {
         return $this->list;
     }
@@ -42,7 +49,7 @@ class Config
 /**
  * 队列配置项
  */
-class Item
+class KafkaItem
 {
     /**
      * bootstrapServers 配置
@@ -57,11 +64,11 @@ class Item
     public function __construct(array $data)
     {
         if (!isset($data['bootstrapServers'])) {
-            throw new Exception('bootstrapServers not found');
+            throw new RuntimeException('Kafaka config bootstrapServers not found');
         }
 
         if (!isset($data['brokers'])) {
-            throw new Exception('brokers not found');
+            throw new RuntimeException('Kafka config brokers not found');
         }
 
         $this->bootstrapServers = $data['bootstrapServers'];
