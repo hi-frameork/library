@@ -7,7 +7,6 @@ use Library\Attribute\Queue\Consumer;
 use Library\Queue\AbstractConsumer;
 use Library\Queue\TopicInterface;
 use longlang\phpkafka\Consumer\ConsumeMessage;
-use Swoole\Process;
 
 #[Consumer(alias: 'user_online_status')]
 class UserOnlineStatusConsumer extends AbstractConsumer

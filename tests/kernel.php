@@ -15,7 +15,7 @@ return (new \Hi\Kernel($_ENV['APP_PATH'] ?? dirname(__DIR__)))->load(function (\
         return new \Library\Queue\Manager([
             'kafka.default' => [
                 'bootstrapServers' => '',
-                'brokers' => '',
+                'brokers'          => '',
             ],
         ], [
             basePath('/src/Queue/Producers'),

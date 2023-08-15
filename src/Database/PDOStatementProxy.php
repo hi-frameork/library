@@ -108,6 +108,7 @@ class PDOStatementProxy extends ObjectProxy
             }
             break;
         }
+
         /* @noinspection PhpUndefinedVariableInspection */
         return $ret;
     }

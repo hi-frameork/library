@@ -27,6 +27,7 @@ class Model
     public function useRead(): self
     {
         $this->connection = $this->readConnection;
+
         return $this;
     }
 

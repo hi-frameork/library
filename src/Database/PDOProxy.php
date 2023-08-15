@@ -74,6 +74,7 @@ class PDOProxy extends ObjectProxy
             }
             break;
         }
+
         /* @noinspection PhpUndefinedVariableInspection */
         return $ret;
     }
