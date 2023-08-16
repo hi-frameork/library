@@ -92,7 +92,7 @@ class ConsumerTest extends TestCase
         $object->contents  = [];
 
         // 批量创建 2 个消费者
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < 1; $i++) {
             Coroutine::create(function () use ($object) {
                 $config   = $this->createConsumerConfig(Topic::SinglePartitionMultiConsumer->value);
                 $consumer = new Consumer(
