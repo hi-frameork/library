@@ -129,6 +129,11 @@ abstract class Elasticsearch
                 'body'  => $body,
             ]);
 
+            // 返回全部字段
+            if (!empty($option['return_all'])) {
+                return $result;
+            }
+
             // 同时返回打分
             if (!empty($option['with_score'])) {
                 foreach ($result['hits']['hits'] as &$value) {
