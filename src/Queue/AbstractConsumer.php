@@ -52,9 +52,9 @@ abstract class AbstractConsumer extends AbstractQueue
     /**
      * 关闭消费者
      */
-    public function stop(): void
+    public function close(): void
     {
-        $this->consumer->stop();
+        $this->consumer->close();
     }
 
     /**

@@ -95,7 +95,7 @@ class ConsumerRunner
 
             // 执行单次消费，然后关闭消费者
             $consumer->execute();
-            $consumer->stop();
+            $consumer->close();
         }
     }
 }

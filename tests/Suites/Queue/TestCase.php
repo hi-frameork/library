@@ -68,7 +68,7 @@ abstract class TestCase extends FrameworkTestCase
             (new CreatableTopic())->setName($name)->setNumPartitions($partition)->setReplicationFactor($replicationFactor)
         ]);
         $request->setTimeoutMs(10000);
-        $request->setValidateOnly(true);
+        // $request->setValidateOnly(true);
         $correlationId = $client->send($request);
 
         $this->assertGreaterThan(0, $correlationId);
