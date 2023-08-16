@@ -29,7 +29,10 @@
       <directory suffix="Test.php">./tests/Feature/Routes/</directory>
     </testsuite> -->
     <testsuite name="Queue">
-      <directory suffix="Test.php">./tests/Suites/Queue/</directory>
+      <!-- <directory suffix="Test.php">./tests/Suites/Queue/Config</directory> -->
+      <!-- <directory suffix="Test.php">./tests/Suites/Queue/Parser</directory> -->
+      <!-- <directory suffix="Test.php">./tests/Suites/Queue/Producer</directory> -->
+      <directory suffix="Test.php">./tests/Suites/Queue/Consumer</directory>
       <!-- <file>./tests/Queue/ParserTest.php</file>
       <file>./tests/Queue/ProducerTest.php</file>
       <file>./tests/Queue/ConsumerTest.php</file> -->

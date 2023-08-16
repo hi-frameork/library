@@ -18,8 +18,10 @@ class ConsumerRunner
 
     /**
      * 启动消费者
+     *
+     * @param bool $parallel 是否并行启动消费者(非并行将会在消费一次后立即返回)
      */
-    public function run(?string $aliasOrClassName = null, bool $parallel = false)
+    public function run(?string $aliasOrClassName = null, bool $parallel = true)
     {
         return $parallel
             ? $this->parallel($aliasOrClassName)
@@ -94,8 +96,7 @@ class ConsumerRunner
             }
 
             // 执行单次消费，然后关闭消费者
-            $consumer->execute();
-            $consumer->close();
+            $consumer->execute(false);
         }
     }
 }

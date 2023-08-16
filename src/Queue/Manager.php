@@ -69,6 +69,8 @@ class Manager
 
     /**
      * 为命令行增加手动投递消息的能力
+     *
+     * @param AbstractProducer|string $producer 生产者类或主题实例(必须为枚举对象)
      */
     public function produce(AbstractProducer|string $producer, ?array $data = null): bool
     {

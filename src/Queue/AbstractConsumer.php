@@ -38,15 +38,26 @@ abstract class AbstractConsumer extends AbstractQueue
         $this->config->setInterval(0.1);
         $this->config->setGroupId(static::class);
         $this->config->setAutoCreateTopic(false);
+        $this->config->setConnectTimeout(5);
     }
 
     /**
      * 创建消费者实例并执行消费
      */
-    public function execute(): void
+    public function execute(bool $loop = true): void
     {
-        $this->consumer = (new Consumer($this->config, [$this, 'consume']));
+        if ($loop) {
+            $this->consumer = (new Consumer($this->config, [$this, 'consume']));
+        } else {
+            $this->consumer = (new Consumer($this->config, function (?ConsumeMessage $meesage) {
+                $this->consume($meesage);
+                $consumer = $meesage->getConsumer();
+                $consumer->stop();
+            }));
+        }
+
         $this->consumer->start();
+        $this->consumer->close();
     }
 
     /**

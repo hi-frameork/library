@@ -5,8 +5,10 @@ namespace Tests\Suites\Queue;
 use Library\Queue\Manager;
 use longlang\phpkafka\Client\SwooleClient;
 use longlang\phpkafka\Config\CommonConfig;
+use longlang\phpkafka\Consumer\ConsumerConfig;
 use longlang\phpkafka\Protocol\CreateTopics\CreatableTopic;
 use longlang\phpkafka\Protocol\CreateTopics\CreateTopicsRequest;
+use longlang\phpkafka\Protocol\DeleteTopics\DeleteTopicsRequest;
 use longlang\phpkafka\Protocol\Metadata\MetadataRequest;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 
@@ -19,7 +21,7 @@ abstract class TestCase extends FrameworkTestCase
         $this->manager = new Manager([
             'kafka-default' => config('queue.kafka-default'),
         ], [
-            __DIR__ . '/Stubs',
+            __DIR__,
         ]);
     }
 
@@ -73,6 +75,43 @@ abstract class TestCase extends FrameworkTestCase
 
         $this->assertGreaterThan(0, $correlationId);
 
+        // 关闭 kafka 连接
+        $client->close();
+
         return [$client, $correlationId];
+    }
+
+    /**
+     * 测试结束， 删除 topic
+     * @param array<string> $names
+     */
+    public function deleteTopic(array $names): void
+    {
+        $client = $this->createKafkaClient();
+        $client->connect();
+
+        $request = new DeleteTopicsRequest();
+        $request->setTopicNames($names);
+        $request->setTimeoutMs(10000);
+        $correlationId = $client->send($request);
+        $this->assertGreaterThan(0, $correlationId);
+
+        $client->close();
+    }
+
+    // 创建消费者配置
+    protected function createConsumerConfig(string $topic)
+    {
+        $config = new ConsumerConfig();
+        $config->setTopic($topic);
+        $config->setInterval(0.1);
+        $config->setGroupId($topic);
+        $config->setAutoCreateTopic(false);
+        $config->setConnectTimeout(5);
+        $config->setBootstrapServer($this->manager->getConfig()->get('kafka-default')->bootstrapServers);
+        // $config->setMemberId(uniqid());
+        $config->setGroupInstanceId(uniqid() . rand(1000, 9999));
+
+        return $config;
     }
 }

@@ -91,7 +91,7 @@ class Parser
             return $this->parsed['aliases'][$aliasOrClassName];
         }
 
-        throw new NotFoundException("Class or alias '{$aliasOrClassName}' not found");
+        throw new NotFoundException("Class or Alias '{$aliasOrClassName}' not found");
     }
 
     public function getParsed(): array

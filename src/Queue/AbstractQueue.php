@@ -12,17 +12,12 @@ abstract class AbstractQueue
     /**
      * 队列连接
      */
-    protected string $connection = 'kafka.default';
+    protected string $connection = '';
 
     /**
      * Topic - 枚举类型需要使用继承至 TopicInterface 的枚举类
      */
     protected TopicInterface $topic;
-
-    /**
-     * 生产者/消费者描述
-     */
-    protected string $description = '';
 
     /**
      * 队列配置
@@ -43,14 +38,6 @@ abstract class AbstractQueue
     public function getTopic(): string
     {
         return $this->topic->value;
-    }
-
-    /**
-     * 返回队列类说明
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
     }
 
     /**

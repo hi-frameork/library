@@ -3,15 +3,26 @@
 namespace Tests\Suites\Queue\Producer;
 
 use Library\Queue\Manager;
-use longlang\phpkafka\Client\ClientInterface;
 use longlang\phpkafka\Protocol\CreateTopics\CreatableTopic;
-use longlang\phpkafka\Protocol\CreateTopics\CreatableTopicResult;
 use longlang\phpkafka\Protocol\CreateTopics\CreateTopicsRequest;
-use longlang\phpkafka\Protocol\CreateTopics\CreateTopicsResponse;
+use Tests\Suites\Queue\Producer\Stubs\SimpleProducer;
+use Tests\Suites\Queue\Producer\Stubs\Topic;
 use Tests\Suites\Queue\TestCase;
 
 class ProducerTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        $this->deleteTopic([
+            Topic::LibraryProducerCreateTopicTest->value,
+            Topic::AttributeProducer100->value,
+            Topic::AttributeProducer101->value,
+            Topic::AttributeProducerGroup100->value,
+            Topic::AttributeProducerGroup101->value,
+        ]);
+    }
+
+    //  测试创建 topic
     public function testCreateTopic()
     {
         $client = $this->createKafkaClient();
@@ -20,55 +31,52 @@ class ProducerTest extends TestCase
         $request = new CreateTopicsRequest();
         $request->setTopics([
             (new CreatableTopic())
-                ->setName('library.producer-cteate-topic-test')
+                ->setName(Topic::LibraryProducerCreateTopicTest->value)
                 ->setNumPartitions(3)
                 ->setReplicationFactor(-1)
         ]);
         $request->setTimeoutMs(10000);
-        $request->setValidateOnly(true);
+        // $request->setValidateOnly(true);
         $correlationId = $client->send($request);
+        $client->close();
 
         $this->assertGreaterThan(0, $correlationId);
     }
 
-    public function testProducerWithObject()
+    // 测试生产者投递消息
+    public function testProduceWithProducerObject()
     {
-        // $args = $this->createTopic(
-        //     'library.producer-test',
-        //     3,
-        //     -1
-        // );
+        $manager = new Manager([
+            'kafka-default' => config('queue.kafka-default'),
+        ], [
+            __DIR__ . '/Stubs',
+        ]);
 
-        // /** @var ClientInterface $client */
-        // [$client, $correlationId] = $args;
-
-        // try {
-        //     /** @var CreateTopicsResponse $response */
-        //     $response = $client->recv($correlationId);
-        //     /** @var CreatableTopicResult[] $topics */
-        //     $topics = $response->getTopics();
-        //     $this->assertCount(1, $topics);
-        //     // print_r($topics);
-        // } finally {
-        //     $client->close();
-        // }
-
-        // $producer = new Stubs\UserOnlineStatusProducer(
-        //     data: [
-        //         'user_id'       => 1,
-        //         'online_status' => 1,
-        //     ],
-        //     batch: false,
-        // );
-
-        // $this->manager->produce($producer);
+        // 投递 50 个消息，观察分区情况
+        for ($i = 0; $i < 50; $i++) {
+            $manager->produce(new SimpleProducer(['time' => time()]));
+        }
     }
 
-    // public function testProducerWithAlias()
-    // {
-    //     $this->manager->produce('user_online_status', [
-    //         'user_id'       => 1,
-    //         'online_status' => 1,
-    //     ]);
-    // }
+    // 测试生产者投递消息 - 通过生产者别名投递单条
+    public function testProducerWithProducerAliasForSingle()
+    {
+        $this->manager->produce('producer-test-100', [
+            'user_id'       => 1,
+            'online_status' => 1,
+        ]);
+        $this->manager->produce('producer-test-101', [
+            'user_id'       => 1,
+            'online_status' => 1,
+        ]);
+    }
+
+    // 测试生产者投递消息 - 通过生产者别名投递单条
+    public function testProducerWithProducerAliasForGroup()
+    {
+        $this->manager->produce('producer-test-group-000', [
+            'user_id' => 2,
+            'time'    => time(),
+        ]);
+    }
 }

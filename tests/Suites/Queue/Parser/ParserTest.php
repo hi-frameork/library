@@ -1,9 +1,7 @@
 <?php
 
-namespace Tests\Suites\Queue;
+namespace Tests\Suites\Queue\Parser;
 
-use Library\Attribute\Queue\Consumer;
-use Library\Attribute\Queue\Producer;
 use Library\Queue\NotFoundException;
 use Library\Queue\Parser;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +25,7 @@ class ParserTest extends TestCase
     {
         $name = uniqid();
         $this->expectException(NotFoundException::class);
-        $this->expectExceptionMessage("Class or alias '{$name}' not found");
+        $this->expectExceptionMessage("Class or Alias '{$name}' not found");
 
         $parser = new Parser([], '');
         $parser->get($name);
