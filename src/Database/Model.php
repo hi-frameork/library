@@ -15,10 +15,13 @@ class Model
     private const Type = 'mysql';
 
     /**
-     * 目标数据库
+     * 目标数据库连接名称
      */
     protected string $connection = 'default';
 
+    /**
+     * 只读数据库连接名称
+     */
     protected string $readConnection = 'default';
 
     /**
@@ -98,7 +101,7 @@ class Model
      * @param QueryInterface $query
      * @return QueryProxy
      */
-    private function createQueryProxy($query)
+    protected function createQueryProxy($query)
     {
         return new QueryProxy($this->connection, $query);
     }

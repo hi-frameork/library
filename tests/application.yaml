@@ -4,3 +4,12 @@ queue:
   kafka-default:
     bootstrapServers: 'host.docker.internal:29092'
     brokers: 'host.docker.internal:29092'
+
+# ClickHouse 配置
+clickhouse:
+  warehouse:
+    host: host.docker.internal
+    port: 8123
+    username: 'developer'
+    password: 'developer'
+    database: library-test

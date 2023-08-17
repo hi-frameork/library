@@ -25,11 +25,10 @@ return (new \Hi\Kernel($_ENV['APP_PATH'] ?? dirname(__DIR__)))->load(function (\
     | 消息队列配置
     |--------------------------------------------------------------------------
     */
-    // $container->set('queue', function () {
-    //     return new \Library\Queue\Manager([
+    // $container->set('queue', fn () => new \Library\Queue\Manager([
     //         'kafka-default' => config('queue.kafka-default'),
     //     ], [
     //         basePath('/src/server/Queue'),
-    //     ]);
-    // });
+    //     ])
+    // );
 });

@@ -36,6 +36,7 @@
         "sempro/phpunit-pretty-print": "^1.2",
         "mockery/mockery": "^1.5",
         "swoole/ide-helper": "4.8.13",
-        "symfony/yaml": "^6.3"
+        "symfony/yaml": "^6.3",
+        "smi2/phpclickhouse": "^1.5"
     }
 }
