@@ -10,6 +10,6 @@ clickhouse:
   warehouse:
     host: host.docker.internal
     port: 8123
-    username: 'developer'
-    password: 'developer'
+    username: 'default'
+    password: ''
     database: library-test
