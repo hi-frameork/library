@@ -3,15 +3,14 @@
 namespace Library\Database;
 
 use Aura\SqlQuery\Common\InsertInterface;
+use Aura\SqlQuery\Common\SelectInterface;
 use Aura\SqlQuery\QueryInterface;
 use Library\Database\ClickHouse\QueryProxy;
 use RuntimeException;
 
 /**
  * @method InsertInterface|QueryProxy insert()
- * @method InsertInterface|QueryProxy select()
- * @method InsertInterface|QueryProxy update()
- * @method InsertInterface|QueryProxy delete()
+ * @method SelectInterface|QueryProxy select()
  */
 class ClickHouse extends AbstractSqlModel
 {
