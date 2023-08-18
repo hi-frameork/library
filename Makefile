@@ -1,35 +1,45 @@
 .PHONY: help
-## help: 打印帮助信息
 help:
+	@echo ""
 	@echo "使用说明:"
-	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed 's/^/ /'
+	@sed -n 's/^##//p' ${MAKEFILE_LIST} | sed 's/^/ /'
+	@echo ""
 
-## dev: 本地开发启动服务并监听文件变动
-.PHONY: dev
-dev: info
-	@sh tests/make.sh watch
+## start   启动本地服务并监听文件变动
+.PHONY: start
+start: info
+	@watchexec -w src -w tests sh tests/make.sh start
 
-## tests: 单元测试
+## stop    停止服务
+.PHONY: stop
+stop: info
+	@sh tests/make.sh stop
+
+## tests   运行单元测试
 .PHONY: tests
 tests: info
 	@sh tests/make.sh tests
 
-## cs: 代码优化
+## cs      执行代码优化
 .PHONY: cs
 cs: info
-	@echo '> Code style format'
+	@echo '# Code style format'
 	@sh tests/make.sh cs
 
-## check: 编码检查
+## check   执行编码检查
 .PHONY: check
 check: info
-	@echo '> Code check'
+	@echo '# Code check'
 	@sh tests/make.sh check
+
+## shell   进入当前服务容器内
+.PHONY: shell
+shell: info
+	@sh tests/make.sh shell
 
 # 打印环境信息
 info:
-	@echo "> 环境信息"
-	@echo 'basedir:' $(shell pwd)
-	@echo 'os:     ' $(shell uname | awk '{print tolower($$0)}')
-	@echo 'arch:   ' $(shell uname -m)
+	@echo '- basedir:' $(shell pwd)
+	@echo '- os:     ' $(shell uname | awk '{print tolower($$0)}')
+	@echo '- arch:   ' $(shell uname -m)
 	@echo ""
