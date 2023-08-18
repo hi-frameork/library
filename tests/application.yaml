@@ -12,4 +12,4 @@ clickhouse:
     port: 8123
     username: 'default'
     password: ''
-    database: library-test
+    database: default

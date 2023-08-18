@@ -102,4 +102,14 @@ class ConnectionPool
 
         $this->put($connection);
     }
+
+    public function num()
+    {
+        return $this->num;
+    }
+
+    public function length()
+    {
+        return $this->pool->length();
+    }
 }

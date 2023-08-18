@@ -71,7 +71,7 @@ class QueryProxy
     /**
      * 在 PDO 中运行数据库操作
      */
-    protected function builtIn(callable $callback)
+    public function builtIn(callable $callback)
     {
         /** @var \Library\Database\Manager $manager */
         $manager = app('db.pool.clickhouse');
@@ -102,13 +102,13 @@ class QueryProxy
     public function execute()
     {
         $sql        = $this->query->getStatement();
-        $bindValues = $this->query->getBindValues;
+        $bindValues = $this->query->getBindValues();
 
         return $this->builtIn(fn (Client $client) => match (true) {
-            ($this->query instanceof SelectInterface) => $client->select($sql, $bindValues),
-            ($this->query instanceof DeleteInterface) => $client->write($sql, $bindValues),
-            ($this->query instanceof InsertInterface) => $client->write($sql, $bindValues),
-            ($this->query instanceof UpdateInterface) => $client->write($sql, $bindValues),
+            ($this->query instanceof SelectInterface) => $client->select($sql, $bindValues)->rows(),
+            ($this->query instanceof InsertInterface) => $client->write($sql, $bindValues)->rows(),
+            // ($this->query instanceof DeleteInterface) => $client->write($sql, $bindValues)->rows(),
+            // ($this->query instanceof UpdateInterface) => $client->write($sql, $bindValues),
         });
     }
 }

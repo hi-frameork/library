@@ -4,9 +4,9 @@ namespace Tests\Suites\Database\ClickHouse;
 
 class ManagerTest extends TestCase
 {
-    public function testCreate()
+    public function testCreateConnectPool()
     {
         $pool = $this->manager->pool('default');
-        $this->assertInstanceOf(\ClickHouseDB\Client::class, $pool->get());;
+        $this->assertInstanceOf(\ClickHouseDB\Client::class, $pool->get());
     }
 }
