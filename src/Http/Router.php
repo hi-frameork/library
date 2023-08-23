@@ -131,7 +131,7 @@ class Router extends HttpRouter
             // 如果路由类注解中声明了身份认证设置, 将其应用到路由方法注解中
             if ($routeClass->attribute->auth !== null && $routeMethod->attribute->auth === null) {
                 $routeMethod->attribute->auth = $routeClass->attribute->auth;
-            } else {
+            } elseif (!is_bool($routeMethod->attribute->auth)) {
                 $routeMethod->attribute->auth = true;
             }
 
