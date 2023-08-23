@@ -51,7 +51,7 @@ class Route
         public string $cors = '',
         public string $prefix = '',
         public string $desc = '',
-        public bool $auth = true,
+        public bool $auth = null,
     ) {
         [$this->method, $this->pattern] = match (true) {
             (bool) $get     => ['GET',     $get],

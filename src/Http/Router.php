@@ -120,20 +120,27 @@ class Router extends HttpRouter
 
         $routeClass = new RouteClass($class, $attribute);
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-            $routeClassMethod = $this->parseClassMethodAttribute($reflectionMethod);
+            $routeMethod = $this->parseClassMethodAttribute($reflectionMethod);
 
             // 如果路由类注解中声明了 CORS 配置, 将其应用到路由方法注解中
             // 如果路由方法注解中声明了 CORS 配置，以路由方法注解中的配置为准
-            if ($routeClass->attribute->cors && !$routeClassMethod->attribute->cors) {
-                $routeClassMethod->attribute->cors = $routeClass->attribute->cors;
+            if ($routeClass->attribute->cors && !$routeMethod->attribute->cors) {
+                $routeMethod->attribute->cors = $routeClass->attribute->cors;
+            }
+
+            // 如果路由类注解中声明了身份认证设置, 将其应用到路由方法注解中
+            if ($routeClass->attribute->auth !== null && $routeMethod->attribute->auth === null) {
+                $routeMethod->attribute->auth = $routeClass->attribute->auth;
+            } else {
+                $routeMethod->attribute->auth = true;
             }
 
             // 如果路由类注解中声明了中间件, 将其应用到路由方法注解中
             if ($routeClass->attribute->middleware) {
-                $routeClassMethod->attribute->appendMiddleware($routeClass->attribute->middleware);
+                $routeMethod->attribute->appendMiddleware($routeClass->attribute->middleware);
             }
 
-            $routeClass->appendMethod($routeClassMethod);
+            $routeClass->appendMethod($routeMethod);
         }
 
         return $routeClass;
