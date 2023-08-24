@@ -47,6 +47,8 @@ abstract class AbstractConsumer extends AbstractQueue
      */
     public function execute(bool $loop = true): void
     {
+        $this->bootstrap();
+
         if ($loop) {
             $this->consumer = (new Consumer($this->config, [$this, 'consume']));
         } else {
@@ -67,6 +69,15 @@ abstract class AbstractConsumer extends AbstractQueue
     public function close(): void
     {
         $this->consumer->close();
+    }
+
+    /**
+     * 消费者启动前置操作
+     * 进行其他服务的初始化或更改消费者配置
+     */
+    protected function bootstrap()
+    {
+        //
     }
 
     /**
