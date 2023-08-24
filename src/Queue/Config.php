@@ -2,6 +2,7 @@
 
 namespace Library\Queue;
 
+use InvalidArgumentException;
 use RuntimeException;
 
 /**
@@ -17,6 +18,10 @@ class Config
     public function __construct(array $data)
     {
         foreach ($data as $name => $item) {
+            if (!is_array($item)) {
+                throw new InvalidArgumentException("Config '{$name}' can net be empty!");
+            }
+
             $this->list[$name] = match ($item['type'] ?? '') {
                 default => new KafkaItem($item),
             };
