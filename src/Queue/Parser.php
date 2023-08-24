@@ -62,9 +62,10 @@ class Parser
                 'attribute' => $attribute,
             ];
 
+            // 将类添加到未分类数组中
+            $this->parsed['unclassified'][] = $item;
             // 将类添加到类数组中
             $this->parsed['classes'][$class] = [$item];
-
             // 如果有别名，将类添加到别名数组中
             if ($attribute->alias) {
                 $this->parsed['aliases'][$attribute->alias][] = $item;
@@ -79,8 +80,8 @@ class Parser
      */
     public function get(?string $aliasOrClassName = null): array
     {
-        if (is_null($aliasOrClassName)) {
-            return $this->parsed['classes'];
+        if (empty($aliasOrClassName)) {
+            return $this->parsed['unclassified'];
         }
 
         if (isset($this->parsed['classes'][$aliasOrClassName])) {
