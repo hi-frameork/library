@@ -1,5 +1,7 @@
 #!/bin/env sh
 
+# 服务端口
+Port=8081
 # 容器名称
 Name=$(basename $(pwd))-$(echo $(pwd) | md5 | cut -c1-10)
 # 单元测试运行镜像
@@ -7,9 +9,7 @@ Image=public.ecr.aws/o0r2l9b2/typing/php:swoole-8.1-arm64
 # 工作目录
 WorkDir=/var/www
 # 目录挂载
-Mount="-v $(pwd)/php.ini:/usr/local/etc/php/conf.d/php.ini -v $(pwd):${WorkDir}"
-# 服务端口
-Port=8081
+Mount="-v $(pwd)/tests/php.ini:/usr/local/etc/php/conf.d/php.ini -v $(pwd):${WorkDir}"
 # 通过是否安装 docker 判断是否在 docker 容器内
 # 没有 docker 命令视为在容器内
 InDocker=$(which docker | wc -l)
@@ -31,6 +31,7 @@ RunServer() {
   fi
 
   docker run --name ${Name} ${Mount} -d -p ${Port}:80 ${Image} ${CmdRunStart} >> /dev/null
+  docker logs -f ${Name} &
 
   # 通过服务启动端口检查服务是否启动成功
   # 最大等待 10 秒
@@ -48,13 +49,25 @@ RunServer() {
   fi
 }
 
+# 在容器中运行参入的命令
+RunInContainer() {
+  echo '> '$1
+  if [[ ${InDocker} -eq "0" ]]; then
+    ($1)
+  else
+    if [ $(docker ps | grep ${Name} | wc -l) -eq 0 ]; then
+      RunServer
+    fi
+    docker exec -it ${Name} sh -c "$1"
+  fi
+}
+
 # watch 函数，启动服务
 StartServer() {
   RunServer
   echo '# 服务地址: http://0.0.0.0:'${Port}
   echo '# 变更时间:' $(date '+%Y-%m-%d %H:%M:%S')
   echo '# 正在监听文件变化...'
-  docker logs -f ${Name} &
 }
 
 # shell 函数，进入容器
@@ -72,19 +85,6 @@ AttachContainer() {
   # 安装依赖并进入容器
   # docker exec -it ${Name} sh -c "apk add util-linux make"
   docker exec -it ${Name} sh
-}
-
-# 在容器中运行参入的命令
-RunInContainer() {
-  echo '> '$1
-  if [[ ${InDocker} -eq "0" ]]; then
-    ($1)
-  else
-    if [ $(docker ps | grep ${Name} | wc -l) -eq 0 ]; then
-      RunServer
-    fi
-    docker exec -it ${Name} sh -c "$1"
-  fi
 }
 
 # 停止服务
