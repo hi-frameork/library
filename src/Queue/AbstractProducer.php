@@ -107,6 +107,8 @@ abstract class AbstractProducer extends AbstractQueue
      */
     public function send(): bool
     {
+        $this->bootstrap();
+
         $messages = [];
         foreach ($this->data as $item) {
             $messages[] = new ProduceMessage(

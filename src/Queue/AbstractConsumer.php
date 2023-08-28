@@ -72,15 +72,6 @@ abstract class AbstractConsumer extends AbstractQueue
     }
 
     /**
-     * 消费者启动前置操作
-     * 进行其他服务的初始化或更改消费者配置
-     */
-    protected function bootstrap()
-    {
-        //
-    }
-
-    /**
      * 执行消费业务处理
      */
     abstract public function consume(?ConsumeMessage $message);

@@ -47,4 +47,13 @@ abstract class AbstractQueue
     {
         return $this->config;
     }
+
+    /**
+     * 消费者/生产者启动前置操作
+     * 进行其他服务的初始化或更改配置
+     */
+    protected function bootstrap()
+    {
+        //
+    }
 }
