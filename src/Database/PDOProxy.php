@@ -6,7 +6,6 @@ namespace Library\Database;
 
 use PDO;
 use PDOException;
-use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 
 /**
  * Copy from https://github.com/swoole/library/blob/b5d133b336d05162c94acd7f31e444afe47fb96a/src/core/Database/PDOProxy.php
@@ -38,6 +37,11 @@ class PDOProxy extends ObjectProxy
         parent::__construct($constructor());
         $this->__object->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
         $this->constructor = $constructor;
+    }
+
+    public function getObject()
+    {
+        return $this->__object;
     }
 
     public function __call(string $name, array $arguments)
@@ -107,13 +111,5 @@ class PDOProxy extends ObjectProxy
     public function inTransaction(): bool
     {
         return $this->__object->inTransaction();
-    }
-
-    public function enableWriteForward()
-    {
-        try {
-            $this->__object->query('SET aurora_replica_read_consistency = "SESSION"');
-        } catch (Throws) {
-        }
     }
 }
