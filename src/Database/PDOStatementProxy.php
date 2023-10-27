@@ -147,4 +147,9 @@ class PDOStatementProxy extends ObjectProxy
 
         return $this->__object->bindValue($parameter, $value, $data_type);
     }
+
+    public function getObject()
+    {
+        return $this->__object;
+    }
 }
