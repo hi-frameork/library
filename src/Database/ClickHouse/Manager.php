@@ -24,6 +24,7 @@ class Manager extends DatabaseManager
                 $client->database($config['database']);
                 $client->setConnectTimeOut($config['connect_timeout'] ?? 5);
                 $client->setTimeout($config['timeout'] ?? 5);
+                $client->enableHttpCompression();
                 if (!$client->ping()) {
                     throw new RuntimeException('ClickHouse connect failed');
                 }
