@@ -21,12 +21,12 @@
     "require": {
         "monolog/monolog": "^3.2",
         "nette/robot-loader": "^3.4",
-        "longlang/phpkafka": "^1.2",
         "aura/sqlquery": "^3.0"
     },
     "require-dev": {
         "hi/http": "^0.0",
         "hi/kernel": "^0.0",
+        "longlang/phpkafka": "^1.2",
         "elasticsearch/elasticsearch": "7.17",
         "jetbrains/phpstorm-stubs": "^2022.3",
         "monolog/monolog": "^3.3",
