@@ -44,7 +44,57 @@ class PDOProxy extends ObjectProxy
         return $this->__object;
     }
 
-    public function __call(string $name, array $arguments)
+    public function beginTransaction()
+    {
+        return $this->run('beginTransaction');
+    }
+
+    public function commit()
+    {
+        return $this->run('commit');
+    }
+
+    public function errorCode()
+    {
+        return $this->run('errorCode');
+    }
+
+    public function errorInfo()
+    {
+        return $this->run('errorInfo');
+    }
+
+    public function prepare()
+    {
+        return $this->run('prepare', func_get_args());
+    }
+
+    public function query()
+    {
+        return $this->run('query', func_get_args());
+    }
+
+    public function exec()
+    {
+        return $this->run('exec', func_get_args());
+    }
+
+    public function getAttribute(int $attribute)
+    {
+        return $this->run('getAttribute', [$attribute]);
+    }
+
+    public function rollBack()
+    {
+        return $this->run('rollBack');
+    }
+
+    public function quote()
+    {
+        return $this->run('quote', func_get_args());
+    }
+
+    public function run(string $name, array $arguments = [])
     {
         for ($n = 3; $n--;) {
             $ret = @$this->__object->{$name}(...$arguments);

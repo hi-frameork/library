@@ -41,7 +41,7 @@ class PDOStatementProxy extends ObjectProxy
         $this->parentRound = $parent->getRound();
     }
 
-    public function __call(string $name, array $arguments)
+    public function run(string $name, array $arguments = [])
     {
         for ($n = 3; $n--;) {
             $ret = @$this->__object->{$name}(...$arguments);
@@ -151,5 +151,80 @@ class PDOStatementProxy extends ObjectProxy
     public function getObject()
     {
         return $this->__object;
+    }
+
+    public function closeCursor()
+    {
+        return $this->run('closeCursor');
+    }
+
+    public function columnCount()
+    {
+        return $this->run('columnCount');
+    }
+
+    public function debugDumpParams()
+    {
+        return $this->run('debugDumpParams');
+    }
+
+    public function errorCode()
+    {
+        return $this->run('errorCode');
+    }
+
+    public function errorInfo()
+    {
+        return $this->run('errorInfo');
+    }
+
+    public function execute()
+    {
+        return $this->run('execute', func_get_args());
+    }
+
+    public function fetch()
+    {
+        return $this->run('fetch', func_get_args());
+    }
+
+    public function fetchAll()
+    {
+        return $this->run('fetchAll', func_get_args());
+    }
+
+    public function fetchColumn()
+    {
+        return $this->run('fetchColumn', func_get_args());
+    }
+
+    public function fetchObject()
+    {
+        return $this->run('fetchObject', func_get_args());
+    }
+
+    public function getAttribute()
+    {
+        return $this->run('getAttribute', func_get_args());
+    }
+
+    public function getColumnMeta()
+    {
+        return $this->run('getColumnMeta', func_get_args());
+    }
+
+    public function getIterator()
+    {
+        return $this->run('getIterator');
+    }
+
+    public function nextRowset()
+    {
+        return $this->run('nextRowset');
+    }
+
+    public function rowCount()
+    {
+        return $this->run('rowCount');
     }
 }
