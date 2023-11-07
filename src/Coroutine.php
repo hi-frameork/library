@@ -4,6 +4,7 @@ namespace Library;
 
 use RuntimeException;
 use Swoole\Coroutine as SwooleCoroutine;
+use Throwable;
 
 /**
  * 协程上下文，用于在协程间共享数据
@@ -30,12 +31,16 @@ class Coroutine extends SwooleCoroutine
     public static function create(callable $func, ...$params)
     {
         return parent::create(function () use ($func, $params) {
-            static::attch(
-                parent::getContext(static::getRpcid()) ?? null,
-                false
-            );
-            // 执行回调业务
-            call_user_func($func, ...$params);
+            try {
+                static::attch(
+                    parent::getContext(static::getRpcid()) ?? null,
+                    false
+                );
+                // 执行回调业务
+                $func(...$params);
+            } catch (Throwable $th) {
+                error($e->getMessage(), $e->getTrace());
+            }
         });
     }
 
