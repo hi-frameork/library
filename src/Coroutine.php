@@ -30,7 +30,7 @@ class Coroutine extends SwooleCoroutine
      */
     public static function create(callable $func, ...$params)
     {
-        return parent::create(function () use ($func, $params) {
+        return SwooleCoroutine::create(function () use ($func, $params) {
             try {
                 static::attch(
                     parent::getContext(static::getRpcid()) ?? null,
