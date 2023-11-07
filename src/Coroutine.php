@@ -39,7 +39,7 @@ class Coroutine extends SwooleCoroutine
                 // 执行回调业务
                 $func(...$params);
             } catch (Throwable $th) {
-                error($e->getMessage(), $e->getTrace());
+                error($th->getMessage(), $th->getTrace());
             }
         });
     }
