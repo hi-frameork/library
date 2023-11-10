@@ -57,7 +57,7 @@ class ConnectionPool
 
         $connection = $this->pool->pop($timeout);
         if (!$connection) {
-            alert(sprintf('Timed out getting connection object from [%s] pool', $this->name), [
+            alert(sprintf('Timeout getting connection object from [%s] pool', $this->name), [
                 'timeout' => $timeout,
             ]);
         }
