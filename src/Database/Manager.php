@@ -25,7 +25,7 @@ abstract class Manager
                 );
             }
 
-            $this->pool[$name] = $this->createPool($config);
+            $this->pool[$name] = $this->createPool($config)->setName(static::class."::{$name}");
         }
     }
 
