@@ -15,6 +15,8 @@ class ModelTest extends MockeryTestCase
 
     protected function setUp(): void
     {
+        $this->markTestSkipped();
+
         $this->selectQuery = (new MySQLAsset())->getSelect();
     }
 

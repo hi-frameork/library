@@ -31,4 +31,13 @@ return (new \Hi\Kernel($_ENV['APP_PATH'] ?? dirname(__DIR__)))->load(function (\
     //         basePath('/src/server/Queue'),
     //     ])
     // );
+
+    /*
+    |--------------------------------------------------------------------------
+    | 数据库配置
+    |--------------------------------------------------------------------------
+    */
+    $container->set('db.pool.mysql', fn () => new \Library\Database\MySQL\Manager([
+        'default' => config('mysql.default'),
+    ]));
 });

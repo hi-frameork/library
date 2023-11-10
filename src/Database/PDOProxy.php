@@ -18,6 +18,7 @@ class PDOProxy extends ObjectProxy
         2002, // MYSQLND_CR_CONNECTION_ERROR
         2006, // MYSQLND_CR_SERVER_GONE_ERROR
         2013, // MYSQLND_CR_SERVER_LOST
+        1290, // MYSQLND_CR_READONLY AWS 在主从切换时会出现
     ];
 
     /** @var PDO */

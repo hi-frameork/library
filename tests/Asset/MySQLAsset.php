@@ -9,7 +9,7 @@ use Library\Database\Model;
  */
 class MySQLAsset extends Model
 {
-    protected string $table = 'test';
+    public string $table = 'test';
 
     public function getSelect()
     {
