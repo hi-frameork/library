@@ -13,3 +13,13 @@ clickhouse:
     username: 'default'
     password: ''
     database: default
+
+mysql:
+  default:
+    host: host.docker.internal
+    port: 3306
+    user: root
+    password: '123456'
+    database: test
+    charset: utf8mb4
+    pool_size: 2

@@ -24,6 +24,8 @@ class ConnectionPool
      */
     protected $num;
 
+    protected $name = '';
+
     /**
      * @param callable $constructor
      */
@@ -55,7 +57,9 @@ class ConnectionPool
 
         $connection = $this->pool->pop($timeout);
         if (!$connection) {
-            alert('Connection get timeout', ['timeout' => $timeout]);
+            alert(sprintf('Timeout getting connection object from [%s] pool', $this->name), [
+                'timeout' => $timeout,
+            ]);
         }
 
         return $connection;
@@ -111,5 +115,12 @@ class ConnectionPool
     public function length()
     {
         return $this->pool->length();
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 }
