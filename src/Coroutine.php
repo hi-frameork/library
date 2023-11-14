@@ -28,7 +28,7 @@ class Coroutine extends SwooleCoroutine
     /**
      * 创建协程
      */
-    public static function create(callable $func, ...$params)
+    public static function create(callable $func, ...$params): int|false
     {
         return SwooleCoroutine::create(function () use ($func, $params) {
             try {
