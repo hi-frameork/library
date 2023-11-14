@@ -20,6 +20,8 @@ class Formatter extends LineFormatter
             $point = json_decode($record->context['_trace_']['point'], true);
             $point = $point[0];
             $content .= " {$point['file']}({$point['line']})\n";
+        } else {
+            $content .= "\n";
         }
         unset($vars['context']['_trace_'], $vars['context']['addition']);
 
