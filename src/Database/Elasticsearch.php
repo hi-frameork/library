@@ -15,7 +15,7 @@ use Exception;
  * @method array search(array $body) 搜索，返回值 array{total: array, hits: array}
  * @method array bulk(array $data) 批量创建
  * @method array updateByQuery(array $query, bool $throwException = true) 根据查询更新
- * @method array updateById(array $query, string $id, bool $throwException = true) 根据id更新
+ * @method array updateById(array $query, string $id, bool $throwException = true, bool $refresh = false) 根据id更新
  */
 abstract class Elasticsearch
 {
@@ -226,14 +226,15 @@ abstract class Elasticsearch
     /**
      * 根据id更新
      */
-    private function updateById(array $query, string $id, bool $throwException = true)
+    private function updateById(array $query, string $id, bool $throwException = true, bool $refresh = false)
     {
-        return function (Client $client) use ($query, $id, $throwException) {
+        return function (Client $client) use ($query, $id, $throwException, $refresh) {
             try {
                 $result = $client->update([
-                    'id'    => $id,
-                    'index' => $this->getIndex(),
-                    'body'  => $query,
+                    'refresh' => $refresh,
+                    'id'      => $id,
+                    'index'   => $this->getIndex(),
+                    'body'    => $query,
                 ]);
 
                 return $result;
