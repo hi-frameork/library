@@ -87,14 +87,14 @@ class Coroutine extends SwooleCoroutine
 
         $context = parent::getContext($cid);
         // 标记当前节点是否为根节点
-        $context->attachRoot = $attachRoot;
+        $context['attachRoot'] = $attachRoot;
         // 对于根节点，挂载原始数据并创建自身引用，reference 为业务数据
         // 对于普通节点根节点引用，reference 为根节点 context 引用
         if ($attachRoot) {
-            $context->data      = $data;
-            $context->reference = $context;
+            $context['data']      = $data;
+            $context['reference'] = $context;
         } else {
-            $context->reference = $data;
+            $context['reference'] = $data;
         }
     }
 
