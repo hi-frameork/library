@@ -46,8 +46,6 @@ class Formatter extends LineFormatter
             $content .= "point: " . $record->context['_trace_']['point'] . PHP_EOL;
         }
 
-        $content .= "\n";
-
         return $content;
     }
 }
