@@ -38,12 +38,22 @@ class QueryProxy
         return $this;
     }
 
+    public function getConnection(): string
+    {
+        return $this->connection;
+    }
+
     /**
      * 生成并返回 SQL 语句
      */
     public function getStatement(): string
     {
         return $this->query->getStatement();
+    }
+
+    public function getSql()
+    {
+        return implode(' ', array_map('trim', explode(PHP_EOL, $this->query->getStatement())));
     }
 
     /**
@@ -78,7 +88,7 @@ class QueryProxy
         $pdo = $pool->get();
 
         try {
-            $sql = implode(' ', array_map('trim', explode(PHP_EOL, $this->query->getStatement())));
+            $sql = $this->getSql();
 
             AppDebug && debug('MYSQL', [$sql, $this->query->getBindValues()]);
 
