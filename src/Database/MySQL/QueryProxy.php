@@ -78,10 +78,12 @@ class QueryProxy
         $pdo = $pool->get();
 
         try {
-            debug('MYSQL', [str_replace(PHP_EOL, ' ', $this->query->getStatement()), $this->query->getBindValues()]);
+            $sql = implode(' ', array_map('trim', explode(PHP_EOL, $this->query->getStatement())));
+
+            AppDebug && debug('MYSQL', [$sql, $this->query->getBindValues()]);
 
             // SQL 预处理
-            $stmt = $pdo->prepare($this->query->getStatement());
+            $stmt = $pdo->prepare($sql);
             // SQL 语句参数绑定并执行
             $stmt->execute($this->query->getBindValues());
             // 执行回调（个性化业务，例如：获取 lastInsertId, 首行数据）

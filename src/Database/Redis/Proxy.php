@@ -21,7 +21,7 @@ class Proxy
      */
     public function __call($name, $arguments)
     {
-        debug('REDIS', [$name, $arguments]);
+        AppDebug && debug('REDIS', [$name, $arguments]);
 
         return $this->builtIn(
             fn ($redis) => $redis->{$name}(...$arguments)
