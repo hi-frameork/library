@@ -54,7 +54,7 @@ class Coroutine extends SwooleCoroutine
         }
 
         // 循环向上查找，任何协程被 attach 即视为根协程
-        while (true) {
+        for (;;) {
             if (parent::getContext($pid)->attachRoot ?? 0) {
                 return $pid;
             }
@@ -103,6 +103,6 @@ class Coroutine extends SwooleCoroutine
      */
     public static function getAttachData()
     {
-        return parent::getContext(parent::getCid())->reference->data ?? null;
+        return parent::getContext(parent::getCid())['reference']['data'] ?? null;
     }
 }

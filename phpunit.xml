@@ -35,13 +35,13 @@
       <!-- <directory suffix="Test.php">./tests/Suites/Queue/Producer</directory> -->
       <!-- <directory suffix="Test.php">./tests/Suites/Queue/Consumer</directory> -->
     <!-- </testsuite> -->
-    <!-- <testsuite name="Corontine"> -->
-    <!--   <directory suffix="Test.php">./tests/Suites/Coroutine/</directory> -->
-    <!-- </testsuite> -->
-    <testsuite name="Database">
-      <!-- <directory suffix="Test.php">./tests/Suites/Database/ClickHouse</directory> -->
-      <directory suffix="Test.php">./tests/Suites/Database/MySQL</directory>
+    <testsuite name="Corontine">
+      <directory suffix="Test.php">./tests/Suites/Coroutine/</directory>
     </testsuite>
+    <!-- <testsuite name="Database"> -->
+      <!-- <directory suffix="Test.php">./tests/Suites/Database/ClickHouse</directory> -->
+      <!-- <directory suffix="Test.php">./tests/Suites/Database/MySQL</directory> -->
+    <!-- </testsuite> -->
   </testsuites>
   <coverage processUncoveredFiles="true">
     <include>
