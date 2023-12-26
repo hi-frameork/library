@@ -19,7 +19,7 @@ class Manager extends DatabaseManager
         return new ConnectionPool(
             function () use ($config) {
                 $redis = new Redis();
-                $redis->connect($config['host'], $config['port'], $config['timeout'] ?? 1);
+                $redis->connect($config['host'], $config['port'] ?? 6379, $config['timeout'] ?? 1);
 
                 if (isset($config['password'])) {
                     $redis->auth($config['password']);
