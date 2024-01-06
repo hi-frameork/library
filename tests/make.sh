@@ -84,7 +84,7 @@ AttachContainer() {
 
   # 安装依赖并进入容器
   # docker exec -it ${Name} sh -c "apk add util-linux make"
-  docker exec -it ${Name} sh
+  docker exec -it ${Name} bash
 }
 
 # 停止服务

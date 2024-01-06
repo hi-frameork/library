@@ -90,7 +90,7 @@ class QueryProxy
         try {
             $sql = $this->getSql();
 
-            AppDebug && debug('MYSQL', [$sql, $this->query->getBindValues()]);
+            debug('MYSQL', [$sql, $this->query->getBindValues()]);
 
             // SQL 预处理
             $stmt = $pdo->prepare($sql);
