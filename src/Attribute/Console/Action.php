@@ -17,7 +17,7 @@ class Action
         public string $action,
         public string $schedule = '',
         public bool $coroutine = true,
-        public string $description = '',
+        public string $desc = '',
     ) {
     }
 }
