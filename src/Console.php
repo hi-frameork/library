@@ -31,7 +31,7 @@ class Console extends KernelConsole
             $instance = $this->continer->get($definition);
             if ($instance instanceof Command) {
                 $reflectionClass = new ReflectionClass($instance);
-                /** @var AttributeConsole */
+                /** @var ?AttributeConsole */
                 $classAttribute = Reader::getClassAttribute($reflectionClass, AttributeConsole::class);
                 if ($classAttribute) {
                     $instance->setCommand($classAttribute->command);
