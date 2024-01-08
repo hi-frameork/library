@@ -9,8 +9,7 @@ class Console
 {
     public function __construct(
         public string $command,
-        public string $title,
-        public string $description = '',
+        public string $desc = '',
     ) {
     }
 }
