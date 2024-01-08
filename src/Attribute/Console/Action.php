@@ -4,7 +4,7 @@ namespace Library\Attribute\Console;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS)]
+#[Attribute(Attribute::TARGET_METHOD)]
 class Action
 {
     /**
