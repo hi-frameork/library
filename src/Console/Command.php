@@ -54,4 +54,9 @@ abstract class Command extends ConsoleCommand
             parent::boot($argument);
         }
     }
+
+    public function execute(Argument $argument): bool
+    {
+        return true;
+    }
 }
