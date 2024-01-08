@@ -4,8 +4,8 @@ namespace Library;
 
 use Hi\Kernel\Attribute\Reader;
 use Hi\Kernel\Console as KernelConsole;
+use Hi\Kernel\Console\Command;
 use Library\Attribute\Console as AttributeConsole;
-use Library\Console\Command;
 use ReflectionClass;
 
 class Console extends KernelConsole
@@ -27,17 +27,15 @@ class Console extends KernelConsole
         }
 
         foreach ($this->registers as $definition) {
-            /** @var Command $instance */
             $instance = $this->continer->get($definition);
             if ($instance instanceof Command) {
+                /** @var \Library\Console\Command $instance */
                 $reflectionClass = new ReflectionClass($instance);
-                /** @var ?AttributeConsole */
+                /** @var ?AttributeConsole $classAttribute */
                 $classAttribute = Reader::getClassAttribute($reflectionClass, AttributeConsole::class);
                 if ($classAttribute) {
-                    $instance->setCommand($classAttribute->command);
-                    $instance->setTitle($classAttribute->title);
-                    $instance->setDescription($classAttribute->description);
-                    $instance->setRunInCoroutine($classAttribute->coroutine);
+                    $classAttribute->command && $instance->setCommand($classAttribute->command);
+                    $classAttribute->desc    && $instance->setTitle($classAttribute->desc);
                 }
 
                 if (!$instance->getCommand()) {
