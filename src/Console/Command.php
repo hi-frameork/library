@@ -48,7 +48,7 @@ abstract class Command extends ConsoleCommand
                 // 记录 action 对应的描述并拼接 schedule 信息
                 // 示例：
                 //  create    生成 Ingress 路由配置 YAML 文件 > schedule[* * * *]
-                $actionDescriptions[$attribute->action] = $attribute->desc . ($attribute->schedule ? " > schedule[{$attribute->schedule}]" : '');
+                $actionDescriptions[$attribute->action] = $attribute->desc . ($attribute->schedule ? " |> schedule: {$attribute->schedule}" : '');
 
                 // 记录 action 对应的方法
                 $actionClosures[$attribute->action] = [
