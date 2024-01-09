@@ -73,7 +73,7 @@ abstract class Command extends ConsoleCommand
 
         [$actionDescriptions, $actionClosures] = $this->loadActions();
         if (!isset($actionClosures[$inputAction])) {
-            $this->actions = $actionDescriptions;
+            $this->actions = array_merge($this->actions, $actionDescriptions);
             $this->display();
 
             return;
