@@ -69,24 +69,28 @@ abstract class Command extends ConsoleCommand
      */
     public function boot(Argument $argument)
     {
-        $inputAction = $argument->getAction();
-
         [$actionDescriptions, $actionClosures] = $this->loadActions();
-        if (!isset($actionClosures[$inputAction])) {
-            $this->actions = array_merge($this->actions, $actionDescriptions);
+
+        $inputAction   = $argument->getAction();
+        $this->actions = array_merge($this->actions, $actionDescriptions);
+        if (!isset($this->actions[$inputAction])) {
             $this->display();
 
             return;
         }
 
-        /** @var Action $attribute */
-        $attribute = $actionClosures[$inputAction]['attribute'];
-        $closure   = $actionClosures[$inputAction]['action'];
-        if ($attribute->coroutine) {
-            Coroutine::create(fn () => $this->{$attribute->pre}() && $closure($argument));
-            Event::wait();
+        if (isset($actionClosures[$inputAction])) {
+            /** @var Action $attribute */
+            $attribute = $actionClosures[$inputAction]['attribute'];
+            $closure   = $actionClosures[$inputAction]['action'];
+            if ($attribute->coroutine) {
+                Coroutine::create(fn () => $this->{$attribute->pre}() && $closure($argument));
+                Event::wait();
+            } else {
+                $closure($argument);
+            }
         } else {
-            $closure($argument);
+            $this->init() && $this->execute($argument);
         }
     }
 

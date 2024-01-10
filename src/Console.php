@@ -38,13 +38,9 @@ class Console extends KernelConsole
                     $classAttribute->desc    && $instance->setTitle($classAttribute->desc);
                 }
 
-                if (!$instance->getCommand()) {
-                    trigger_error($definition . ' command not set');
-                } else {
+                if ($instance->getCommand()) {
                     $this->commands[$instance->getCommand()] = $instance;
                 }
-            } else {
-                trigger_error($definition . ' must be instance of Command');
             }
         }
 
