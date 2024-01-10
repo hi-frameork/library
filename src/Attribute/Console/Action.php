@@ -18,6 +18,7 @@ class Action
         public string $schedule = '',
         public bool $coroutine = true,
         public string $desc = '',
+        public string $pre = 'init',
     ) {
     }
 }

@@ -83,7 +83,7 @@ abstract class Command extends ConsoleCommand
         $attribute = $actionClosures[$inputAction]['attribute'];
         $closure   = $actionClosures[$inputAction]['action'];
         if ($attribute->coroutine) {
-            Coroutine::create(fn () => $closure($argument));
+            Coroutine::create(fn () => $this->{$attribute->pre}() && $closure($argument));
             Event::wait();
         } else {
             $closure($argument);
@@ -91,6 +91,11 @@ abstract class Command extends ConsoleCommand
     }
 
     public function execute(Argument $argument): bool
+    {
+        return true;
+    }
+
+    public function init(): bool
     {
         return true;
     }
