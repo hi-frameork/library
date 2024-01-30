@@ -103,4 +103,21 @@ abstract class Command extends ConsoleCommand
     {
         return true;
     }
+
+    /**
+     * 打印三列对齐方式的表格
+     */
+    protected function displayThreeColumns(array $data)
+    {
+        // 三列对齐方式打印
+        // Action     Schedule     Description
+        // cron-demo  */1 * * * *  定时任务示例
+        $maxLen = array_map(
+            fn ($item) => max(array_map(fn ($i) => strlen($i), $item)),
+            array_map(null, ...$data)
+        );
+        foreach ($data as $item) {
+            fwrite(STDOUT, implode('  ', array_map(fn ($i, $j) => str_pad($i, $j), $item, $maxLen)) . PHP_EOL);
+        }
+    }
 }
