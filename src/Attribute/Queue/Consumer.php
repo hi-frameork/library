@@ -8,12 +8,14 @@ use Attribute;
 class Consumer
 {
     /**
-     * @param string $alias 消费者队列别名，可用于手动执行特定消费者类，使用相同别名视为同一组
-     * @param string $desc  消费者描述
+     * @param string $alias   消费者队列别名，可用于手动执行特定消费者类，使用相同别名视为同一组
+     * @param string $desc    消费者描述
+     * @param int    $members 消费者数量
      */
     public function __construct(
         public string $alias = '',
         public string $desc = '',
+        public int $members = 1,
     ) {
     }
 }
