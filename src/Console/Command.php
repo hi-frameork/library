@@ -120,4 +120,29 @@ abstract class Command extends ConsoleCommand
             fwrite(STDOUT, implode('  ', array_map(fn ($i, $j) => str_pad($i, $j), $item, $maxLen)) . PHP_EOL);
         }
     }
+
+    /**
+     * 所有命令行遍历
+     */
+    protected function iterativeCommands(callable $callback): array
+    {
+        $schedules = [];
+
+        /** @var Command[] */
+        $commands = app('console')->getCommands();
+        foreach ($commands as $command) {
+            if (!$command instanceof Command) {
+                continue;
+            }
+
+            [, $actionClosures] = $command?->loadActions();
+            foreach ($actionClosures as $action) {
+                if ($result = $callback($action['command'], $action['attribute'], $action['action'])) {
+                    $schedules[] = $result;
+                }
+            }
+        }
+
+        return $schedules;
+    }
 }
