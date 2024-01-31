@@ -83,17 +83,33 @@ abstract class Command extends ConsoleCommand
             /** @var Action $attribute */
             $attribute = $actionClosures[$inputAction]['attribute'];
             $closure   = $actionClosures[$inputAction]['action'];
-            if ($attribute->coroutine) {
-                Coroutine::create(fn () => $this->{$attribute->pre}() && $closure($argument));
-                Event::wait();
+
+            //  前置方法执行失败则直接退出
+            if (!$this->{$attribute->pre}()) {
+                throw new \RuntimeException('Pre method running failed.');
+            }
+
+            if ($attribute->replicas) {
+                for (;;) $this->warpRun($attribute, $closure, $argument);
             } else {
-                $closure($argument);
+                $this->warpRun($attribute, $closure, $argument);
             }
         } else {
             $this->init() && $this->execute($argument);
         }
+    }
 
-        exit(0);
+    /**
+     * 执行 action
+     */
+    private function warpRun(Action $attribute, $closure, $argument)
+    {
+        if ($attribute->coroutine) {
+            Coroutine::create(fn () => $closure($argument));
+            Event::wait();
+        } else {
+            $closure($argument);
+        }
     }
 
     public function execute(Argument $argument): bool
