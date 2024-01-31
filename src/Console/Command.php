@@ -92,6 +92,8 @@ abstract class Command extends ConsoleCommand
         } else {
             $this->init() && $this->execute($argument);
         }
+
+        exit(0);
     }
 
     public function execute(Argument $argument): bool
