@@ -6,9 +6,9 @@ use Hi\Kernel\Argument;
 use Hi\Kernel\Attribute\Reader;
 use Hi\Kernel\Console\Command as ConsoleCommand;
 use Library\Attribute\Console\Action;
-use Library\Coroutine;
 use ReflectionClass;
-use Swoole\Event;
+
+use function Swoole\Coroutine\run;
 
 abstract class Command extends ConsoleCommand
 {
@@ -90,7 +90,9 @@ abstract class Command extends ConsoleCommand
             }
 
             if ($attribute->replicas) {
-                for (;;) $this->warpRun($attribute, $closure, $argument);
+                for (;;) {
+                    $this->warpRun($attribute, $closure, $argument);
+                }
             } else {
                 $this->warpRun($attribute, $closure, $argument);
             }
@@ -105,8 +107,7 @@ abstract class Command extends ConsoleCommand
     private function warpRun(Action $attribute, $closure, $argument)
     {
         if ($attribute->coroutine) {
-            Coroutine::create(fn () => $closure($argument));
-            Event::wait();
+            run(fn () => $closure($argument));
         } else {
             $closure($argument);
         }
