@@ -15,6 +15,22 @@ class ConnectionPool
     public const DEFAULT_SIZE = 64;
 
     /**
+     * 定时器循环检查间隔时间
+     * 单位/秒
+     */
+    public const GC_INTERVAL = 60;
+
+    /**
+     * 每次释放连接数
+     */
+    public const GC_COUNT = 2;
+
+    /**
+     * 最小连接数
+     */
+    protected int $minObjectNum = 4;
+
+    /**
      * @var Channel
      */
     protected $pool;
@@ -36,6 +52,8 @@ class ConnectionPool
     ) {
         $this->pool = new Channel($size);
         $this->num  = 0;
+
+        Coroutine::create(fn () => $this->gc());
     }
 
     public function fill(): void
@@ -122,5 +140,36 @@ class ConnectionPool
         $this->name = $name;
 
         return $this;
+    }
+
+    public function setMinObjectNum(int $minObjectNum): self
+    {
+        $this->minObjectNum = $minObjectNum;
+
+        return $this;
+    }
+
+    public function getMinObjectNum(): int
+    {
+        return $this->minObjectNum;
+    }
+
+    /**
+     * 回收空闲连接
+     */
+    protected function gc()
+    {
+        for (;;) {
+            // 每次释放 2 个连接
+            if ($this->num - $this->minObjectNum > 1) {
+                for ($i = 0; $i < self::GC_COUNT; $i++) {
+                    $connection = $this->pool->pop();
+                    unset($connection);
+                    debug("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num);
+                }
+            }
+
+            Coroutine::sleep(self::GC_INTERVAL);
+        }
     }
 }
