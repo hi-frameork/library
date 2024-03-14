@@ -165,7 +165,7 @@ class ConnectionPool
                 for ($i = 0; $i < self::GC_COUNT; $i++) {
                     $connection = $this->pool->pop();
                     unset($connection);
-                    debug("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num);
+                    info("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num);
                 }
             }
 
