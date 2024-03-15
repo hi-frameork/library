@@ -31,6 +31,11 @@ class ConnectionPool
     protected int $minObjectNum = 4;
 
     /**
+     * 上一次释放时间
+     */
+    protected int $lastGCTime = 0;
+
+    /**
      * @var Channel
      */
     protected $pool;
@@ -53,7 +58,7 @@ class ConnectionPool
         $this->pool = new Channel($size);
         $this->num  = 0;
 
-        Coroutine::create(fn () => $this->gc());
+        // Coroutine::create(fn () => $this->gc());
     }
 
     public function fill(): void
@@ -68,6 +73,8 @@ class ConnectionPool
         if ($this->pool === null) {
             throw new RuntimeException('Pool has been closed');
         }
+
+        $this->gc();
 
         if ($this->pool->isEmpty() && $this->num < $this->size) {
             $this->make();
@@ -159,18 +166,22 @@ class ConnectionPool
      */
     protected function gc()
     {
-        for (;;) {
-            // 每次释放 2 个连接
-            if ($this->num - $this->minObjectNum > 1) {
-                for ($i = 0; $i < self::GC_COUNT; $i++) {
-                    $connection = $this->pool->pop();
-                    unset($connection);
-                    $this->num--;
-                    info("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num);
-                }
+        $time = time();
+        if ($time - $this->lastGCTime < self::GC_INTERVAL) {
+            return;
+        }
+
+        // 每次释放 2 个连接
+        if ($this->num - $this->minObjectNum >= self::GC_COUNT) {
+            for ($i = 0; $i < self::GC_COUNT; $i++) {
+                $connection = $this->pool->pop();
+                unset($connection);
+                $this->num--;
+                info("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num);
             }
 
-            Coroutine::sleep(self::GC_INTERVAL);
+            // 记录最后一次释放时间
+            $this->lastGCTime = $time;
         }
     }
 }
