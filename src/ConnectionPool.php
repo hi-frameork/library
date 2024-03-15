@@ -79,10 +79,10 @@ class ConnectionPool
             throw new RuntimeException('Pool has been closed');
         }
 
+        $this->gc();
+
         if ($this->pool->isEmpty() && $this->num < $this->size) {
             $this->make();
-        } else {
-            $this->gc();
         }
 
         $connection = $this->pool->pop($timeout);
@@ -179,27 +179,27 @@ class ConnectionPool
             return;
         }
 
-        // 避协程切换导致的并发问题
-        $this->gcLock = true;
-
         $time = time();
         if ($time - $this->lastGCTime < self::GC_INTERVAL) {
             return;
         }
 
+        // 避协程切换导致的并发问题
+        $this->gcLock = true;
+
         // 基于当前 chan 中剩余连接数，释放多余的连接
         // 否则将会出现已分配的连接都在使用中，可用的连接被释放后业务反而获取不到连接的情况
         // 每次释放 2 个连接
         for ($i = 0; $i < self::GC_COUNT; $i++) {
-            if ($this->pool->length() - $this->minObjectNum >= self::GC_COUNT) {
+            if ($this->pool->length() - $this->minObjectNum > 0) {
                 if ($connection = $this->pool->pop(0)) {
                     unset($connection);
                     $this->num--;
                     info("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num, [
-                        $this->name,
-                        $this->minObjectNum,
-                        $this->num,
-                        $this->pool->length(),
+                        'name' => $this->name,
+                        'minObjectNum' => $this->minObjectNum,
+                        'num' => $this->num,
+                        'length' => $this->pool->length(),
                     ]);
                 }
             }
