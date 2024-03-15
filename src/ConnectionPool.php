@@ -68,7 +68,7 @@ class ConnectionPool
         }
     }
 
-    public function get(float $timeout = 2)
+    public function get(float $timeout = 1)
     {
         if ($this->pool === null) {
             throw new RuntimeException('Pool has been closed');
@@ -171,8 +171,10 @@ class ConnectionPool
             return;
         }
 
-        // 每次释放 2 个连接
-        if ($this->num - $this->minObjectNum >= self::GC_COUNT) {
+        // 基于当前 chan 中剩余连接数，释放多余的连接
+        // 否则将会出现已分配的连接都在使用中，可用的连接被释放后业务反而获取不到连接的情况
+        if ($this->pool->length() - $this->minObjectNum >= self::GC_COUNT) {
+            // 每次释放 2 个连接
             for ($i = 0; $i < self::GC_COUNT; $i++) {
                 if ($connection = $this->pool->pop(0)) {
                     unset($connection);
