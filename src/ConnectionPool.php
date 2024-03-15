@@ -36,6 +36,11 @@ class ConnectionPool
     protected int $lastGCTime = 0;
 
     /**
+     * 连接池释放锁
+     */
+    protected bool $gcLock = false;
+
+    /**
      * @var Channel
      */
     protected $pool;
@@ -169,6 +174,13 @@ class ConnectionPool
      */
     protected function gc()
     {
+        if ($this->gcLock) {
+            return;
+        }
+
+        // 避协程切换导致的并发问题
+        $this->gcLock = true;
+
         $time = time();
         if ($time - $this->lastGCTime < self::GC_INTERVAL) {
             return;
@@ -176,8 +188,8 @@ class ConnectionPool
 
         // 基于当前 chan 中剩余连接数，释放多余的连接
         // 否则将会出现已分配的连接都在使用中，可用的连接被释放后业务反而获取不到连接的情况
+        // 每次释放 2 个连接
         if ($this->pool->length() - $this->minObjectNum >= self::GC_COUNT) {
-            // 每次释放 2 个连接
             for ($i = 0; $i < self::GC_COUNT; $i++) {
                 if ($connection = $this->pool->pop(0)) {
                     unset($connection);
@@ -194,5 +206,7 @@ class ConnectionPool
             // 记录最后一次释放时间
             $this->lastGCTime = $time;
         }
+
+        $this->gcLock = false;
     }
 }
