@@ -74,10 +74,10 @@ class ConnectionPool
             throw new RuntimeException('Pool has been closed');
         }
 
-        $this->gc();
-
         if ($this->pool->isEmpty() && $this->num < $this->size) {
             $this->make();
+        } else {
+            $this->gc();
         }
 
         $connection = $this->pool->pop($timeout);
@@ -174,10 +174,11 @@ class ConnectionPool
         // 每次释放 2 个连接
         if ($this->num - $this->minObjectNum >= self::GC_COUNT) {
             for ($i = 0; $i < self::GC_COUNT; $i++) {
-                $connection = $this->pool->pop();
-                unset($connection);
-                $this->num--;
-                info("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num);
+                if ($connection = $this->pool->pop(0)) {
+                    unset($connection);
+                    $this->num--;
+                    info("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num);
+                }
             }
 
             // 记录最后一次释放时间
