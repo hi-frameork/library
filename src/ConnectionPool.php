@@ -88,6 +88,7 @@ class ConnectionPool
         $connection = $this->pool->pop($timeout);
         if (!$connection) {
             alert(sprintf('Timeout getting connection object from [%s] pool', $this->name), [
+                'connection' => $connection,
                 'timeout' => $timeout,
                 'length'  => $this->pool->length(),
                 'num'     => $this->num,
@@ -189,8 +190,8 @@ class ConnectionPool
         // 基于当前 chan 中剩余连接数，释放多余的连接
         // 否则将会出现已分配的连接都在使用中，可用的连接被释放后业务反而获取不到连接的情况
         // 每次释放 2 个连接
-        if ($this->pool->length() - $this->minObjectNum >= self::GC_COUNT) {
-            for ($i = 0; $i < self::GC_COUNT; $i++) {
+        for ($i = 0; $i < self::GC_COUNT; $i++) {
+            if ($this->pool->length() - $this->minObjectNum >= self::GC_COUNT) {
                 if ($connection = $this->pool->pop(0)) {
                     unset($connection);
                     $this->num--;
