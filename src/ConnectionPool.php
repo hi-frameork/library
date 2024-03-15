@@ -84,6 +84,9 @@ class ConnectionPool
         if (!$connection) {
             alert(sprintf('Timeout getting connection object from [%s] pool', $this->name), [
                 'timeout' => $timeout,
+                'length'  => $this->pool->length(),
+                'num'     => $this->num,
+                'size'    => $this->size,
             ]);
         }
 
@@ -183,6 +186,7 @@ class ConnectionPool
                         $this->name,
                         $this->minObjectNum,
                         $this->num,
+                        $this->pool->length(),
                     ]);
                 }
             }
