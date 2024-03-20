@@ -68,7 +68,7 @@ class ConnectionPool
         }
     }
 
-    public function get(float $timeout = 1)
+    public function get(float $timeout = 2)
     {
         if ($this->pool === null) {
             throw new RuntimeException('Pool has been closed');
@@ -80,9 +80,9 @@ class ConnectionPool
             $this->make();
         }
 
-        $count = $timeout / 10;
-        for ($i = 0; $i < $count; $i++) {
-            $connection = $this->pool->pop($timeout);
+        $every = $timeout / 10;
+        for ($i = 0; $i < 10; $i++) {
+            $connection = $this->pool->pop($every);
             if (!$connection) {
                 info("Timeout getting connection object from [{$this->name}] pool");
                 continue;
