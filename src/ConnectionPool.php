@@ -80,14 +80,23 @@ class ConnectionPool
             $this->make();
         }
 
-        $connection = $this->pool->pop($timeout);
+        $count = $timeout / 10;
+        for ($i = 0; $i < $count; $i++) {
+            $connection = $this->pool->pop($timeout);
+            if (!$connection) {
+                info("Timeout getting connection object from [{$this->name}] pool");
+                continue;
+            }
+            break;
+        }
+
         if (!$connection) {
             alert(sprintf('Timeout getting connection object from [%s] pool', $this->name), [
                 'connection' => $connection,
-                'timeout' => $timeout,
-                'length'  => $this->pool->length(),
-                'num'     => $this->num,
-                'size'    => $this->size,
+                'timeout'    => $timeout,
+                'length'     => $this->pool->length(),
+                'num'        => $this->num,
+                'size'       => $this->size,
             ]);
         }
 
@@ -186,10 +195,10 @@ class ConnectionPool
                     unset($connection);
                     $this->num--;
                     info("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num, [
-                        'name' => $this->name,
+                        'name'         => $this->name,
                         'minObjectNum' => $this->minObjectNum,
-                        'num' => $this->num,
-                        'length' => $this->pool->length(),
+                        'num'          => $this->num,
+                        'length'       => $this->pool->length(),
                     ]);
                 }
             }
