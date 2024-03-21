@@ -32,7 +32,10 @@ class Manager extends DatabaseManager
         $pdoConfig->withUsername($config['user']);
         $pdoConfig->withPassword($config['password']);
         $pdoConfig->withCharset($config['charset'] ?? 'utf8mb4');
-        $pdoConfig->withOptions([PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT]);
+        $pdoConfig->withOptions([
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_SILENT,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "set wait_timeout=300",
+        ]);
 
         return new PDOPool(
             $pdoConfig,
