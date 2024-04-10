@@ -41,10 +41,16 @@ class ProducerRunner
         }
 
         foreach ($producers as $producer) {
+            $connectionName   = $producer->getConnection();
+            $connectionConfig = $this->config->get($connectionName);
+
             // 为生产者设置 bootstrap 服务器
-            $producer->getConfig()->setBootstrapServer(
-                $this->config->get($connection)->bootstrapServers
-            );
+            $producer->getConfig()->setBootstrapServer($connectionConfig->bootstrapServers);
+            if ($connectionConfig->sasl !== null) {
+                $producer->getConfig()->setSasl($connectionConfig->sasl);
+            } elseif ($connectionConfig->ssl !== null) {
+                $producer->getConfig()->setSsl($connectionConfig->ssl);
+            }
 
             $producer->send();
         }

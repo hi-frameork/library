@@ -66,6 +66,16 @@ class KafkaItem
      */
     public string $brokers;
 
+    /**
+     * Sasl 认证
+     */
+    public ?array $sasl = null;
+
+    /**
+     * SSL 认证
+     */
+    public ?array $ssl = null;
+
     public function __construct(array $data)
     {
         if (!isset($data['bootstrapServers'])) {
@@ -78,5 +88,7 @@ class KafkaItem
 
         $this->bootstrapServers = $data['bootstrapServers'];
         $this->brokers          = $data['brokers'];
+        $this->ssl              = $data['ssl']  ?? null;
+        $this->sasl             = $data['sasl'] ?? null;
     }
 }

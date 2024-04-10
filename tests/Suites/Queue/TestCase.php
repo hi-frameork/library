@@ -37,6 +37,7 @@ abstract class TestCase extends FrameworkTestCase
         $config = new CommonConfig();
         $config->setSendTimeout(10);
         $config->setRecvTimeout(10);
+        $config->setSasl($conConfig->sasl);
         $class = SwooleClient::class;
         /** @var SwooleClient $client */
         $client = new $class($part[0], $part[1], $config);
