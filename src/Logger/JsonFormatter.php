@@ -14,21 +14,16 @@ class JsonFormatter extends NormalizerFormatter
     public const BATCH_MODE_JSON     = 1;
     public const BATCH_MODE_NEWLINES = 2;
 
-    protected int $batchMode;
-
-    protected bool $appendNewline;
-
     protected bool $includeStacktraces = false;
 
     /**
      * @param self::BATCH_MODE_* $batchMode
      */
-    public function __construct(int $batchMode = self::BATCH_MODE_JSON, bool $appendNewline = true, bool $ignoreEmptyContextAndExtra = true)
-    {
-        $this->batchMode                  = $batchMode;
-        $this->appendNewline              = $appendNewline;
-        $this->ignoreEmptyContextAndExtra = $ignoreEmptyContextAndExtra;
-
+    public function __construct(
+        protected int $batchMode = self::BATCH_MODE_JSON,
+        protected bool $appendNewline = true,
+        protected bool $ignoreEmptyContextAndExtra = true
+    ) {
         parent::__construct();
     }
 
