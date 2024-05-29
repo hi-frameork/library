@@ -194,7 +194,7 @@ class ConnectionPool
                 if ($connection = $this->pool->pop(0)) {
                     unset($connection);
                     $this->num--;
-                    info("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num, [
+                    debug("连接释放 [{$this->name}] 连接池剩余连接数: " . $this->num, [
                         'name'         => $this->name,
                         'minObjectNum' => $this->minObjectNum,
                         'num'          => $this->num,
