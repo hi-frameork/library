@@ -32,9 +32,11 @@ abstract class Elasticsearch
     /**
      * 设置索引名称
      */
-    protected function setIndex(string $index): void
+    protected function setIndex(string $index): self
     {
         $this->index = $index;
+
+        return $this;
     }
 
     /**
