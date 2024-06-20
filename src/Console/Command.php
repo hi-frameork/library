@@ -92,9 +92,11 @@ abstract class Command extends ConsoleCommand
             if ($attribute->replicas) {
                 for (;;) {
                     $this->warpRun($attribute, $closure, $argument);
+                    $this->{$attribute->post}();
                 }
             } else {
                 $this->warpRun($attribute, $closure, $argument);
+                $this->{$attribute->post}();
             }
         } else {
             $this->init() && $this->execute($argument);
@@ -119,6 +121,11 @@ abstract class Command extends ConsoleCommand
     }
 
     public function init(): bool
+    {
+        return true;
+    }
+
+    public function post(): bool
     {
         return true;
     }
