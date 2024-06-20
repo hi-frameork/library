@@ -92,11 +92,9 @@ abstract class Command extends ConsoleCommand
             if ($attribute->replicas) {
                 for (;;) {
                     $this->warpRun($attribute, $closure, $argument);
-                    $this->{$attribute->post}();
                 }
             } else {
                 $this->warpRun($attribute, $closure, $argument);
-                $this->{$attribute->post}();
             }
         } else {
             $this->init() && $this->execute($argument);
@@ -109,9 +107,13 @@ abstract class Command extends ConsoleCommand
     private function warpRun(Action $attribute, $closure, $argument)
     {
         if ($attribute->coroutine) {
-            run(fn () => $closure($argument));
+            run(function () use ($attribute, $closure, $argument) {
+                $closure($argument);
+                $this->{$attribute->post}();
+            });
         } else {
             $closure($argument);
+            $this->{$attribute->post}();
         }
     }
 
