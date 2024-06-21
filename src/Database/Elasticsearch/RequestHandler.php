@@ -3,6 +3,7 @@
 namespace Library\Database\Elasticsearch;
 
 use GuzzleHttp\Ring\Core;
+use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Ring\Exception\RingException;
 use GuzzleHttp\Ring\Future\CompletedFutureArray;
 use Library\Coroutine;
@@ -15,6 +16,10 @@ use Library\Http\Client;
  */
 class RequestHandler
 {
+    /**
+     * @param array<string,mixed> $settings
+     * @param mixed $client
+     */
     public function __construct(
         protected array $settings = [],
         protected $client = null,
@@ -55,6 +60,7 @@ class RequestHandler
      *                       [port_in_header] =>
      *                       )
      *                       )
+     * @return mixed
      */
     public function __invoke(array $request)
     {
@@ -64,7 +70,8 @@ class RequestHandler
     /**
      * 从给定参数创建协程客户端
      *
-     * @param array $params
+     * @param array<string,mixed> $request
+     * @return mixed
      */
     private function doRquest(array $request)
     {
@@ -90,7 +97,7 @@ class RequestHandler
 
         // 路径
         $path = $parsed['path'] ?? '/';
-        if (isset($parsed['query'])  && is_string($parsed['query'])) {
+        if (isset($parsed['query'])) {
             $path .= '?' . $parsed['query'];
         }
 
@@ -118,7 +125,12 @@ class RequestHandler
             'body'          => $this->getBodyStream($client->body),
         ]);
     }
-
+    /**
+     * @param mixed $host
+     * @param mixed $port
+     * @param mixed $ssl
+     * @return Client
+     */
     private function getClient($host, $port, $ssl)
     {
         if (!$this->client) {
@@ -130,8 +142,10 @@ class RequestHandler
 
     /**
      * 处理请求头
+     * @param array<string,mixed> $request
+     * @return array<string,string>
      */
-    private function processHeaders(array $request): array
+    private function processHeaders($request): array
     {
         $headers = [];
         foreach ($request['headers'] ?? [] as $name => $value) {
@@ -148,6 +162,8 @@ class RequestHandler
 
     /**
      * 处理设置
+     * @param array<string,mixed> $options
+     * @return array|array<string,mixed>
      */
     private function processSettings(array $options): array
     {
@@ -166,15 +182,19 @@ class RequestHandler
 
     /**
      * 检查状态码结果，如果请求失败抛出异常
+     * @param mixed $statusCode
+     * @param mixed $errorCode
+     * @param mixed $errorMessage
+     * @return ConnectException|RingException|bool
      */
     private function checkStatusCode($statusCode, $errorCode, $errorMessage)
     {
-        if ($statusCode === -1) {
-            return new RingException(
+        if ($errorCode === 61) {
+            return new ConnectException(
                 sprintf("Connection timed out errCode=%s errMsg=%s", $errorCode, $errorMessage)
             );
         }
-        if ($statusCode === -2) {
+        if ($statusCode === -1) {
             return new RingException('Request timed out');
         }
 
@@ -183,6 +203,8 @@ class RequestHandler
 
     /**
      * 获取响应体
+     *
+     * @return resource|bool
      */
     protected function getBodyStream(string $resource)
     {
