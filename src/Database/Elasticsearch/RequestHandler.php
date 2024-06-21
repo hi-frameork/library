@@ -190,12 +190,12 @@ class RequestHandler
     private function checkStatusCode($statusCode, $errorCode, $errorMessage)
     {
         if ($errorCode === 61) {
-            return new ConnectException(
+            throw new ConnectException(
                 sprintf("Connection timed out errCode=%s errMsg=%s", $errorCode, $errorMessage)
             );
         }
         if ($statusCode === -1) {
-            return new RingException('Request timed out');
+            throw new RingException('Request timed out');
         }
 
         return true;
