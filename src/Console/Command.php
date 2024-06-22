@@ -10,6 +10,8 @@ use ReflectionClass;
 
 use function Swoole\Coroutine\run;
 
+use Throwable;
+
 abstract class Command extends ConsoleCommand
 {
     public function setTitle(string $title): self
@@ -91,10 +93,10 @@ abstract class Command extends ConsoleCommand
 
             if ($attribute->replicas) {
                 for (;;) {
-                    $this->warpRun($attribute, $closure, $argument);
+                    $this->warp($attribute, $closure, $argument);
                 }
             } else {
-                $this->warpRun($attribute, $closure, $argument);
+                $this->warp($attribute, $closure, $argument);
             }
         } else {
             $this->init() && $this->execute($argument);
@@ -104,16 +106,24 @@ abstract class Command extends ConsoleCommand
     /**
      * 执行 action
      */
-    private function warpRun(Action $attribute, $closure, $argument)
+    private function warp(Action $attribute, $closure, $argument)
     {
         if ($attribute->coroutine) {
-            run(function () use ($attribute, $closure, $argument) {
-                $closure($argument);
-                $this->{$attribute->post}();
-            });
+            run(fn () => $this->run($attribute, $closure, $argument));
         } else {
+            $this->run($attribute, $closure, $argument);
+        }
+    }
+
+    private function run(Action $attribute, $closure, $argument): void
+    {
+        try {
             $closure($argument);
             $this->{$attribute->post}();
+        } catch (Throwable $th) {
+            error($th->getMessage(), $th->getTrace());
+
+            throw $th;
         }
     }
 
