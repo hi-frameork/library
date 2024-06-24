@@ -3,10 +3,14 @@
 namespace Library\Database\MySQL;
 
 use Aura\SqlQuery\Common\SelectInterface;
-use Aura\SqlQuery\Common\WhereInterface;
+use Aura\SqlQuery\Mysql\Delete;
+use Aura\SqlQuery\Mysql\Insert;
+use Aura\SqlQuery\Mysql\Select;
+use Aura\SqlQuery\Mysql\Update;
 use Aura\SqlQuery\QueryInterface;
 use Library\ConnectionPool;
 use PDO;
+use PDOStatement;
 use Throwable;
 
 /**
@@ -22,7 +26,7 @@ class QueryProxy
      * QueryProxy Construct
      *
      * @param string                         $connection 目标数据库
-     * @param SelectInterface|WhereInterface $query
+     * @param QueryInterface&SelectInterface $query
      */
     public function __construct(protected string $connection, protected QueryInterface $query)
     {
@@ -30,8 +34,11 @@ class QueryProxy
 
     /**
      * 实现 proxy 目标 $query 方法调用
+     *
+     * @param string            $name
+     * @param array<int,mixed> $arguments
      */
-    public function __call($name, $arguments)
+    public function __call($name, $arguments): self
     {
         $this->query->{$name}(...$arguments);
 
@@ -51,7 +58,7 @@ class QueryProxy
         return $this->query->getStatement();
     }
 
-    public function getSql()
+    public function getSql(): string
     {
         return implode(' ', array_map('trim', explode(PHP_EOL, $this->query->getStatement())));
     }
@@ -69,15 +76,17 @@ class QueryProxy
      *
      * @return QueryInterface
      */
-    public function getQuery()
+    public function getQuery(): QueryInterface
     {
         return $this->query;
     }
 
     /**
      * 在 PDO 中运行数据库操作
+     *
+     * @param callable $callback
      */
-    private function runWithPDO(callable $callback)
+    private function runWithPDO(callable $callback): mixed
     {
         /** @var \Library\Database\Manager $manager */
         $manager = app('db.pool.mysql');
@@ -114,12 +123,16 @@ class QueryProxy
      *
      * @return array|false
      */
-    public function first()
+    public function first(): mixed
     {
         $this->query->limit(1);
 
         return $this->runWithPDO(
-            fn ($pdo, $stmt) => $stmt->fetch(PDO::FETCH_ASSOC)
+            /**
+             * @param PDO $pdo
+             * @param PDOStatement $stmt
+             */
+            fn ($pdo, $stmt): mixed => $stmt->fetch(PDO::FETCH_ASSOC)
         );
     }
 
@@ -140,12 +153,21 @@ class QueryProxy
      * 执行成功，返回 array (结果数据)
      * 执行失败，返回 false
      *
-     * @return array[]|false
+     * @return array|int|false
      */
-    public function execute()
+    public function execute(): array|int|false
     {
         return $this->runWithPDO(
-            fn ($pdo, $stmt) => $stmt->fetchAll(PDO::FETCH_ASSOC)
+            /**
+             * @param PDO $pdo
+             * @param PDOStatement $stmt
+             */
+            fn ($pdo, $stmt): mixed => match (get_class($this->query)) {
+                Select::class => $stmt->fetchAll(PDO::FETCH_ASSOC),
+                Delete::class => $stmt->rowCount(),
+                Update::class => $stmt->rowCount(),
+                Insert::class => $pdo->lastInsertId(),
+            }
         );
     }
 
@@ -156,9 +178,12 @@ class QueryProxy
      *
      * @return string|false
      */
-    public function executeAndGetlastId()
+    public function executeAndGetlastId(): mixed
     {
         return $this->runWithPDO(
+            /**
+             * @param PDO $pdo
+             */
             fn ($pdo) => $pdo->lastInsertId()
         );
     }
