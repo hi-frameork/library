@@ -163,10 +163,10 @@ class QueryProxy
              * @param PDOStatement $stmt
              */
             fn ($pdo, $stmt): mixed => match (get_class($this->query)) {
+                Insert::class => $stmt->fetchAll(PDO::FETCH_ASSOC),
                 Select::class => $stmt->fetchAll(PDO::FETCH_ASSOC),
                 Delete::class => $stmt->rowCount(),
                 Update::class => $stmt->rowCount(),
-                Insert::class => $pdo->lastInsertId(),
             }
         );
     }
