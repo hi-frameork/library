@@ -42,7 +42,7 @@ abstract class Elasticsearch
     /**
      * 返回索引名称
      */
-    protected function getIndex(): string
+    public function getIndex(): string
     {
         return $this->index;
     }
@@ -268,7 +268,7 @@ abstract class Elasticsearch
 
     /**
      * @param callable $callback
-     * @return Client
+     * @return mixed
      */
     protected function run(callable $callback)
     {
