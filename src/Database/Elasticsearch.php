@@ -10,12 +10,13 @@ use Exception;
 /**
  * @method IndicesNamespace indices() 获取指定 ID 的文档
  * @method string index(array $body, string $id = '', bool $refresh = false) 创建 Index && Doc
- * @method array get(string $id, array $body = [], bool $throwException = true) 获取指定 Doc
+ * @method ?array get(string $id, array $body = [], bool $throwException = true) 获取指定 Doc
  * @method bool delete(array $body) 删除指定 ID 的文档
  * @method array search(array $body) 搜索，返回值 array{total: array, hits: array}
  * @method array bulk(array $data) 批量创建
  * @method array updateByQuery(array $query, bool $throwException = true) 根据查询更新
  * @method array updateById(array $query, string $id, bool $throwException = true, bool $refresh = false) 根据id更新
+ * @method ?bool exists(array $body, bool $throwException = true) 检查指定记录是否存在
  */
 abstract class Elasticsearch
 {
@@ -240,6 +241,22 @@ abstract class Elasticsearch
                 ]);
 
                 return $result;
+            } catch (Exception $th) {
+                $throwException && throw $th;
+            }
+
+            return null;
+        };
+    }
+
+    private function exists(array $body, bool $throwException = true)
+    {
+        return function (Client $client) use ($body, $throwException) {
+            try {
+                return $client->exists([
+                    'index' => $this->getIndex(),
+                    ...$body,
+                ]);
             } catch (Exception $th) {
                 $throwException && throw $th;
             }
