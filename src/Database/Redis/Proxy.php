@@ -24,6 +24,10 @@ class Proxy
         debug('REDIS', [$name, $arguments]);
 
         return $this->builtIn(
+            /**
+             * @param \Redis $redis
+             * @return mixed
+             */
             fn ($redis) => $redis->{$name}(...$arguments)
         );
     }
@@ -37,20 +41,20 @@ class Proxy
      */
     public function builtIn(callable $callback)
     {
-        /** @var \Library\Database\Manager $manager */
-        $manager = app('db.pool.redis');
         /** @var ConnectionPool $pool */
-        $pool = $manager->pool($this->connection);
+        $pool = app('db.pool.redis')->pool($this->connection);
 
         /** @var \Redis $redis */
         $redis = $pool->get();
 
+        $result = null;
+
         try {
             $result = $callback($redis);
-        } catch (\Throwable $th) {
-            throw $th;
         } finally {
-            $pool->put($redis);
+            if ($result !== null) {
+                $pool->put($redis);
+            }
         }
 
         return $result;

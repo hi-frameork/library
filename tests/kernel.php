@@ -40,4 +40,8 @@ return (new \Hi\Kernel($_ENV['APP_PATH'] ?? dirname(__DIR__)))->load(function (\
     $container->set('db.pool.mysql', fn () => new \Library\Database\MySQL\Manager([
         'default' => config('mysql.default'),
     ]));
+
+    $container->set('db.pool.redis', fn () => new \Library\Database\Redis\Manager([
+        'default' => config('redis.default'),
+    ]));
 });
