@@ -8,51 +8,38 @@ use Library\ConnectionPool;
 
 class Proxy
 {
-    public function __construct(private string $connection)
+    public function __construct(private string $connection, private int $failedRetries = 3)
     {
     }
 
     /**
-     * 动态代理 redis 方法
-     *
-     * @param string $name      redis 扩展所提供的所有方法名
-     * @param array  $arguments 方法对应的参数
-     * @return mixed
+     * @param array<string,mixed> $arguments
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
-        debug('REDIS', [$name, $arguments]);
-
-        return $this->builtIn(
-            fn ($redis) => $redis->{$name}(...$arguments)
-        );
-    }
-
-    /**
-     * 以闭包方式执行 redis 操作
-     * 传递 redis 连接给闭包作为参数
-     *
-     * @param callable $callback
-     * @return mixed
-     */
-    public function builtIn(callable $callback)
-    {
-        /** @var \Library\Database\Manager $manager */
-        $manager = app('db.pool.redis');
         /** @var ConnectionPool $pool */
-        $pool = $manager->pool($this->connection);
+        $pool = app('db.pool.redis')->pool($this->connection);
 
-        /** @var \Redis $redis */
-        $redis = $pool->get();
-
-        try {
-            $result = $callback($redis);
-        } catch (\Throwable $th) {
-            throw $th;
-        } finally {
-            $pool->put($redis);
+        $hasError = false;
+        $throw = null;
+        for ($i = 0; $i < $this->failedRetries; $i++) {
+            /** @var \Redis $redis */
+            $redis = $pool->get();
+            try {
+                debug('REDIS', [$name, $arguments]);
+                return $redis->{$name}(...$arguments);
+            } catch (\Throwable $th) {
+                $hasError = true;
+                $throw = $th;
+            } finally {
+                if ($hasError === false) {
+                    $pool->put($redis);
+                } else {
+                    $redis->close();
+                }
+            }
         }
 
-        return $result;
+        throw $throw;
     }
 }
