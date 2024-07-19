@@ -17,10 +17,15 @@ class Redis
     protected string $connection = 'default';
 
     /**
+     * 失败重试次数
+     */
+    private int $failedRetries = 3;
+
+    /**
      * Redis Construct
      */
     public function __construct()
     {
-        $this->redis = new Proxy($this->connection);
+        $this->redis = new Proxy($this->connection, $this->failedRetries);
     }
 }
