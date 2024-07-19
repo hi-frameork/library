@@ -34,8 +34,6 @@ class Proxy
             } finally {
                 if ($hasError === false) {
                     $pool->put($redis);
-                } else {
-                    $redis->close();
                 }
             }
         }
