@@ -8,7 +8,6 @@ class CallTest extends TestCase
     {
         $result = $this->redis->subscribe(['test-pub'], function ($redis, $channel, $message) {
         });
-        var_dump($result);
     }
 
     public function test_with_set(): void

@@ -86,9 +86,9 @@ class Coroutine
     }
 
     /**
-     * @return ArrayAccess
+     * @return ?ArrayAccess
      */
-    public static function getContext(): object
+    public static function getContext(): mixed
     {
         return SwooleCoroutine::getContext();
     }
