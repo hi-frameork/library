@@ -6,6 +6,8 @@ use function app;
 
 use Library\ConnectionPool;
 
+use RedisException;
+
 class Proxy
 {
     public function __construct(private string $connection)
@@ -47,16 +49,18 @@ class Proxy
         /** @var \Redis $redis */
         $redis = $pool->get();
 
-        $result = null;
+        $throw = false;
 
         try {
-            $result = $callback($redis);
+            return $callback($redis);
+        } catch (RedisException $e) {
+            $throw = true;
+
+            throw $e;
         } finally {
-            if ($result !== null) {
+            if ($throw === false) {
                 $pool->put($redis);
             }
         }
-
-        return $result;
     }
 }
