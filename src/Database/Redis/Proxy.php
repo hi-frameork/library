@@ -60,6 +60,8 @@ class Proxy
         } finally {
             if ($throw === false) {
                 $pool->put($redis);
+            } else {
+                $pool->put(null);
             }
         }
     }
