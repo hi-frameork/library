@@ -20,7 +20,7 @@ class Manager extends DatabaseManager
             function () use ($config) {
                 $redis = new Redis();
                 $redis->connect($config['host'], $config['port'] ?? 6379, $config['timeout'] ?? 1);
-                $redis->setOption(Redis::OPT_READ_TIMEOUT, -1);
+                // $redis->setOption(Redis::OPT_READ_TIMEOUT, -1);
 
                 if (isset($config['password'])) {
                     $redis->auth($config['password']);
