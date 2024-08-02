@@ -26,6 +26,16 @@ abstract class AbstractSqlModel
      */
     protected string $table = '';
 
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
+    public function getConnection(): string
+    {
+        return $this->connection;
+    }
+
     /**
      * 返回数据库 Select 对象
      * @see https://github.com/auraphp/Aura.SqlQuery/blob/3.x/docs/select.md
