@@ -26,7 +26,7 @@ abstract class AbstractSqlModel
      */
     protected string $table = '';
 
-    public function getTable(): string
+    public function getTableName(): string
     {
         return $this->table;
     }
