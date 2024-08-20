@@ -54,6 +54,9 @@ class Coroutine
     /**
      * 为当前携程挂载数据
      * 其将会通过 $maps 与 $referenceCount 在所有子协程中共享
+     *
+     * 对于自定义的数据，可以通过 $name 来区分，请使用自定义的 $name
+     * __data 作为内部保留字段使用
      */
     public static function setAttach(mixed $data, string $name = '__data'): bool
     {
@@ -109,5 +112,10 @@ class Coroutine
     public static function defer(callable $callback)
     {
         return SwooleCoroutine::defer($callback);
+    }
+
+    public static function getuid(): int
+    {
+        return SwooleCoroutine::getuid();
     }
 }
