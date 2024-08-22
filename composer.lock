@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9361e6c702fe96d3a7d62014511e382",
+    "content-hash": "f6d328117db371ba153105af6636f1f8",
     "packages": [
         {
             "name": "aura/sqlquery",
-            "version": "3.x-dev",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.SqlQuery.git",
-                "reference": "b58a7aab3c3291b31671ace4d64cc31e68f3f2a7"
+                "reference": "6f71a3b82d7018dff437cdd316f3eb851fd3713c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.SqlQuery/zipball/b58a7aab3c3291b31671ace4d64cc31e68f3f2a7",
-                "reference": "b58a7aab3c3291b31671ace4d64cc31e68f3f2a7",
+                "url": "https://api.github.com/repos/auraphp/Aura.SqlQuery/zipball/6f71a3b82d7018dff437cdd316f3eb851fd3713c",
+                "reference": "6f71a3b82d7018dff437cdd316f3eb851fd3713c",
                 "shasum": ""
             },
             "require": {
@@ -30,7 +30,6 @@
             "suggest": {
                 "aura/sql": "Provides an extension to the native PDO along with a profiler and connection locator."
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -70,9 +69,9 @@
             ],
             "support": {
                 "issues": "https://github.com/auraphp/Aura.SqlQuery/issues",
-                "source": "https://github.com/auraphp/Aura.SqlQuery/tree/3.x"
+                "source": "https://github.com/auraphp/Aura.SqlQuery/tree/3.0.0"
             },
-            "time": "2024-03-14T04:50:31+00:00"
+            "time": "2023-04-25T13:21:16+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6513,9 +6512,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "aura/sqlquery": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
